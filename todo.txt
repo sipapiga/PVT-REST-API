@@ -1,0 +1,35 @@
+===============================================================================
+                                    THE LIST
+===============================================================================
+
+* Make testing database separate from application database.
+
+===============================================================================
+
+* Implement swiping session functionality.
+
+    Suggestions for further swiping session endpoints:
+
+    POST  /swipingsessions?initiatorEmail=email1&buddyEmail=email2
+    Initiates a new swiping session, returns list of activities to choose from.
+
+    PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&initiatorChosen=[activity1, activity2]
+
+    Or:
+
+    PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&buddyChosen=[activity1, activity3])
+    Records chosen activities for the specified user.
+
+    Note that all of these endpoints currently only handle two users. This is,
+    of course, easy to fix JSON-wise but might require a bit more thinking when
+    it comes to persisting everything in the database.
+
+===============================================================================
+
+* Add priorities for items in this list.
+
+===============================================================================
+
+* Add time estimates for items in this list.
+
+===============================================================================
