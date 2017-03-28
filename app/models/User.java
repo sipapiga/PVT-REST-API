@@ -123,6 +123,10 @@ public class User extends Model {
         }
     }
 
+    public static User findByEmailAddress(String emailAddress) {
+        return find.where().eq("emailAddress", emailAddress).findUnique();
+    }
+
     public static User findByEmailAddressAndPassword(String emailAddress, String password) {
         return find.where().eq("emailAddress", emailAddress.toLowerCase()).eq("shaPassword", getSha512(password)).findUnique();
     }
