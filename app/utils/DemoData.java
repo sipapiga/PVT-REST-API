@@ -1,3 +1,7 @@
+/*
+ * Modified from https://github.com/jamesward/play-rest-security
+ */
+
 package utils;
 
 import models.*;

@@ -1,3 +1,6 @@
+
+# Modified from https://github.com/jamesward/play-rest-security
+
 # --- !Ups
 
 create table user (

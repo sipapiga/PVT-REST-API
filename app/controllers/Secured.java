@@ -1,3 +1,7 @@
+/*
+ * From https://github.com/jamesward/play-rest-security
+ */
+
 package controllers;
 
 import models.User;

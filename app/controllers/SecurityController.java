@@ -1,3 +1,7 @@
+/*
+ * From https://github.com/jamesward/play-rest-security
+ */
+
 package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
