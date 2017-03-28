@@ -33,3 +33,22 @@
 * Add time estimates for items in this list.
 
 ===============================================================================
+
+* Add documentation.
+
+    For:
+    * SecurityController
+    * Secured
+    * SwipingSessionsController
+    * models.User
+    * models.SwipingSession
+
+===============================================================================
+
+* Integrate server and database with data from the public API's.
+
+    Will involve:
+    * Updating fields in models.SwipingSession
+    * Updating sql in conf/evolutions/default/1.sql
+    
+===============================================================================
