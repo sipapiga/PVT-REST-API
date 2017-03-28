@@ -31,12 +31,16 @@ public class SecurityController extends Controller {
     // return an authToken
     public Result login() {
 
-        JsonNode json = request().body().asJson();
+        Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
 
-        String emailAddress = json.findPath("email").textValue();
-        String password = json.findPath("password").textValue();
+        if (loginForm.hasErrors()) {
+            return badRequest(loginForm.errorsAsJson());
+        }
 
-        User user = User.findByEmailAddressAndPassword(emailAddress, password);
+        Login login = loginForm.get();
+
+        User user = User.findByEmailAddressAndPassword(login.emailAddress, login.password);
+
 
         if (user == null) {
             return unauthorized();
