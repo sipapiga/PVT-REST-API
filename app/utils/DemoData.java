@@ -17,6 +17,8 @@ public class DemoData {
     public User user1;
     public User user2;
 
+    public SwipingSession session;
+
     @Inject
     public DemoData(Environment environment) {
         
@@ -31,6 +33,9 @@ public class DemoData {
 
                 user2 = new User("user2@demo.com", "password", "Jane Doe");
                 user2.save();
+
+                session = new SwipingSession("user1@demo.com", "user2@demo.com");
+                session.save();
                 
             }
         }
