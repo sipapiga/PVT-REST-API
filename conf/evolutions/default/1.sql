@@ -1,35 +1,35 @@
 
-# Modified from https://github.com/jamesward/play-rest-security
+# USER table taken from https://github.com/jamesward/play-rest-security
 
 # --- !Ups
 
-create table swiping_session (
-    id                  bigint auto_increment not null,
-    initiator_email     varchar(256) not null,
-    buddy_email         varchar(256) not null,
-    initialization_date timestamp not null,
-    constraint pk_swiping_session primary key (id)
+CREATE TABLE swiping_session (
+    id                  bigint AUTO_INCREMENT NOT NULL,
+    initiator_email     varchar(256) NOT NULL,
+    buddy_email         varchar(256) NOT NULL,
+    initialization_date timestamp NOT NULL,
+    CONSTRAINT pk_swiping_session PRIMARY KEY (id)
 );
 
-create table user (
-    id              bigint auto_increment not null,
+CREATE TABLE user (
+    id              bigint auto_increment NOT NULL,
     auth_token      varchar(256),
-    email_address   varchar(256) not null,
-    sha_password    varbinary(64) not null,
-    full_name       varchar(256) not null,
-    creation_date     timestamp not null,
-    constraint uq_user_email_address unique (email_address),
-    constraint pk_user primary key (id)
+    email_address   varchar(256) NOT NULL,
+    sha_password    varbinary(64) NOT NULL,
+    full_name       varchar(256) NOT NULL,
+    creation_date   timestamp NOT NULL,
+    CONSTRAINT uq_user_email_address UNIQUE (email_address),
+    CONSTRAINT pk_user PRIMARY KEY (id)
 );
 
-alter table swiping_session add constraint fk_swiping_session_emails foreign key (initiator_email, buddy_email) references user(email_address, email_address) on delete restrict on update restrict;
-create index ix_swiping_session_emails on swiping_session (initiator_email, buddy_email);
+ALTER TABLE swiping_session ADD CONSTRAINT fk_swiping_session_emails FOREIGN KEY (initiator_email, buddy_email) REFERENCES user(email_address, email_address) ON DELETE RESTRICT ON UPDATE RESTRICT;
+CREATE INDEX ix_swiping_session_emails ON swiping_session (initiator_email, buddy_email);
 
 # --- !Downs
 
-alter table swiping_session drop constraint if exists fk_swiping_session_emails;
-drop index if exists ix_swiping_session_emails;
+ALTER TABLE swiping_session DROP CONSTRAINT IF EXISTS fk_swiping_session_emails;
+DROP INDEX IF EXISTS ix_swiping_session_emails;
 
-drop table if exists swiping_session;
+DROP TABLE IF EXISTS swiping_session;
 
-drop table if exists user;
+DROP TABLE IF EXISTS user;

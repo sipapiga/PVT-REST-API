@@ -8,4 +8,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 POST    /login                      controllers.SecurityController.login
 POST    /logout                     controllers.SecurityController.logout
 
-GET     /swipingsessions            controllers.SwipingSessionsController.getSwipingSession(initiatorEmail ?= null, buddyEmail ?= null)
+GET     /swipingsessions            controllers.SwipingSessionsController.getSwipingSession(initiatorEmail, buddyEmail)

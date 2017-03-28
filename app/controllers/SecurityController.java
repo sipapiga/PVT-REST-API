@@ -12,7 +12,6 @@ import play.data.FormFactory;
 import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.*;
-import play.Logger;
 
 import javax.inject.Inject;
 
