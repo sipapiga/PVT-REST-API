@@ -7,4 +7,5 @@
         * Make testing data separate from development data.
 
  Time taken: 6.5 hours.
+ Browser tabs required: 30, at least.
 ===============================================================================
