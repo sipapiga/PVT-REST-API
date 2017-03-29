@@ -3,9 +3,16 @@
 ---------
 * Make testing database separate from application database.
 
-    With subtask:
+  * With subtask:
         * Make testing data separate from development data.
 
- Time taken: 6.5 hours.
- Browser tabs required: 30, at least.
+  * Time taken: 6.5 hours.
+  * Browser tabs required: 30, at least.
+
+* Add priorities to items in todo list.
+    Time taken: 5 minutes.
+    Browser tabs required: 0 (!).
+
+* Add time estimates to items in todo list.
+    Time taken: 5 minutes.
 ===============================================================================

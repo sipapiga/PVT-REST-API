@@ -4,53 +4,54 @@
 
 * Implement swiping session functionality.
 
-    Suggestions for further swiping session endpoints:
+    * Suggestions for further swiping session endpoints:
 
-    POST  /swipingsessions?initiatorEmail=email1&buddyEmail=email2
-    Initiates a new swiping session, returns list of activities to choose from.
+      POST  /swipingsessions?initiatorEmail=email1&buddyEmail=email2
+      Initiates a new swiping session, returns list of activities to choose from.
 
-    PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&initiatorChosen=[activity1, activity2]
+      PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&initiatorChosen=[activity1, activity2]
 
-    Or:
+      Or:
 
-    PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&buddyChosen=[activity1, activity3])
-    Records chosen activities for the specified user.
+      PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&buddyChosen=[activity1, activity3])
+      Records chosen activities for the specified user.
 
-    Note that all of these endpoints currently only handle two users. This is,
-    of course, easy to fix JSON-wise but might require a bit more thinking when
-    it comes to persisting everything in the database.
+      Note that all of these endpoints currently only handle two users. This is,
+      of course, easy to fix JSON-wise but might require a bit more thinking when
+      it comes to persisting everything in the database.
 
-===============================================================================
-
-* Add priorities for items in this list.
-
-===============================================================================
-
-* Add time estimates for items in this list.
+    * Priority: 1.
+    * Time: 4 hours.
 
 ===============================================================================
 
 * Add documentation.
 
-    For:
-    * SecurityController
-    * Secured
-    * SwipingSessionsController
-    * models.User
-    * models.SwipingSession
+    * For:
+      * SecurityController
+      * Secured
+      * SwipingSessionsController
+      * models.User
+      * models.SwipingSession
+
+    * Priority: 3.
+    * Time: 2 hours.
 
 ===============================================================================
 
 * Integrate server and database with data from the public API's.
 
-    Will involve:
-    * Updating fields in models.SwipingSession
-    * Updating sql in conf/evolutions/default/1.sql
+    * Will involve:
+      * Updating fields in models.SwipingSession.
+
+    * Priority: 1.
+    * Time: 8 hours.
 
 ===============================================================================
 
-* Use real MySQL database for development
-
-    Estimated time: 3 hours.
+* Use real MySQL database for development.
+    
+    * Priority: 2.
+    * Time: 3 hours.
 
 ===============================================================================
