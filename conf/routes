@@ -2,8 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Interesting tidbit which indicate POST might be better than GET for passing sensitive information:
+# https://security.stackexchange.com/questions/12531/ssl-with-get-and-post
+# Should be the second answer.
 POST    /login                      controllers.SecurityController.login
 POST    /logout                     controllers.SecurityController.logout
+
+POST    /facebook/login             controllers.FacebookSecurityController.login
 
 GET     /swipingsessions            controllers.SwipingSessionsController.getSwipingSession(initiatorEmail, buddyEmail)
 
