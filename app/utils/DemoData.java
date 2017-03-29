@@ -5,6 +5,7 @@
 package utils;
 
 import models.*;
+import play.Configuration;
 import play.Environment;
 import play.Logger;
 
@@ -23,7 +24,8 @@ public class DemoData {
     public DemoData(Environment environment) {
         
         if (environment.isDev() || environment.isTest()) {
-            
+        //if (environment.isTest()) {
+
             if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
 
                 Logger.info("Loading Demo Data");

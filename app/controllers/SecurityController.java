@@ -40,7 +40,6 @@ public class SecurityController extends Controller {
 
         User user = User.findByEmailAddressAndPassword(login.emailAddress, login.password);
 
-
         if (user == null) {
             return unauthorized();
         } else {
