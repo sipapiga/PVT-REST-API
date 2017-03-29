@@ -4,57 +4,35 @@
 
 package controllers;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.config.ServerConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import com.google.common.collect.ImmutableMap;
-import models.SwipingSession;
-import models.User;
-import org.junit.After;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.Before;
+import org.junit.*;
 
-import play.Application;
 import play.libs.Json;
 import play.mvc.Result;
-import play.test.WithApplication;
-import utils.DemoData;
-
-import play.db.Database;
-
-import javax.inject.Inject;
+import testResources.BaseTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.*;
 
-import play.Logger;
+public class SecurityControllerTest extends BaseTest {
 
-public class SecurityControllerTest extends WithApplication {
-
-    private Database db;
-    private DemoData demoData;
     private ObjectNode loginJson;
 
-    public void setup() {
-
-        demoData = app.injector().instanceOf(DemoData.class);
+    private void setup() {
         loginJson = Json.newObject();
-
     }
 
     @Test
     public void login() {
 
         setup();
-        loginJson.put("emailAddress", demoData.user1.getEmailAddress());
-        loginJson.put("password", demoData.user1.getPassword());
+
+        loginJson.put("emailAddress", user1Email);
+        loginJson.put("password", user1Password);
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.login()).bodyJson(loginJson));
 
@@ -65,12 +43,12 @@ public class SecurityControllerTest extends WithApplication {
 
     }
 
-    /*@Test
+    @Test
     public void loginWithBadPassword() {
 
         setup();
-        loginJson.put("emailAddress", demoData.user1.getEmailAddress());
-        loginJson.put("password", demoData.user1.getPassword().substring(1));
+        loginJson.put("emailAddress", user1Email);
+        loginJson.put("password", user1Password.substring(1));
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.login()).bodyJson(loginJson));
         assertEquals(UNAUTHORIZED, result.status());
@@ -81,8 +59,8 @@ public class SecurityControllerTest extends WithApplication {
     public void loginWithBadUsername() {
 
         setup();
-        loginJson.put("emailAddress", demoData.user1.getEmailAddress().substring(1));
-        loginJson.put("password", demoData.user1.getPassword());
+        loginJson.put("emailAddress", user1Email.substring(1));
+        loginJson.put("password", user1Password);
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.login()).bodyJson(loginJson));
         assertEquals(UNAUTHORIZED, result.status());
@@ -93,8 +71,8 @@ public class SecurityControllerTest extends WithApplication {
     public void loginWithDifferentCaseUsername() {
 
         setup();
-        loginJson.put("emailAddress", demoData.user1.getEmailAddress().toUpperCase());
-        loginJson.put("password", demoData.user1.getPassword());
+        loginJson.put("emailAddress", user1Email.toUpperCase());
+        loginJson.put("password", user1Password);
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.login()).bodyJson(loginJson));
         assertEquals(OK, result.status());
@@ -105,7 +83,7 @@ public class SecurityControllerTest extends WithApplication {
     public void loginWithNullPassword() {
         
         setup();
-        loginJson.put("emailAddress", demoData.user1.getEmailAddress());
+        loginJson.put("emailAddress", user1Email);
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.login()).bodyJson(loginJson));
         assertEquals(BAD_REQUEST, result.status());
@@ -115,13 +93,12 @@ public class SecurityControllerTest extends WithApplication {
     @Test
     public void logout() {
         
-        demoData = app.injector().instanceOf(DemoData.class);
-        String authToken = demoData.user1.createToken();
+        String authToken = user1.createToken();
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.logout()).header(SecurityController.AUTH_TOKEN_HEADER, authToken));
         assertEquals(SEE_OTHER, result.status());
 
-    }*/
+    }
 }
 
 

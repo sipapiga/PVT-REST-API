@@ -11,6 +11,7 @@ import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Http;
 import play.test.WithApplication;
+import testResources.BaseTest;
 import utils.DemoData;
 
 import javax.inject.Inject;
@@ -22,14 +23,14 @@ import static play.test.Helpers.*;
 
 import play.Logger;
 
-public class SwipingSessionsControllerTest extends WithApplication {
+public class SwipingSessionsControllerTest extends BaseTest {
 
-    DemoData demoData;
+    //DemoData demoData;
 
     /*@Before
     public void setup() {
         demoData = app.injector().instanceOf(DemoData.class);
-    }
+    }*/
 
     private Result makeAuthenticatedRequest(String authToken, String email1, String email2) {
 
@@ -42,14 +43,15 @@ public class SwipingSessionsControllerTest extends WithApplication {
 
     private Result makeRequestWithCorrectEmails() {
 
-        String authToken = demoData.user1.createToken();
-        return makeAuthenticatedRequest(authToken, demoData.user1.getEmailAddress(), demoData.user2.getEmailAddress());
+        //String authToken = demoData.user1.createToken();
+        String authToken = user1.createToken();
+        return makeAuthenticatedRequest(authToken, user1Email, user2Email);
 
     }
 
     private Result makeRequest(String email1, String email2) {
 
-        String authToken = demoData.user1.createToken();
+        String authToken = user1.createToken();
         return makeAuthenticatedRequest(authToken, email1, email2);
 
     }
@@ -70,7 +72,8 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionWhenNotLoggedIn() {
 
-        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSession(demoData.user1.getEmailAddress(), demoData.user2.getEmailAddress())));
+        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSession(user1Email,
+                user2Email)));
         assertEquals(UNAUTHORIZED, result.status());
 
     }
@@ -78,7 +81,7 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionOnNonExistantInitializer() {
         
-        Result result = makeRequest("nonexistant@demo.com", demoData.user2.getEmailAddress());
+        Result result = makeRequest("nonexistant@demo.com", user2Email);
         assertEquals(BAD_REQUEST, result.status());
 
     }
@@ -86,7 +89,7 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionOnNonExistantBuddy() {
         
-        Result result = makeRequest(demoData.user1.getEmailAddress(), "nonexistant@demo.com");
+        Result result = makeRequest(user1Email, "nonexistant@demo.com");
         assertEquals(BAD_REQUEST, result.status());
 
     }
@@ -94,7 +97,7 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionOnNullInitializer() {
         
-        Result result = makeRequest(null, demoData.user2.getEmailAddress());
+        Result result = makeRequest(null, user2Email);
         assertEquals(BAD_REQUEST, result.status());
 
     }
@@ -102,7 +105,7 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionOnNullBuddy() {
         
-        Result result = makeRequest(demoData.user1.getEmailAddress(), null);
+        Result result = makeRequest(user1Email, null);
         assertEquals(BAD_REQUEST, result.status());
 
     }
@@ -110,8 +113,8 @@ public class SwipingSessionsControllerTest extends WithApplication {
     @Test
     public void getSwipingSessionOnNonExistantSwipingSession() {
 
-        Result result = makeRequest(demoData.user2.getEmailAddress(), demoData.user1.getEmailAddress());
+        Result result = makeRequest(user2Email, user1Email);
         assertEquals(NOT_FOUND, result.status());
         
-    }*/
+    }
 }

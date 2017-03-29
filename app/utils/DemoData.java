@@ -23,8 +23,7 @@ public class DemoData {
     @Inject
     public DemoData(Environment environment) {
         
-        if (environment.isDev() || environment.isTest()) {
-        //if (environment.isTest()) {
+        if (environment.isDev()) {
 
             if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
 

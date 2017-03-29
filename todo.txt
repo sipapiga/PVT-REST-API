@@ -2,10 +2,6 @@
                                     THE LIST
 ===============================================================================
 
-* Make testing database separate from application database.
-
-===============================================================================
-
 * Implement swiping session functionality.
 
     Suggestions for further swiping session endpoints:
@@ -50,5 +46,11 @@
     Will involve:
     * Updating fields in models.SwipingSession
     * Updating sql in conf/evolutions/default/1.sql
+
+===============================================================================
+
+* Use real MySQL database for development
+
+    Estimated time: 3 hours.
 
 ===============================================================================

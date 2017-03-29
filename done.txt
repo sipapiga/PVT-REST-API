@@ -1,0 +1,10 @@
+===============================================================================
+29/3 2017
+---------
+* Make testing database separate from application database.
+
+    With subtask:
+        * Make testing data separate from development data.
+
+ Time taken: 6.5 hours.
+===============================================================================
