@@ -64,12 +64,20 @@ public class FacebookSecurityController extends Controller {
                     user = new User(email, "password", name);
                 }
 
-                String token = user.createToken();
                 String userId = userData.asJson().findValue("id").textValue();
+                String authToken = user.createToken();
 
-               return getRelevantFields(userId, facebookToken).thenApply(response -> ok(response.asJson()));
+                return getRelevantFields(userId, facebookToken).thenApply(response -> {
 
+                    ObjectNode authTokenJson = Json.newObject();
+                    authTokenJson.put(AUTH_TOKEN, authToken);
+                    response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authToken).withSecure(ctx().request().secure()).build());
+
+                    return ok(response.asJson());
+
+                });
             });
+
         } else {
 
             // ToDo: This should return unauthorized. Figure out how to return it as a CompletionStage.
@@ -79,7 +87,6 @@ public class FacebookSecurityController extends Controller {
 
     private CompletionStage<WSResponse> getRelevantFields(String userId, String accessToken) {
 
-        String url = "https://graph.facebook.com/" + userId + "/friendlists?access_token=" + accessToken;
         return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + accessToken)
         .get();
     }
