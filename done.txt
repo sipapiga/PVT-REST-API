@@ -16,3 +16,7 @@
 * Add time estimates to items in todo list.
     Time taken: 5 minutes.
 ===============================================================================
+31/3 2017
+---------
+* Enable facebook login
+
