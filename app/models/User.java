@@ -1,7 +1,3 @@
-/*
- * Modified from https://github.com/jamesward/play-rest-security
- */
-
 package models;
 
 import com.avaje.ebean.Model;
@@ -17,6 +13,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An entity representing a user.
+ * Modified from https://github.com/jamesward/play-rest-security
+ */
 @Entity
 public class User extends Model {
 
@@ -32,34 +32,21 @@ public class User extends Model {
     @Constraints.Email
     private String emailAddress;
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress.toLowerCase();
-    }
-
-    @Column(length = 64, nullable = false)
+    @Column(length = 64)
     private byte[] shaPassword;
 
     @Transient
-    @Constraints.Required
     @Constraints.MinLength(6)
     @Constraints.MaxLength(256)
     @JsonIgnore
     private String password;
 
-    public String getPassword() {
-        return password;
-    }
+    @Column()
+    private byte[] shaFacebookAuthToken;
 
-    public void setPassword(String password) {
-
-        this.password = password;
-        shaPassword = getSha512(password);
-
-    }
+    @Transient
+    @JsonIgnore
+    private String facebookAuthToken;
 
     @Column(length = 256, nullable = false)
     @Constraints.Required
@@ -70,21 +57,10 @@ public class User extends Model {
     @Column(nullable = false)
     public Date creationDate;
 
-    public String createToken() {
-        
-        authToken = UUID.randomUUID().toString();
-        save();
+    @OneToOne
+    public FacebookData facebookData;
 
-        return authToken; 
-
-    }
-
-    public void deleteAuthToken() {
-
-        authToken = null;
-        save();
-
-    }
+    public static Finder<Long, User> find = new Finder<>(User.class);
 
     public User() {
         this.creationDate = new Date();
@@ -99,6 +75,14 @@ public class User extends Model {
 
     }
 
+    public User(String emailAddress, String fullName) {
+
+        setEmailAddress(emailAddress);
+        this.fullName = fullName;
+        this.creationDate = new Date();
+
+    }
+
     public static byte[] getSha512(String value) {
         
         try {
@@ -108,7 +92,55 @@ public class User extends Model {
         }
     }
 
-    public static Finder<Long, User> find = new Finder<>(User.class);
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress.toLowerCase();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+
+        this.password = password;
+        shaPassword = getSha512(password);
+
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setFacebookAuthToken(String facebookAuthToken) {
+
+        this.facebookAuthToken = facebookAuthToken;
+        shaFacebookAuthToken = getSha512(facebookAuthToken);
+
+    }
+
+    public void setFacebookData(FacebookData facebookData) {
+        this.facebookData = facebookData;
+    }
+
+    public String createToken() {
+
+        authToken = UUID.randomUUID().toString();
+        save();
+
+        return authToken;
+
+    }
+
+    public void deleteAuthToken() {
+
+        authToken = null;
+        save();
+
+    }
 
     public static User findByAuthToken(String authToken) {
         
