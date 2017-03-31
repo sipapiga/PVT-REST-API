@@ -3,7 +3,9 @@ package controllers;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import jdk.nashorn.internal.ir.RuntimeNode;
+import models.FacebookData;
 import models.User;
+import play.libs.concurrent.HttpExecutionContext;
 import play.libs.oauth.OAuth.RequestToken;
 import play.Logger;
 import play.data.Form;
@@ -16,12 +18,14 @@ import play.libs.ws.WSRequest;
 import play.libs.ws.WSResponse;
 import play.libs.ws.WSSignatureCalculator;
 import play.mvc.*;
+import play.mvc.Http.*;
 import scala.Function1;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
 import javax.inject.Inject;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
@@ -30,8 +34,14 @@ public class FacebookSecurityController extends Controller {
     public static final String AUTH_TOKEN_HEADER = "FACEBOOK-AUTH-TOKEN";
     public static final String AUTH_TOKEN = "authToken";
 
+    private String userToken = "test";
+    private String userId;
+
     @Inject
     WSClient ws;
+
+    @Inject
+    HttpExecutionContext ec;
 
     public static User getUser() {
         return (User) Http.Context.current().args.get("user");
@@ -41,54 +51,121 @@ public class FacebookSecurityController extends Controller {
 
         String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
 
-        if ((facebookToken != null) && !facebookToken.isEmpty()) {
+        CompletionStage<WSResponse> atRes = ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get();
+        CompletionStage<WSResponse> mdRes = atRes.thenCompose(wsR -> {
 
-            /*
-             * 1. Check if user already exists, update or create accordingly.
-             * 2. Get new session token.
-             * 3. Make request to Facebook graph api and get all desired fields.
-             * 4. Update user and save.
-             * 5. Return session token and data to the client.
-             */
+            String userId = wsR.asJson().findValue("id").textValue();
+            return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
 
-            WSRequest request = ws.url("https://graph.facebook.com/me?access_token=" + facebookToken);
-            return request.get().thenCompose(userData -> {
+        });
 
-                JsonNode jsonData = userData.asJson();
-                String email = jsonData.findValue("email").textValue();
-                String name = jsonData.findValue("name").textValue();
+        return mdRes.thenApplyAsync(res -> {
 
-                User user = User.findByEmailAddress(email);
+            ObjectNode authTokenJson = Json.newObject();
+            authTokenJson.put(AUTH_TOKEN, userToken);
+            response().setCookie(Cookie.builder(AUTH_TOKEN, userToken).withSecure(request().secure()).build());
 
-                if (user == null) {
-                    user = new User(email, "password", name);
-                }
+            return ok(res.asJson());
 
-                String userId = userData.asJson().findValue("id").textValue();
-                String authToken = user.createToken();
+        }, ec.current());
 
-                return getRelevantFields(userId, facebookToken).thenApply(response -> {
+        // how about this for handling unauthorized requests:
+        // return CompletableFuture.completedFuture(unathorized())?
+        // see comment at http://stackoverflow.com/questions/38287403/returning-common-result-as-completionstageresult-in-play
 
-                    ObjectNode authTokenJson = Json.newObject();
-                    authTokenJson.put(AUTH_TOKEN, authToken);
-                    response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authToken).withSecure(ctx().request().secure()).build());
+        //if ((facebookToken != null) && !facebookToken.isEmpty()) {
 
-                    return ok(response.asJson());
+        /*WSRequest request = ws.url("https://graph.facebook.com/me?access_token=" + facebookToken);
+        return request.get().thenCompose(userData -> {
 
-                });
-            });
+            JsonNode jsonData = userData.asJson();
+            String email = jsonData.findValue("email").textValue();
 
-        } else {
+            User user = User.findByEmailAddress(email);
 
-            // ToDo: This should return unauthorized. Figure out how to return it as a CompletionStage.
+            if (user == null) {
+
+                user = new User(email, jsonData.findValue("name").textValue());
+                user.save();
+
+            }
+
+            setUserAttributes(user, userData.asJson(), facebookToken);
+            String userId = userData.asJson().findValue("id").textValue();
+            String authToken = user.createToken();
+
+            return getRelevantFields(userId, facebookToken).thenApplyAsync(response -> {
+
+                ObjectNode authTokenJson = Json.newObject();
+                authTokenJson.put(AUTH_TOKEN, authToken);
+                response().setCookie(Cookie.builder(AUTH_TOKEN, authToken).withSecure(request().secure()).build());
+
+                return ok(response.asJson());
+
+            }, ec.current());
+        });*/
+
+        /*} else {
+            // how about this:
+            // return CompletableFuture.completedFuture(unathorized())?
+            // see comment at http://stackoverflow.com/questions/38287403/returning-common-result-as-completionstageresult-in-play
             return null;
-        }
+        }*/
+    }
+
+    private CompletionStage<Void> getAndSaveBasicUserData(CompletionStage<WSResponse> response, String facebookToken) {
+
+        return response.thenAccept(userData -> {
+
+            JsonNode jsonData = userData.asJson();
+            String email = jsonData.findValue("email").textValue();
+
+            User user = User.findByEmailAddress(email);
+
+            if (user == null) {
+
+                user = new User(email, jsonData.findValue("name").textValue());
+                user.save();
+
+            }
+
+            setUserAttributes(user, userData.asJson(), facebookToken);
+            String userId = userData.asJson().findValue("id").textValue();
+            String authToken = user.createToken();
+
+        });
     }
 
     private CompletionStage<WSResponse> getRelevantFields(String userId, String accessToken) {
 
         return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + accessToken)
         .get();
+    }
+
+    private void setUserAttributes(User user, JsonNode userData, String facebookToken) {
+
+        FacebookData fbData = buildFaceBookData(userData);
+        fbData.save();
+
+        user.setFacebookData(fbData);
+        user.setFacebookAuthToken(facebookToken);
+
+        user.save();
+
+    }
+
+    private FacebookData buildFaceBookData(JsonNode data) {
+
+        String id = data.findValue("id").textValue();
+        String emailAddress = data.findValue("email").textValue();
+        String firstName = data.findValue("first_name").textValue();
+        String lastName = data.findValue("last_name").textValue();
+        String gender = data.findValue("gender").textValue();
+        String locale = data.findValue("locale").textValue();
+        int timeZone = data.findValue("timezone").intValue();
+
+        return new FacebookData(id, emailAddress, firstName, lastName, gender, locale, timeZone);
+
     }
 
     @Security.Authenticated(Secured.class)
