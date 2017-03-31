@@ -61,10 +61,6 @@ public class FacebookSecurityController extends Controller {
 
                     }, ec.current());
 
-            // how about this for handling unauthorized requests:
-            // return CompletableFuture.completedFuture(unathorized())?
-            // see comment at http://stackoverflow.com/questions/38287403/returning-common-result-as-completionstageresult-in-play
-
         } else {
             return CompletableFuture.completedFuture(unauthorized());
         }
