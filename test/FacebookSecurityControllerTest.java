@@ -18,7 +18,7 @@ public class FacebookSecurityControllerTest extends BaseTest {
     public void testLoginOnEmptyAccessToken() {
 
         Result result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()).header(FacebookSecurityController.AUTH_TOKEN_HEADER, ""));
-        assertEquals(UNAUTHORIZED, result.status());
+        assertEquals(BAD_REQUEST, result.status());
 
     }
 

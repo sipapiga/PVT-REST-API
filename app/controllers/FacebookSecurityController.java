@@ -38,32 +38,26 @@ public class FacebookSecurityController extends Controller {
 
         String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
 
-        if (facebookToken != null && !facebookToken.isEmpty()) {
+        return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
+                .thenCompose(userData -> {
 
-            return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
-                    .thenCompose(userData -> {
+                    if (userData.asJson().findValue("error") != null) {
+                        return CompletableFuture.completedFuture(userData);
+                    }
 
-                        if (userData.asJson().findValue("error") != null) {
-                            return CompletableFuture.completedFuture(userData);
-                        }
+                    String userId = processUserData(facebookToken, userData);
+                    return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
 
-                        String userId = processUserData(facebookToken, userData);
-                        return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
+                }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
 
-                    }).thenApplyAsync(response -> {
+                    if (response.getStatus() == BAD_REQUEST) {
+                        return badRequest(response.asJson());
+                    }
 
-                        if (response.getStatus() == BAD_REQUEST) {
-                            return badRequest(response.asJson());
-                        }
+                    setAuthTokenCookie();
+                    return ok(response.asJson());
 
-                        setAuthTokenCookie();
-                        return ok(response.asJson());
-
-                    }, ec.current());
-
-        } else {
-            return CompletableFuture.completedFuture(unauthorized());
-        }
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
     }
 
     private void setAuthTokenCookie() {
