@@ -34,7 +34,7 @@ public class FacebookSecurityController extends Controller {
     public static final String AUTH_TOKEN_HEADER = "FACEBOOK-AUTH-TOKEN";
     public static final String AUTH_TOKEN = "authToken";
 
-    private String userToken = "test";
+    private String userToken;
     private String userId;
 
     @Inject
@@ -52,9 +52,24 @@ public class FacebookSecurityController extends Controller {
         String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
 
         CompletionStage<WSResponse> atRes = ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get();
-        CompletionStage<WSResponse> mdRes = atRes.thenCompose(wsR -> {
+        CompletionStage<WSResponse> mdRes = atRes.thenCompose(userData -> {
 
-            String userId = wsR.asJson().findValue("id").textValue();
+            JsonNode jsonData = userData.asJson();
+            String email = jsonData.findValue("email").textValue();
+
+            User user = User.findByEmailAddress(email);
+
+            if (user == null) {
+
+                user = new User(email, jsonData.findValue("name").textValue());
+                user.save();
+
+            }
+
+            setUserAttributes(user, userData.asJson(), facebookToken);
+            String userId = userData.asJson().findValue("id").textValue();
+            userToken = user.createToken();
+
             return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
 
         });
