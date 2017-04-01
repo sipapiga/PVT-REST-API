@@ -17,10 +17,12 @@ public class FacebookSecurityControllerTest extends BaseTest {
     public void testLogin() {
 
         if (facebookToken != null) {
+
             Result result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()).header(FacebookSecurityController.AUTH_TOKEN_HEADER, facebookToken));
             assertEquals(OK, result.status());
+
         } else {
-            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'.");
+            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'");
         }
 
     }
@@ -29,13 +31,15 @@ public class FacebookSecurityControllerTest extends BaseTest {
     public void testLoginSameUserTwice() {
 
         if (facebookToken != null) {
+
             Result result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()).header(FacebookSecurityController.AUTH_TOKEN_HEADER, facebookToken));
             assertEquals(OK, result.status());
 
             result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()).header(FacebookSecurityController.AUTH_TOKEN_HEADER, facebookToken));
             assertEquals(OK, result.status());
+
         } else {
-            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'.");
+            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'");
         }
 
     }
