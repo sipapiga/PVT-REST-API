@@ -1,9 +1,11 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.FacebookData;
 import models.User;
+import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
 import play.libs.ws.WSClient;
@@ -145,14 +147,21 @@ public class FacebookSecurityController extends Controller {
     private FacebookData buildFaceBookData(JsonNode data) {
 
         String id = data.findValue("id").textValue();
-        String emailAddress = data.findValue("email").textValue();
-        String firstName = data.findValue("first_name").textValue();
-        String lastName = data.findValue("last_name").textValue();
-        String gender = data.findValue("gender").textValue();
-        String locale = data.findValue("locale").textValue();
-        int timeZone = data.findValue("timezone").intValue();
 
-        return new FacebookData(id, emailAddress, firstName, lastName, gender, locale, timeZone);
+        FacebookData fbData = FacebookData.findByFacebookUserId(id);
+        if (fbData == null) {
+            fbData = new FacebookData();
+        }
+
+        fbData.facebookUserId = id;
+        fbData.emailAddress = data.findValue("email").textValue();
+        fbData.firstName = data.findValue("first_name").textValue();
+        fbData.lastName = data.findValue("last_name").textValue();
+        fbData.gender = data.findValue("gender").textValue();
+        fbData.locale = data.findValue("locale").textValue();
+        fbData.timezone = data.findValue("timezone").intValue();
+
+        return fbData;
 
     }
 

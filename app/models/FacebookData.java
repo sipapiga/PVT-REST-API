@@ -19,13 +19,13 @@ public class FacebookData extends Model {
 
    @Column(unique = true, nullable = false)
    @Constraints.Required
-   String facebookUserId;
+   public String facebookUserId;
 
    @Column(length = 256, unique = true, nullable = false)
    @Constraints.MaxLength(256)
    @Constraints.Required
    @Constraints.Email
-   private String emailAddress;
+   public String emailAddress;
 
    @Column(length = 256)
    @Constraints.MaxLength(256)
@@ -51,6 +51,8 @@ public class FacebookData extends Model {
 
    public static Finder<Long, FacebookData> find = new Finder<>(FacebookData.class);
 
+   public FacebookData() {};
+
    public FacebookData(String facebookUserId, String emailAddress, String firstName, String lastName, String gender, String locale, int timezone) {
 
        this.facebookUserId = facebookUserId;
@@ -62,6 +64,10 @@ public class FacebookData extends Model {
        this.timezone = timezone;
 
    }
+
+    public static FacebookData findByFacebookUserId(String facebookUserId) {
+        return find.where().eq("facebookUserId", facebookUserId).findUnique();
+    }
 
    public static FacebookData findByEmailAddress(String emailAddress) {
       return find.where().eq("emailAddress", emailAddress).findUnique();

@@ -53,4 +53,10 @@
   * Time estimated: 2 hours.
   * Time taken: 5 minutes.
 
+* Make FacebookSecurityController able to handle multiple requests to log
+  the same user in, both during the same session and over multiple ones.
+
+ * Time estimated: 4 hours.
+ * Time taken: 1 hour.
+
 ===============================================================================
