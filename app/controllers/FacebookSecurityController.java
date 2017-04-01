@@ -45,7 +45,7 @@ public class FacebookSecurityController extends Controller {
      * make further requests for data to Facebook. Currently, the only further
      * data collected is the first page of the user's list of friends. Sends
      * a custom authentication token back on successful requests, to be used
-     * for further communication.
+     * for authenticating further requests to the server.
      *
      * The access token should be provided in the header field represented by
      * the AUTH_TOKEN_HEADER constant and the custom authentication token
