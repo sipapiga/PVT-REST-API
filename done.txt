@@ -22,10 +22,23 @@
 
   * Time taken: 4 hours.
 
+* Create Facebook data model and integrate with User model. Make
+  FacebookSecurityController actually record the data from Facebook.
+
+    * With subtasks:
+      * Create a Facebook token field in User.
+      * Making User passwords optional.
+
+    * Time estimated: 1.5 hours.
+    * Time taken: 2 hours.
+
 ===============================================================================
 1/4 2017
 ---------
 * Make FacebookSecurityController forward responses to requests that Facebook
   considers invalid.
 
-  *Time taken: 30 minutes.
+  * Time estimated: 2 hours.
+  * Time taken: 30 minutes.
+  
+===============================================================================
