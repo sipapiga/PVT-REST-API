@@ -73,7 +73,7 @@ public class FacebookSecurityController extends Controller {
                 }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
 
                     if (response.getStatus() != OK) {
-                        return badRequest(response.asJson());
+                        return status(response.getStatus(), response.asJson());
                     }
 
                     setAuthTokenCookie();

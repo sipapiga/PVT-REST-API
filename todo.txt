@@ -65,11 +65,3 @@
     * Time: 3 hours.
 
 ===============================================================================
-
-* Make FacebookSecurityController not treat every response from Facebook that
-  is not 200 (OK) as a 400 (BAD REQUEST).
-
-    * Priority: 2.
-    * Time: 2 hours.
-
-===============================================================================
