@@ -47,4 +47,10 @@
   * Time estimated: (2 / 6) * 3 = 1 hour.
   * Time taken: 15 minutes.
 
+* Make FacebookSecurityController not treat every response from Facebook that
+  is not 200 (OK) as a 400 (BAD REQUEST).
+
+  * Time estimated: 2 hours.
+  * Time taken: 5 minutes.
+
 ===============================================================================
