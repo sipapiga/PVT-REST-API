@@ -44,7 +44,6 @@ public class FacebookSecurityControllerTest extends BaseTest {
 
     }
 
-
     @Test
     public void testLoginOnEmptyAccessToken() {
 
@@ -54,7 +53,7 @@ public class FacebookSecurityControllerTest extends BaseTest {
     }
 
     @Test
-    public void testLoginOnInvalid() {
+    public void testLoginOnInvalidAccessToken() {
 
         Result result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()).header(FacebookSecurityController.AUTH_TOKEN_HEADER, "invalid"));
         assertEquals(BAD_REQUEST, result.status());
