@@ -56,18 +56,6 @@
 
 ===============================================================================
 
-* Create Facebook data model and integrate with User model. Make
-  FacebookSecurityController actually record the data from Facebook.
-
-    * Will involve:
-      * Create a Facebook token field in User.
-      * Making User passwords optional.
-
-    * Priority: 1.
-    * Time: 1.5 hours.
-
-===============================================================================
-
 * Make FacebookSecurityController not treat every response from Facebook that
   is not 200 (OK) as a 400 (BAD REQUEST).
 
