@@ -22,7 +22,9 @@ public class FacebookSecurityControllerTest extends BaseTest {
             assertEquals(OK, result.status());
 
         } else {
-            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'");
+            fail("No valid Facebook token detected. " +
+                    "Please specify one in 'conf/application.secrets.conf' under the key 'facebookToken'." +
+                    "Valid access tokens can be obtained from https://developers.facebook.com/tools/explorer");
         }
 
     }
@@ -39,7 +41,9 @@ public class FacebookSecurityControllerTest extends BaseTest {
             assertEquals(OK, result.status());
 
         } else {
-            fail("No valid Facebook token detected. Please specify one in a configuration file named 'application.secrets.conf' under the key 'facebookToken'");
+            fail("No valid Facebook token detected. " +
+                    "Please specify one in 'conf/application.secrets.conf' under the key 'facebookToken'." +
+                    "Valid access tokens can be obtained from https://developers.facebook.com/tools/explorer");
         }
 
     }
