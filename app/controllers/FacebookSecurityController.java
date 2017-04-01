@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.FacebookData;
 import models.User;
 import play.libs.concurrent.HttpExecutionContext;
-import play.data.validation.Constraints;
 import play.libs.Json;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
@@ -27,7 +26,6 @@ public class FacebookSecurityController extends Controller {
     public static final String AUTH_TOKEN = "authToken";
 
     private String userToken;
-    private String userId;
 
     @Inject
     WSClient ws;
@@ -113,6 +111,7 @@ public class FacebookSecurityController extends Controller {
         }
 
         setUserAttributes(user, userData.asJson(), facebookToken);
+
         String userId = userData.asJson().findValue("id").textValue();
         userToken = user.createToken();
 
