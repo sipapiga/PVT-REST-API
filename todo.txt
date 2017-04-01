@@ -65,3 +65,15 @@
     * Time: 3 hours.
 
 ===============================================================================
+
+* Make FacebookSecurityController record more data than just basic user data.
+
+  * Will involve:
+    * Determining what data to gather and store. It is probably a good idea to
+      let the client dictate this.
+    * Update fields in FacebookData accordingly.
+
+  * Priority: 1.
+  * Time: 4 hours.
+  
+===============================================================================
