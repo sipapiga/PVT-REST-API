@@ -14,6 +14,8 @@ public class BaseTest extends WithApplication {
     protected String user2Email;
     protected String user2Password;
 
+    protected String facebookToken;
+
     @Before
     public void setupClass() {
 
@@ -26,6 +28,8 @@ public class BaseTest extends WithApplication {
         user2 = testData.getUser2();
         user2Email = user2.getEmailAddress();
         user2Password = user2.getPassword();
+
+        facebookToken = testData.getFacebookToken();
 
     }
 }

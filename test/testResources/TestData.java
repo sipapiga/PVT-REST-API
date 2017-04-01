@@ -6,6 +6,7 @@ package testResources;
 
 import models.SwipingSession;
 import models.User;
+import play.Configuration;
 import play.Environment;
 import play.Logger;
 
@@ -19,9 +20,10 @@ public class TestData {
     private User user2;
 
     private SwipingSession session;
+    private String facebookToken;
 
     @Inject
-    public TestData() {
+    public TestData(Configuration config) {
         
         if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
 
@@ -35,6 +37,9 @@ public class TestData {
             session.save();
 
         }
+
+        facebookToken = config.getString("facebookToken");
+
     }
 
     public User getUser1() {
@@ -47,5 +52,9 @@ public class TestData {
 
     public SwipingSession getSession() {
         return session;
+    }
+
+    public String getFacebookToken() {
+        return facebookToken;
     }
 }
