@@ -40,5 +40,11 @@
 
   * Time estimated: 2 hours.
   * Time taken: 30 minutes.
-  
+
+* Add documentation for Secured, SecurityController and
+  FacebookSecurityController.
+
+  * Time estimated: (2 / 6) * 3 = 1 hour.
+  * Time taken: 15 minutes.
+
 ===============================================================================

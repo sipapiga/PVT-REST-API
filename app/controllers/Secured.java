@@ -1,7 +1,3 @@
-/*
- * From https://github.com/jamesward/play-rest-security
- */
-
 package controllers;
 
 import models.User;
@@ -11,6 +7,12 @@ import play.mvc.Security;
 
 import play.Logger;
 
+/**
+ * Authenticator class to be used with @Security.Authenticated to
+ * secure endpoints needing authentication to be accessed.
+ *
+ * @author James Ward, https://github.com/jamesward/play-rest-security.
+ */
 public class Secured extends Security.Authenticator {
 
     @Override
