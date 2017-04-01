@@ -1,7 +1,3 @@
-/*
- * From https://github.com/jamesward/play-rest-security
- */
-
 package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,6 +11,12 @@ import play.mvc.*;
 
 import javax.inject.Inject;
 
+/**
+ * Endpoint controller for handling requests for authentication by username and
+ * password.
+ *
+ * @author James Ward, https://github.com/jamesward/play-rest-security.
+ */
 public class SecurityController extends Controller {
 
     @Inject

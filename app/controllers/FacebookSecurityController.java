@@ -16,6 +16,11 @@ import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
+/**
+ * Endpoint controller for handling requests for Facebook authorization.
+ *
+ * @author Simon Olofsson
+ */
 public class FacebookSecurityController extends Controller {
 
     public static final String AUTH_TOKEN_HEADER = "FACEBOOK-AUTH-TOKEN";
@@ -34,6 +39,23 @@ public class FacebookSecurityController extends Controller {
         return (User) Http.Context.current().args.get("user");
     }
 
+    /**
+     * Method for handling a request for authorization via Facebook. Accepts a
+     * Facebook access token, collects basic user data and uses the user id to
+     * make further requests for data to Facebook. Currently, the only further
+     * data collected is the first page of the user's list of friends. Sends
+     * a custom authentication token back on successful requests, to be used
+     * for further communication.
+     *
+     * The access token should be provided in the header field represented by
+     * the AUTH_TOKEN_HEADER constant and the custom authentication token
+     * returned will be placed in the field represented by the AUTH_TOKEN
+     * constant.
+     *
+     * @return a status code and, given that the authorization was successful,
+     * a custom authentication token to be used in future communication with
+     * the server.
+     */
     public CompletionStage<Result> login() {
 
         String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
@@ -51,7 +73,7 @@ public class FacebookSecurityController extends Controller {
                 }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
 
                     if (response.getStatus() != OK) {
-                        return badRequest(response.asJson()); // ToDo: Using bad request for everything here, maybe the status code of the response should be used instead?
+                        return badRequest(response.asJson());
                     }
 
                     setAuthTokenCookie();
@@ -68,6 +90,14 @@ public class FacebookSecurityController extends Controller {
 
     }
 
+    /**
+     * Takes data from Facebook and determines whether the user already exists
+     * or not, and creates or updates the user and its fields accordingly.
+     *
+     * @param facebookToken a Facebook authorization token.
+     * @param userData a WSResponse object containing the user data.
+     * @return the user id extracted from the data.
+     */
     private String processUserData(String facebookToken, WSResponse userData) {
 
         JsonNode jsonData = userData.asJson();
@@ -90,6 +120,17 @@ public class FacebookSecurityController extends Controller {
 
     }
 
+    /**
+     * Sets user attributes according to the data passed to the method. Only
+     * operates on existing users and will create a new FacebookData entry
+     * from the data passed.
+     *
+     * @param user the user to operate on.
+     * @param userData the data to create a FacebookData entry from.
+     * @param facebookToken the Facebook authorization token used to
+     *                      obtain the data. Will be included in the
+     *                      FacebookData entry for further use.
+     */
     private void setUserAttributes(User user, JsonNode userData, String facebookToken) {
 
         FacebookData fbData = buildFaceBookData(userData);
@@ -123,17 +164,6 @@ public class FacebookSecurityController extends Controller {
         getUser().deleteAuthToken();
 
         return redirect("/");
-
-    }
-
-    public static class Login {
-
-        @Constraints.Required
-        @Constraints.Email
-        public String emailAddress;
-
-        @Constraints.Required
-        public String password;
 
     }
 }

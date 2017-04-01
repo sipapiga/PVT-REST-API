@@ -28,14 +28,24 @@
 * Add documentation.
 
     * For:
-      * SecurityController
-      * Secured
       * SwipingSessionsController
       * models.User
       * models.SwipingSession
 
     * Priority: 3.
     * Time: 2 hours.
+
+===============================================================================
+
+* Improve documentation.
+
+  * For:
+    * SecurityController
+    * Secured
+    * FacebookSecurityController
+
+  * Priority: 4.
+  * Time: 2 hours.
 
 ===============================================================================
 
