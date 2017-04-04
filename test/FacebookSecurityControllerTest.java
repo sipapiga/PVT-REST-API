@@ -26,7 +26,6 @@ public class FacebookSecurityControllerTest extends BaseTest {
                     "Please specify one in 'conf/application.secrets.conf' under the key 'facebookToken'." +
                     "Valid access tokens can be obtained from https://developers.facebook.com/tools/explorer");
         }
-
     }
 
     @Test
@@ -45,7 +44,6 @@ public class FacebookSecurityControllerTest extends BaseTest {
                     "Please specify one in 'conf/application.secrets.conf' under the key 'facebookToken'." +
                     "Valid access tokens can be obtained from https://developers.facebook.com/tools/explorer");
         }
-
     }
 
     @Test
