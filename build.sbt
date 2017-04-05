@@ -1,3 +1,7 @@
+import NativePackagerKeys._
+
+herokuAppName in Compile := "protected-gorge-44302"
+
 lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 name := """pvt"""
