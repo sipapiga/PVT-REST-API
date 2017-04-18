@@ -28,6 +28,7 @@ public class FacebookSecurityController extends Controller {
     private String userToken;
 
     WSClient ws;
+
     HttpExecutionContext ec;
 
     @Inject
