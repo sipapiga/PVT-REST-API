@@ -18,4 +18,6 @@ libraryDependencies ++= Seq(
 )
 
 routesGenerator := InjectedRoutesGenerator
+
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+javaSource in Test := baseDirectory.value / "test"
