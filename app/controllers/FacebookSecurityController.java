@@ -27,11 +27,16 @@ public class FacebookSecurityController extends Controller {
 
     private String userToken;
 
-    @Inject
     WSClient ws;
+    HttpExecutionContext ec;
 
     @Inject
-    HttpExecutionContext ec;
+    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec) {
+
+        this.ws = ws;
+        this.ec = ec;
+
+    }
 
     public static User getUser() {
         return (User) Http.Context.current().args.get("user");
