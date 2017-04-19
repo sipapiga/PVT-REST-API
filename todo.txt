@@ -59,13 +59,6 @@
 
 ===============================================================================
 
-* Use real MySQL database for development.
-    
-    * Priority: 2.
-    * Time: 3 hours.
-
-===============================================================================
-
 * Make FacebookSecurityController record more data than just basic user data.
 
   * Will involve:
@@ -75,5 +68,20 @@
 
   * Priority: 1.
   * Time: 4 hours.
+
+===============================================================================
+
+* Use Jackson's deserialization mechanism instead of manually setting all
+  attributes of FacebookData objects in FacebookSecurityController.buildFacebookData
+
+  * Priority 4.
+  * Time: 3 hours.
+
+===============================================================================
+
+* Use a DSV mysql database for production
+
+  * Priority 1.
+  * Time: 2 hours.
 
 ===============================================================================
