@@ -21,8 +21,8 @@ public class FacebookData extends Model {
    @Constraints.Required
    public String facebookUserId;
 
-   @Column(length = 256, unique = true, nullable = false)
-   @Constraints.MaxLength(256)
+   @Column(unique = true, nullable = false)
+   @Constraints.MaxLength(255)
    @Constraints.Required
    @Constraints.Email
    public String emailAddress;

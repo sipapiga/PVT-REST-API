@@ -26,8 +26,8 @@ public class User extends Model {
 
     private String authToken;
 
-    @Column(length = 256, unique = true, nullable = false)
-    @Constraints.MaxLength(256)
+    @Column(unique = true, nullable = false)
+    @Constraints.MaxLength(255)
     @Constraints.Required
     @Constraints.Email
     private String emailAddress;
@@ -54,8 +54,8 @@ public class User extends Model {
     @Constraints.MaxLength(256)
     public String fullName;
 
-    @Column(nullable = false)
-    public Date creationDate;
+    @Column(nullable = false, columnDefinition = "datetime") // columnDefinition prevents ebeans from generating
+    public Date creationDate;                                // SQL that the DSV mysql server cannot handle.
 
     @OneToOne
     public FacebookData facebookData;

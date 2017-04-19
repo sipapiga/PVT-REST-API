@@ -6,7 +6,7 @@
 create table facebook_data (
   id                            bigint auto_increment not null,
   facebook_user_id              varchar(255) not null,
-  email_address                 varchar(256) not null,
+  email_address                 varchar(255) not null,
   first_name                    varchar(256),
   last_name                     varchar(256),
   gender                        varchar(15),
@@ -21,9 +21,9 @@ create table facebook_data (
 
 create table swiping_session (
   id                            bigint auto_increment not null,
-  initiator_email               varchar(256) not null,
-  buddy_email                   varchar(256) not null,
-  initialization_date           timestamp not null,
+  initiator_email               varchar(255) not null,
+  buddy_email                   varchar(255) not null,
+  initialization_date           datetime not null,
   constraint uq_swiping_session_initiator_email unique (initiator_email),
   constraint uq_swiping_session_buddy_email unique (buddy_email),
   constraint pk_swiping_session primary key (id)
@@ -32,11 +32,11 @@ create table swiping_session (
 create table user (
   id                            bigint auto_increment not null,
   auth_token                    varchar(255),
-  email_address                 varchar(256) not null,
+  email_address                 varchar(255) not null,
   sha_password                  varbinary(64),
   sha_facebook_auth_token       varbinary(255),
   full_name                     varchar(256) not null,
-  creation_date                 timestamp not null,
+  creation_date                 datetime not null,
   facebook_data_id              bigint,
   constraint uq_user_email_address unique (email_address),
   constraint uq_user_facebook_data_id unique (facebook_data_id),
@@ -50,9 +50,9 @@ alter table user add constraint fk_user_facebook_data_id foreign key (facebook_d
 
 # --- !Downs
 
-alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
+alter table facebook_data drop foreign key fk_facebook_data_user_id;
 
-alter table user drop constraint if exists fk_user_facebook_data_id;
+alter table user drop foreign key fk_user_facebook_data_id;
 
 drop table if exists facebook_data;
 

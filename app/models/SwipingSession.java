@@ -13,20 +13,20 @@ public class SwipingSession extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
-    @Column(length = 256, unique = true, nullable = false)
-    @Constraints.MaxLength(256)
+    @Column(unique = true, nullable = false)
+    @Constraints.MaxLength(255)
     @Constraints.Required
     @Constraints.Email
     String initiatorEmail;
 
-    @Column(length = 256, unique = true, nullable = false)
-    @Constraints.MaxLength(256)
+    @Column(unique = true, nullable = false)
+    @Constraints.MaxLength(255)
     @Constraints.Required
     @Constraints.Email
     String buddyEmail;
 
-    @Column(nullable = false)
-    public Date initializationDate;
+    @Column(nullable = false, columnDefinition = "datetime") // columnDefinition prevents ebeans from generating
+    public Date initializationDate;                          // SQL that the DSV mysql server cannot handle.
 
     public static Finder<Long, SwipingSession> find = new Finder<>(SwipingSession.class);
 
