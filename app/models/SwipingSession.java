@@ -37,8 +37,11 @@ public class SwipingSession extends Model {
     @ManyToMany
     public List<User> participatingUsers = new ArrayList<>();
 
-    @ManyToMany
-    public Map<User, ActivityChoice> chosenActivities = new HashMap<>();
+    /*@ManyToMany
+    public Map<User, ActivityChoice> chosenActivities = new HashMap<>();*/
+
+    @OneToMany
+    public List<ActivityChoice> chosenActivities;
 
     @Column(nullable = false, columnDefinition = "datetime") // columnDefinition prevents ebeans from generating
     public Date initializationDate;                          // SQL that the DSV mysql server cannot handle.
@@ -65,15 +68,18 @@ public class SwipingSession extends Model {
 
     public void setUserActivityChoice(String userEmailAddress, List<Activity> activities) {
 
-        ActivityChoice choice = new ActivityChoice(activities);
+        User user = User.findByEmailAddress(userEmailAddress);
+        ActivityChoice choice = new ActivityChoice(user, this, activities);
         choice.save();
 
-        chosenActivities.put(User.findByEmailAddress(userEmailAddress), choice);
+        chosenActivities.add(choice);
+        //chosenActivities.put(User.findByEmailAddress(userEmailAddress), choice);
 
     }
 
     public List<Activity> getChosenActivities(String userEmailAddress) {
-        return chosenActivities.get(User.findByEmailAddress(userEmailAddress)).chosenActivities;
+        //return chosenActivities.get(User.findByEmailAddress(userEmailAddress)).chosenActivities;
+        return ActivityChoice.findBySwipingSessionAndUser(User.findByEmailAddress(userEmailAddress).id, id).chosenActivities;
     }
 
     public static List<SwipingSession> findByEmail(String initiatorEmail, String buddyEmail) {
