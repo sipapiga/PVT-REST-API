@@ -204,6 +204,11 @@ public class SwipingSessionsControllerTest extends BaseTest {
         }
     }
 
+    @Test
+    public void testCannotInitiateSwipingSessionWithOneself() {
+
+    }
+
     /*
      * Test PUT.
      */

@@ -53,6 +53,9 @@ public class SwipingSessionsController extends Controller {
             return badRequest();
         }
 
+        SwipingSession swipingSession = new SwipingSession(initiatorEmail, buddyEmail);
+        swipingSession.save();
+
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode array = mapper.createArrayNode();
 
