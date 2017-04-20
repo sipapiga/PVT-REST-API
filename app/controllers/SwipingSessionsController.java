@@ -105,7 +105,7 @@ public class SwipingSessionsController extends Controller {
 
             SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
 
-            long userId = User.findByEmailAddress(email).id;
+            /*long userId = User.findByEmailAddress(email).id;
 
             if (userId == swipingSession.initiator.id) {
                 swipingSession.initiatorActivities = parsedActivities;
@@ -114,7 +114,9 @@ public class SwipingSessionsController extends Controller {
             } else {
                 return buildBadRequestResponse(mapper,
                         "The email address passed does not match any of the participants in the swiping session.");
-            }
+            }*/
+
+            swipingSession.setUserActivityChoice(email, parsedActivities);
 
             try {
                 swipingSession.save();
