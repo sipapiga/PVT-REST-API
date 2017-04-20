@@ -77,6 +77,17 @@ public class SwipingSessionsController extends Controller {
 
     }
 
+    private Result buildBadRequestResponse(ObjectMapper mapper, String message) {
+
+        ObjectNode responseBody = mapper.createObjectNode();
+
+        ObjectNode error = responseBody.putObject("error");
+        error.put("message", message);
+
+        return badRequest(responseBody);
+
+    }
+
     public Result chooseActivities(long swipingSessionId, String email, String activities) {
 
         if (User.findByEmailAddress(email) == null) {
@@ -101,19 +112,20 @@ public class SwipingSessionsController extends Controller {
             } else if(userId == swipingSession.buddy.id) {
                 swipingSession.buddyActivities = parsedActivities;
             } else {
-                return badRequest("The email address passed does not match any of the participants in the swiping session.");
+                return buildBadRequestResponse(mapper,
+                        "The email address passed does not match any of the participants in the swiping session.");
             }
 
             try {
                 swipingSession.save();
             } catch(PersistenceException pe) {
-                return badRequest("Got persistence exception - did you pass an activity that does not exist?");
+                return buildBadRequestResponse(mapper,"Got persistence exception - did you pass an activity that does not exist?");
             }
 
             return ok();
 
         } catch (IOException e) {
-            return badRequest("Malformed list of activities.");
+            return buildBadRequestResponse(mapper, "Malformed list of activities");
         }
     }
 }
