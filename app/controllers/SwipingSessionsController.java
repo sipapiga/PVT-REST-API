@@ -1,12 +1,19 @@
 package controllers;
 
+import akka.actor.dsl.Creators;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import models.Activity;
 import play.Logger;
 import play.mvc.*;
 import models.SwipingSession;
 import models.User;
 
+import javax.persistence.PersistenceException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Security.Authenticated(Secured.class)
@@ -26,7 +33,7 @@ public class SwipingSessionsController extends Controller {
             return badRequest();
         }
 
-        List<SwipingSession> swipingSessions = SwipingSession.find(initiatorEmail, buddyEmail);
+        List<SwipingSession> swipingSessions = SwipingSession.findByEmail(initiatorEmail, buddyEmail);
 
         if (swipingSessions == null || swipingSessions.isEmpty()) {
             return notFound();
@@ -57,15 +64,57 @@ public class SwipingSessionsController extends Controller {
         swipingSession.save();
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayNode array = mapper.createArrayNode();
 
+        ObjectNode json = mapper.createObjectNode();
+        json.put("swipingSessionId", swipingSession.id);
+
+        ArrayNode array = json.putArray("activities");
         array.add("Moderna Museet");
 
-        return ok(array);
+        return ok(json);
 
     }
 
-    public Result chooseActivities() {
-        return null;
+    public Result chooseActivities(long swipingSessionId, String email, String activities) {
+
+        if (User.findByEmailAddress(email) == null) {
+            return badRequest();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        TypeFactory typeFactory = mapper.getTypeFactory();
+
+        try {
+
+            List<String> activityNames = mapper.readValue(activities,
+                    typeFactory.constructCollectionType(List.class, String.class));
+
+            List<Activity> parsedActivities = new ArrayList<>();
+
+            activityNames.forEach(activityName -> parsedActivities.add(Activity.findByName(activityName)));
+
+            SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
+
+            long userId = User.findByEmailAddress(email).id;
+
+            if (userId == swipingSession.initiator.id) {
+                swipingSession.initiatorActivities = parsedActivities;
+            } else if(userId == swipingSession.buddy.id) {
+                swipingSession.buddyActivities = parsedActivities;
+            } else {
+                return badRequest("The email address passed does not match any of the participants in the swiping session.");
+            }
+
+            try {
+                swipingSession.save();
+            } catch(PersistenceException pe) {
+                return badRequest("Got persistence exception - did you pass an activity that does not exist?");
+            }
+
+            return ok();
+
+        } catch (IOException e) {
+            return badRequest("Malformed list of activities.");
+        }
     }
 }

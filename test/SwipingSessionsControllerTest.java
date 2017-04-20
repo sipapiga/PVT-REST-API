@@ -4,9 +4,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import models.Activity;
 import models.SwipingSession;
 import org.junit.Test;
 
@@ -70,6 +69,28 @@ public class SwipingSessionsControllerTest extends BaseTest {
         return makePostRequest(user1Email, user2Email);
     }
 
+    private Result makeAuthenticatedPutRequest(String authToken, long swipingSessionId, String email, String activities) {
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.SwipingSessionsController.chooseActivities(
+                swipingSessionId, email, activities
+        ));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+
+        return route(fakeRequest);
+
+    }
+
+    private Result makePutRequest(long swipingSessionId, String email, String activities) {
+
+        String authToken = user1.createToken();
+        return makeAuthenticatedPutRequest(authToken, swipingSessionId, email, activities);
+
+    }
+
+    private Result makePutRequestWithCorrectEmail(long swipingSessionId, String activities) {
+        return makePutRequest(swipingSessionId, user1Email, activities);
+    }
+
     /*
      * Test GET.
      */
@@ -81,7 +102,6 @@ public class SwipingSessionsControllerTest extends BaseTest {
         assertEquals(OK, result.status());
 
         JsonNode json = Json.parse(contentAsString(result));
-
         for (JsonNode swipingSession : json) {
 
             assertNotNull(swipingSession.get("id"));
@@ -171,18 +191,18 @@ public class SwipingSessionsControllerTest extends BaseTest {
     @Test
     public void testInitiateSwipingSessionCreatesSwipingSession() {
 
-        List<SwipingSession> before = SwipingSession.find(user1Email, user2Email);
+        List<SwipingSession> before = SwipingSession.findByEmail(user1Email, user2Email);
 
         makePostRequestWithCorrectEmails();
 
-        List<SwipingSession> after = SwipingSession.find(user1Email, user2Email);
+        List<SwipingSession> after = SwipingSession.findByEmail(user1Email, user2Email);
 
         assertTrue(after.size() == (before.size() + 1));
 
     }
 
     @Test
-    public void testInitiateSwipingSessionReturnsNonEmptyArray() {
+    public void testInitiateSwipingSessionReturnsNonEmptyList() {
 
         Result result = makePostRequestWithCorrectEmails();
 
@@ -194,7 +214,8 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
         try {
 
-            List<String> activities = mapper.readValue(contentAsString(result), typeFactory.constructCollectionType(List.class, String.class));
+            List<String> activities = mapper.readValue(json.get("activities").toString(),
+                    typeFactory.constructCollectionType(List.class, String.class));
 
             assertNotNull(activities);
             assertTrue(activities.size() > 0);
@@ -206,7 +227,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     @Test
     public void testCannotInitiateSwipingSessionWithOneself() {
-
+        // Implement this.
     }
 
     /*
@@ -216,13 +237,79 @@ public class SwipingSessionsControllerTest extends BaseTest {
     @Test
     public void testChooseActivitiesWhenNotLoggedIn() {
 
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode array = mapper.createArrayNode();
-
-        array.add("Moderna Museet");
-
-        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.chooseActivities()));
+        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.chooseActivities(2, "email@email.com", "[]")));
         assertEquals(UNAUTHORIZED, result.status());
 
+    }
+
+    @Test
+    public void testChooseActivitiesOnIncorrectEmailsButCorrectSession() {
+
+        Result result = makePutRequest(1,"nonexistant1@demo.com", "[]");
+        assertEquals(BAD_REQUEST, result.status());
+
+    }
+
+    @Test
+    public void testChooseActivitiesOnCorrectCredentials() {
+
+        Result result = makePutRequestWithCorrectEmail(1, "[]");
+        assertEquals(OK, result.status());
+
+    }
+
+    private boolean compareListAndJsonList(List<Activity> activityList, JsonNode jsonList) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        TypeFactory typeFactory = mapper.getTypeFactory();
+
+        try {
+
+            List<Activity> activitiesFromJson = mapper.readValue(jsonList.toString(),
+                    typeFactory.constructCollectionType(List.class, Activity.class));
+
+            for (int i = 0; i < activitiesFromJson.size(); i++) {
+
+                if (!(activitiesFromJson.get(i).name.equals(activityList.get(i).name))) {
+                    return false;
+                }
+            }
+
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+
+    }
+
+    @Test
+    public void testChooseActivitiesUpdatesSwipingSession() {
+
+        Result postResult = makePostRequestWithCorrectEmails();
+        JsonNode json = Json.parse(contentAsString(postResult));
+
+        try {
+
+            long swipingSessionId = Long.parseLong(json.get("swipingSessionId").toString());
+            Result putResult = makePutRequestWithCorrectEmail(swipingSessionId, json.get("activities").toString());
+
+            assertEquals(OK, putResult.status());
+
+            SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
+            assertTrue(compareListAndJsonList(swipingSession.initiatorActivities, json.get("activities")));
+
+        } catch (NumberFormatException e) {
+            fail("NumberFormatException when getting swiping session id");
+        }
+    }
+
+    @Test
+    public void testCannotChooseActivitiesThatWereNotSent() {
+        // Implement this.
+    }
+
+    @Test
+    public void testCannotChooseActivitiesThatDoNotExist() {
+        // Implement this.
     }
 }

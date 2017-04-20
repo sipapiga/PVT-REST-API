@@ -4,6 +4,7 @@
 
 package testResources;
 
+import models.Activity;
 import models.SwipingSession;
 import models.User;
 import play.Configuration;
@@ -20,6 +21,8 @@ public class TestData {
     private User user2;
 
     private SwipingSession session;
+    private Activity modernaMuseet;
+
     private String facebookToken;
 
     @Inject
@@ -38,6 +41,9 @@ public class TestData {
 
         }
 
+        modernaMuseet = new Activity("Moderna Museet");
+        modernaMuseet.save();
+
         facebookToken = config.getString("facebookToken");
 
     }
@@ -52,6 +58,10 @@ public class TestData {
 
     public SwipingSession getSession() {
         return session;
+    }
+
+    public Activity getModernaMuseet() {
+        return modernaMuseet;
     }
 
     public String getFacebookToken() {
