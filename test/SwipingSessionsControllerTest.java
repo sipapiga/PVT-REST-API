@@ -296,7 +296,8 @@ public class SwipingSessionsControllerTest extends BaseTest {
             assertEquals(OK, putResult.status());
 
             SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
-            assertTrue(compareListAndJsonList(swipingSession.initiatorActivities, json.get("activities")));
+            //assertTrue(compareListAndJsonList(swipingSession.initiatorActivities, json.get("activities")));
+            assertTrue(compareListAndJsonList(swipingSession.getChosenActivities(user1Email), json.get("activities")));
 
         } catch (NumberFormatException e) {
             fail("NumberFormatException when getting swiping session id");
