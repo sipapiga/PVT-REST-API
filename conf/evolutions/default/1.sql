@@ -3,6 +3,13 @@
 
 # --- !Ups
 
+create table activity (
+  id                            bigint auto_increment not null,
+  name                          varchar(255) not null,
+  constraint uq_activity_name unique (name),
+  constraint pk_activity primary key (id)
+);
+
 create table facebook_data (
   id                            bigint auto_increment not null,
   facebook_user_id              varchar(255) not null,
@@ -27,6 +34,18 @@ create table swiping_session (
   constraint pk_swiping_session primary key (id)
 );
 
+create table initiator_activities (
+  swiping_session_id            bigint not null,
+  activity_id                   bigint not null,
+  constraint pk_initiator_activities primary key (swiping_session_id,activity_id)
+);
+
+create table buddy_activities (
+  swiping_session_id            bigint not null,
+  activity_id                   bigint not null,
+  constraint pk_buddy_activities primary key (swiping_session_id,activity_id)
+);
+
 create table user (
   id                            bigint auto_increment not null,
   auth_token                    varchar(255),
@@ -49,6 +68,18 @@ create index ix_swiping_session_initiator_id on swiping_session (initiator_id);
 alter table swiping_session add constraint fk_swiping_session_buddy_id foreign key (buddy_id) references user (id) on delete restrict on update restrict;
 create index ix_swiping_session_buddy_id on swiping_session (buddy_id);
 
+alter table initiator_activities add constraint fk_initiator_activities_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
+create index ix_initiator_activities_swiping_session on initiator_activities (swiping_session_id);
+
+alter table initiator_activities add constraint fk_initiator_activities_activity foreign key (activity_id) references activity (id) on delete restrict on update restrict;
+create index ix_initiator_activities_activity on initiator_activities (activity_id);
+
+alter table buddy_activities add constraint fk_buddy_activities_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
+create index ix_buddy_activities_swiping_session on buddy_activities (swiping_session_id);
+
+alter table buddy_activities add constraint fk_buddy_activities_activity foreign key (activity_id) references activity (id) on delete restrict on update restrict;
+create index ix_buddy_activities_activity on buddy_activities (activity_id);
+
 alter table user add constraint fk_user_facebook_data_id foreign key (facebook_data_id) references facebook_data (id) on delete restrict on update restrict;
 
 
@@ -62,11 +93,29 @@ drop index if exists ix_swiping_session_initiator_id;
 alter table swiping_session drop constraint if exists fk_swiping_session_buddy_id;
 drop index if exists ix_swiping_session_buddy_id;
 
+alter table initiator_activities drop constraint if exists fk_initiator_activities_swiping_session;
+drop index if exists ix_initiator_activities_swiping_session;
+
+alter table initiator_activities drop constraint if exists fk_initiator_activities_activity;
+drop index if exists ix_initiator_activities_activity;
+
+alter table buddy_activities drop constraint if exists fk_buddy_activities_swiping_session;
+drop index if exists ix_buddy_activities_swiping_session;
+
+alter table buddy_activities drop constraint if exists fk_buddy_activities_activity;
+drop index if exists ix_buddy_activities_activity;
+
 alter table user drop constraint if exists fk_user_facebook_data_id;
+
+drop table if exists activity;
 
 drop table if exists facebook_data;
 
 drop table if exists swiping_session;
+
+drop table if exists initiator_activities;
+
+drop table if exists buddy_activities;
 
 drop table if exists user;
 

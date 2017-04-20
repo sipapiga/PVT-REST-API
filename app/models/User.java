@@ -60,7 +60,7 @@ public class User extends Model {
     @OneToOne
     public FacebookData facebookData;
 
-    public static Finder<Long, User> find = new Finder<>(User.class);
+    private static Finder<Long, User> find = new Finder<>(User.class);
 
     public User() {
         this.creationDate = new Date();

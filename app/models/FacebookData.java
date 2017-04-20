@@ -49,7 +49,7 @@ public class FacebookData extends Model {
    @OneToOne
    public User user;
 
-   public static Finder<Long, FacebookData> find = new Finder<>(FacebookData.class);
+   private static Finder<Long, FacebookData> find = new Finder<>(FacebookData.class);
 
    public FacebookData() {};
 
