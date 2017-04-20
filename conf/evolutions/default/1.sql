@@ -50,9 +50,9 @@ alter table user add constraint fk_user_facebook_data_id foreign key (facebook_d
 
 # --- !Downs
 
-alter table facebook_data drop foreign key fk_facebook_data_user_id;
+alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
 
-alter table user drop foreign key fk_user_facebook_data_id;
+alter table user drop constraint if exists fk_user_facebook_data_id;
 
 drop table if exists facebook_data;
 

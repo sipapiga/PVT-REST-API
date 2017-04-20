@@ -5,6 +5,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class SwipingSession extends Model {
@@ -38,7 +39,8 @@ public class SwipingSession extends Model {
         
     }
 
-    public static SwipingSession find(String initiatorEmail, String buddyEmail) {
-        return find.where().eq("initiator_email", initiatorEmail.toLowerCase()).eq("buddy_email", buddyEmail.toLowerCase()).findUnique();
+    public static List<SwipingSession> find(String initiatorEmail, String buddyEmail) {
+        //return find.where().eq("initiator_email", initiatorEmail.toLowerCase()).eq("buddy_email", buddyEmail.toLowerCase()).findUnique();
+       return find.where().eq("initiator_email", initiatorEmail.toLowerCase()).eq("buddy_email", buddyEmail.toLowerCase()).findList();
     }
 }
