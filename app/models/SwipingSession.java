@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Index;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -14,17 +15,15 @@ public class SwipingSession extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
-    @Column(unique = true, nullable = false)
-    @Constraints.MaxLength(255)
+    @Column(nullable = false)
     @Constraints.Required
-    @Constraints.Email
-    String initiatorEmail;
+    @ManyToOne
+    public User initiator;
 
-    @Column(unique = true, nullable = false)
-    @Constraints.MaxLength(255)
+    @Column(nullable = false)
     @Constraints.Required
-    @Constraints.Email
-    String buddyEmail;
+    @ManyToOne
+    public User buddy;
 
     @Column(nullable = false, columnDefinition = "datetime") // columnDefinition prevents ebeans from generating
     public Date initializationDate;                          // SQL that the DSV mysql server cannot handle.
@@ -33,14 +32,18 @@ public class SwipingSession extends Model {
 
     public SwipingSession(String initiatorEmail, String buddyEmail) {
         
-        this.initiatorEmail = initiatorEmail;
-        this.buddyEmail = buddyEmail;
+        this.initiator = User.findByEmailAddress(initiatorEmail);
+        this.buddy = User.findByEmailAddress(buddyEmail);
         this.initializationDate = new Date();
         
     }
 
     public static List<SwipingSession> find(String initiatorEmail, String buddyEmail) {
-        //return find.where().eq("initiator_email", initiatorEmail.toLowerCase()).eq("buddy_email", buddyEmail.toLowerCase()).findUnique();
-       return find.where().eq("initiator_email", initiatorEmail.toLowerCase()).eq("buddy_email", buddyEmail.toLowerCase()).findList();
+
+        User initiator = User.findByEmailAddress(initiatorEmail);
+        User buddy = User.findByEmailAddress(buddyEmail);
+
+        return find.where().eq("initiator_id", initiator.id).eq("buddy_id", buddy.id).findList();
+
     }
 }

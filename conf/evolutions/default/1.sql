@@ -21,11 +21,9 @@ create table facebook_data (
 
 create table swiping_session (
   id                            bigint auto_increment not null,
-  initiator_email               varchar(255) not null,
-  buddy_email                   varchar(255) not null,
+  initiator_id                  bigint,
+  buddy_id                      bigint,
   initialization_date           datetime not null,
-  constraint uq_swiping_session_initiator_email unique (initiator_email),
-  constraint uq_swiping_session_buddy_email unique (buddy_email),
   constraint pk_swiping_session primary key (id)
 );
 
@@ -45,12 +43,24 @@ create table user (
 
 alter table facebook_data add constraint fk_facebook_data_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
 
+alter table swiping_session add constraint fk_swiping_session_initiator_id foreign key (initiator_id) references user (id) on delete restrict on update restrict;
+create index ix_swiping_session_initiator_id on swiping_session (initiator_id);
+
+alter table swiping_session add constraint fk_swiping_session_buddy_id foreign key (buddy_id) references user (id) on delete restrict on update restrict;
+create index ix_swiping_session_buddy_id on swiping_session (buddy_id);
+
 alter table user add constraint fk_user_facebook_data_id foreign key (facebook_data_id) references facebook_data (id) on delete restrict on update restrict;
 
 
 # --- !Downs
 
 alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
+
+alter table swiping_session drop constraint if exists fk_swiping_session_initiator_id;
+drop index if exists ix_swiping_session_initiator_id;
+
+alter table swiping_session drop constraint if exists fk_swiping_session_buddy_id;
+drop index if exists ix_swiping_session_buddy_id;
 
 alter table user drop constraint if exists fk_user_facebook_data_id;
 
