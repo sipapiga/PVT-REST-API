@@ -1,6 +1,8 @@
 package controllers;
 
 import akka.actor.dsl.Creators;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -82,16 +84,13 @@ public class SwipingSessionsController extends Controller {
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        TypeFactory typeFactory = mapper.getTypeFactory();
 
         try {
 
-            List<String> activityNames = mapper.readValue(activities,
-                    typeFactory.constructCollectionType(List.class, String.class));
-
+            JsonNode jsonActivities = mapper.readTree(activities);
             List<Activity> parsedActivities = new ArrayList<>();
 
-            activityNames.forEach(activityName -> parsedActivities.add(Activity.findByName(activityName)));
+            jsonActivities.forEach(activityName -> parsedActivities.add(Activity.findByName(activityName.asText())));
 
             SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
 
