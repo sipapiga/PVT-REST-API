@@ -67,4 +67,10 @@
     * Time estimated: 3 hours.
     * Time taken: 1.5 hours.
 
+* Use a DSV mysql database for production
+
+  * Time estimated: 2 hours.
+  * Time taken: 1.75 hours.
+
+
 ===============================================================================
