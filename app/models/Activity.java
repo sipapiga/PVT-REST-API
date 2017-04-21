@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Activity extends Model {
@@ -28,5 +29,9 @@ public class Activity extends Model {
 
     public static Activity findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    public static List<Activity> getAll() {
+        return find.all();
     }
 }
