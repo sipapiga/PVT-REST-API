@@ -12,6 +12,7 @@ import play.Logger;
 import play.mvc.*;
 import models.SwipingSession;
 import models.User;
+import utils.ActivityGenerator;
 
 import javax.persistence.PersistenceException;
 import java.io.IOException;
@@ -72,8 +73,7 @@ public class SwipingSessionsController extends Controller {
             ObjectNode json = mapper.createObjectNode();
             json.put("swipingSessionId", swipingSession.id);
 
-            ArrayNode array = json.putArray("activities");
-            array.add("Moderna Museet");
+            ActivityGenerator.generateActivitiesAsArrayNode(json);
 
             return ok(json);
 
