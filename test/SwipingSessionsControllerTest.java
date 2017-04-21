@@ -176,7 +176,12 @@ public class SwipingSessionsControllerTest extends BaseTest {
     }*/
 
     @Test
-    public void getSwipingSessionOnNonexistantEmailAddress() {
+    public void getSwipingSessionOnNonExistantEmailAddress() {
+        // Implement this.
+    }
+
+    @Test
+    public void getSwipingSessionOnEmailAddressNotPartOfSession() {
         // Implement this.
     }
 
@@ -190,13 +195,13 @@ public class SwipingSessionsControllerTest extends BaseTest {
         // Implement this.
     }
 
-    /*@Test
+    @Test
     public void getSwipingSessionOnNonExistantSwipingSession() {
 
-        Result result = makeGetRequest(user2Email, user1Email);
-        assertEquals(NOT_FOUND, result.status());
+        /*Result result = makeGetRequest(user2Email, user1Email);
+        assertEquals(NOT_FOUND, result.status());*/
         
-    }*/
+    }
 
     /*
      * Test POST.
@@ -232,8 +237,6 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     @Test
     public void testInitiateSwipingSessionCreatesSwipingSession() {
-
-        //List<SwipingSession> before = SwipingSession.findByEmail(user1Email, user2Email);
 
         List<String> emails = new ArrayList<>();
 
