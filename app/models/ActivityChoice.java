@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Simon Olofsson
  */
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "swiping_session_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "swiping_session_id"}))
 @Entity
 public class ActivityChoice extends Model {
 

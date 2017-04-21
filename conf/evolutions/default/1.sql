@@ -14,6 +14,7 @@ create table activity_choice (
   id                            bigint auto_increment not null,
   user_id                       bigint,
   swiping_session_id            bigint,
+  constraint uq_activity_choice_user_id_swiping_session_id unique (user_id,swiping_session_id),
   constraint pk_activity_choice primary key (id)
 );
 
@@ -65,7 +66,6 @@ create table user (
   constraint pk_user primary key (id)
 );
 
-create index ix_activity_choice_user_id_swiping_session_id on activity_choice (user_id,swiping_session_id);
 alter table activity_choice add constraint fk_activity_choice_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_activity_choice_user_id on activity_choice (user_id);
 
@@ -127,4 +127,3 @@ drop table if exists swiping_session_user;
 
 drop table if exists user;
 
-drop index if exists ix_activity_choice_user_id_swiping_session_id;

@@ -369,7 +369,25 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     @Test
     public void testCannotChooseActivitiesMultipleTimes() {
-        // Implement this.
+
+        Result postResult = makePostRequestWithCorrectEmails();
+        JsonNode json = Json.parse(contentAsString(postResult));
+
+        long swipingSessionId = Long.parseLong(json.get("swipingSessionId").toString());
+
+        // Putting twice to check idempotency
+        makePutRequestWithCorrectEmail(swipingSessionId, json.get("activities").toString());
+        makePutRequestWithCorrectEmail(swipingSessionId, json.get("activities").toString());
+
+        Result getResult = makeGetRequestWithCorrectEmails();
+        JsonNode getJson = Json.parse(contentAsString(getResult));
+
+        for (JsonNode node : getJson) {
+
+            if (node.findValue("id").equals(json.get("swipingSessionId"))) {
+                assertEquals(1, node.findValue("chosenActivities").size());
+            }
+        }
     }
 
     @Test
