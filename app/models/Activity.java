@@ -6,6 +6,12 @@ import play.data.validation.Constraints;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * An entity representing an activity gathered from the open API's, such as a
+ * museum or an art gallery.
+ *
+ * @author Simon Olofsson
+ */
 @Entity
 public class Activity extends Model {
 
