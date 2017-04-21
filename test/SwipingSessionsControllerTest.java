@@ -375,7 +375,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
         long swipingSessionId = Long.parseLong(json.get("swipingSessionId").toString());
 
-        // Putting twice to check idempotency
+        // Putting twice to make sure choices cannot be repeated.
         makePutRequestWithCorrectEmail(swipingSessionId, json.get("activities").toString());
         makePutRequestWithCorrectEmail(swipingSessionId, json.get("activities").toString());
 
