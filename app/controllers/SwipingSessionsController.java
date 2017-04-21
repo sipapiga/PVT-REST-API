@@ -152,7 +152,8 @@ public class SwipingSessionsController extends Controller {
                 swipingSession.save();
 
             } catch(RuntimeException re) {
-                return buildBadRequestResponse(mapper,"Got exception - did you pass an activity that does not exist?");
+                return buildBadRequestResponse(mapper,
+                        "Got exception - that user might already have made a choice during this session or maybe you tried to pass an activity that does not exist?");
             }
 
             return ok();
