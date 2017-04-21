@@ -2,6 +2,10 @@ package models;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,24 +16,26 @@ public class ActivityChoice extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     public long id;
 
     @ManyToOne
     public User user;
 
     @ManyToOne
+    @JsonIgnore
     public SwipingSession swipingSession;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<Activity> chosenActivities;
+    public List<Activity> activities;
 
     private static Finder<Long, ActivityChoice> find = new Finder<>(ActivityChoice.class);
 
-    public ActivityChoice(User user, SwipingSession swipingSession, List<Activity> chosenActivities) {
+    public ActivityChoice(User user, SwipingSession swipingSession, List<Activity> activities) {
 
         this.user = user;
         this.swipingSession = swipingSession;
-        this.chosenActivities = chosenActivities;
+        this.activities = activities;
 
     }
 
