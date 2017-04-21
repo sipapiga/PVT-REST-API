@@ -4,24 +4,28 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ActivityGenerator {
 
-    private static String generateActivity() {
+    private static List<String> generateRandomActivities() {
 
-        List<Activity> activities = Activity.getAll();
-        int randomIndex = ThreadLocalRandom.current().nextInt(activities.size());
+        List<Activity> existingActivities = Activity.getAll();
+        int randomIndex = ThreadLocalRandom.current().nextInt(existingActivities.size());
 
-        return activities.get(randomIndex).name;
+        List<String> chosenActivities = new ArrayList<>();
+        chosenActivities.add(existingActivities.get(randomIndex).name);
+
+        return chosenActivities;
 
     }
 
     public static void generateActivitiesAsArrayNode(ObjectNode json) {
 
         ArrayNode array = json.putArray("activities");
-        array.add(generateActivity());
+        generateRandomActivities().forEach(activity -> array.add(activity));
 
     }
 }
