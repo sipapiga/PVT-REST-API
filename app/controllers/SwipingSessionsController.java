@@ -16,7 +16,9 @@ import models.User;
 import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Security.Authenticated(Secured.class)
 public class SwipingSessionsController extends Controller {
@@ -55,7 +57,7 @@ public class SwipingSessionsController extends Controller {
         try {
 
             JsonNode jsonEmails = mapper.readTree(emailAddresses);
-            List<User> participatingUsers = new ArrayList<>();
+            Set<User> participatingUsers = new HashSet<>();
 
             jsonEmails.forEach(emailAddress -> participatingUsers.add(User.findByEmailAddress(emailAddress.asText())));
 
@@ -93,13 +95,11 @@ public class SwipingSessionsController extends Controller {
 
     public Result chooseActivities(long swipingSessionId, String email, String activities) {
 
-        Logger.debug("Swiping session: " + swipingSessionId + "\n" + "User: " + email + "\n" + "Activities: " + activities);
         ObjectMapper mapper = new ObjectMapper();
 
         if (User.findByEmailAddress(email) == null) {
             return buildBadRequestResponse(mapper, "No user with that email address found.");
         }
-
 
         try {
 
