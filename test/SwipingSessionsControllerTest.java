@@ -348,6 +348,8 @@ public class SwipingSessionsControllerTest extends BaseTest {
             assertEquals(OK, putResult.status());
 
             SwipingSession swipingSession = SwipingSession.findById(swipingSessionId);
+
+            assertTrue( (swipingSession.getChosenActivities(user1Email).size() > 0) && (json.get("activities").size() > 0) );
             assertTrue(compareListAndJsonList(swipingSession.getChosenActivities(user1Email), json.get("activities")));
 
         } catch (NumberFormatException e) {
