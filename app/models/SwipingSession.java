@@ -14,7 +14,7 @@ public class SwipingSession extends Model {
     public long id;
 
     @ManyToMany
-    public List<User> participatingUsers = new ArrayList<>();
+    public Set<User> participatingUsers = new HashSet<>();
 
     @OneToMany
     public List<ActivityChoice> chosenActivities;
@@ -24,7 +24,7 @@ public class SwipingSession extends Model {
 
     private static Finder<Long, SwipingSession> find = new Finder<>(SwipingSession.class);
 
-    public SwipingSession(List<User> participatingUsers) {
+    public SwipingSession(Set<User> participatingUsers) {
 
         this.participatingUsers = participatingUsers;
         this.initializationDate = new Date();
@@ -47,7 +47,7 @@ public class SwipingSession extends Model {
 
     public static List<SwipingSession> findByEmail(List<String> emails) {
 
-        List<User> users = new ArrayList<>();
+        Set<User> users = new HashSet<>();
         emails.forEach(email -> users.add(User.findByEmailAddress(email)));
 
         List<SwipingSession> allSwipingSessions = find.all();

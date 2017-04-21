@@ -14,7 +14,9 @@ import play.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Singleton
 public class TestData {
@@ -38,7 +40,7 @@ public class TestData {
             user2 = new User("user2@demo.com", "password", "Jane Doe");
             user2.save();
 
-            List<User> participants = new ArrayList<>();
+            Set<User> participants = new HashSet<>();
 
             participants.add(user1);
             participants.add(user2);
