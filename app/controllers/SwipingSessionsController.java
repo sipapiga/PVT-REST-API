@@ -171,7 +171,7 @@ public class SwipingSessionsController extends Controller {
                         "That swiping session does not seem to exist.");
             } catch (PersistenceException pe) {
                 return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
-                        "At least one of the users passed seem to have made a choice already.");
+                        "The user passed seems to have made a choice already.");
             } catch(IllegalArgumentException iae) {
                 return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
                         "Chosen activities must be picked from the original set of generated activities associated with the swiping session." +
