@@ -140,9 +140,10 @@ public class SwipingSessionsController extends Controller {
      *                   choice.
      * @return 200 OK if the swiping session exists and the email address can
      * be connected to an existing user, 400 BAD REQUEST if the user indicated
-     * or any of the chosen activities does/do not exist, if the user exists
-     * has already made a choice or if the list of activities is in any way
-     * malformed.
+     * or any of the chosen activities does/do not exist or was not among the
+     * originally generated activities for the swiping session, if the user
+     * exists but has already made a choice or if the list of activities is in
+     * any way malformed.
      */
     public Result chooseActivities(long swipingSessionId, String email, String activities) {
 
