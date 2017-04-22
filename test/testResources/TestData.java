@@ -45,13 +45,16 @@ public class TestData {
             participants.add(user1);
             participants.add(user2);
 
-            session = new SwipingSession(participants);
+            modernaMuseet = new Activity("Moderna Museet");
+            modernaMuseet.save();
+
+            Set<Activity> activities = new HashSet<>();
+            activities.add(modernaMuseet);
+
+            session = new SwipingSession(participants, activities);
             session.save();
 
         }
-
-        modernaMuseet = new Activity("Moderna Museet");
-        modernaMuseet.save();
 
         facebookToken = config.getString("facebookToken");
 

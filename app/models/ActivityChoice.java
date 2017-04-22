@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonAppend;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A utility entity mapping a swiping session to a user and a series of chosen
@@ -44,11 +45,11 @@ public class ActivityChoice extends Model {
     public SwipingSession swipingSession;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<Activity> activities;
+    public Set<Activity> activities;
 
     private static Finder<Long, ActivityChoice> find = new Finder<>(ActivityChoice.class);
 
-    public ActivityChoice(User user, SwipingSession swipingSession, List<Activity> activities) {
+    public ActivityChoice(User user, SwipingSession swipingSession, Set<Activity> activities) {
 
         this.user = user;
         this.swipingSession = swipingSession;
