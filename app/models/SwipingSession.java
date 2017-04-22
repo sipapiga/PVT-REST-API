@@ -71,7 +71,7 @@ public class SwipingSession extends Model {
      *
      * @param userEmailAddress the email address of the user whose activities
      *                         are to be returned.
-     * @return a list containing the activities chosen by the user,
+     * @return A list containing the activities chosen by the user,
      * may be empty.
      */
     public Set<Activity> getChosenActivities(String userEmailAddress) {
