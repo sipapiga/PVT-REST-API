@@ -10,6 +10,7 @@ import models.SwipingSession;
 import models.User;
 import utils.ActivityGenerator;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +24,14 @@ import java.util.Set;
  */
 @Security.Authenticated(Secured.class)
 public class SwipingSessionsController extends Controller {
+
+    protected static final String MALFORMED_LIST = "Malformed list.";
+    protected static final String NO_SUCH_ENTITY = "No such entity.";
+    protected static final String FORBIDDEN_ACTIVITY_CHOICE = "Forbidden activity choice.";
+
+    private String getMalformedListMessage(String listContent) {
+        return "The list of " + listContent.toLowerCase() + " is malformed, make sure it uses correct json array syntax.";
+    }
 
     /**
      * Method for getting swiping sessions where all of the users indicated
@@ -56,7 +65,7 @@ public class SwipingSessionsController extends Controller {
             return ok(json);
 
         } catch (IOException e) {
-            return buildBadRequestResponse(mapper, "Malformed list of emails");
+            return buildBadRequestResponse(mapper, MALFORMED_LIST, getMalformedListMessage("emails"));
         }
     }
 
@@ -83,31 +92,36 @@ public class SwipingSessionsController extends Controller {
 
             jsonEmails.forEach(emailAddress -> participatingUsers.add(User.findByEmailAddress(emailAddress.asText())));
 
-            SwipingSession swipingSession = new SwipingSession(participatingUsers);
+            ActivityGenerator generator = new ActivityGenerator();
+            SwipingSession swipingSession = new SwipingSession(participatingUsers, generator.getActivitiesAsSet());
 
             try {
                 swipingSession.save();
             } catch (RuntimeException re) {
-                return buildBadRequestResponse(mapper, "Invalid email.");
+                return buildBadRequestResponse(mapper, NO_SUCH_ENTITY,
+                        "Invalid email - at least one of the email addresses is not associated with any registered user.");
             }
 
             ObjectNode json = mapper.createObjectNode();
-            json.put("swipingSessionId", swipingSession.id);
+            generator.getActivitiesAsArrayNode(json);
 
-            ActivityGenerator.generateActivitiesAsArrayNode(json);
+            json.put("swipingSessionId", swipingSession.id);
 
             return ok(json);
 
         } catch (IOException e) {
-            return buildBadRequestResponse(mapper, "Malformed list of emails");
+            return buildBadRequestResponse(mapper, MALFORMED_LIST,
+                    getMalformedListMessage("emails"));
         }
     }
 
-    private Result buildBadRequestResponse(ObjectMapper mapper, String message) {
+    private Result buildBadRequestResponse(ObjectMapper mapper, String errorType, String message) {
 
         ObjectNode responseBody = mapper.createObjectNode();
 
         ObjectNode error = responseBody.putObject("error");
+
+        error.put("type", errorType);
         error.put("message", message);
 
         return badRequest(responseBody);
@@ -126,21 +140,22 @@ public class SwipingSessionsController extends Controller {
      *                   choice.
      * @return 200 OK if the swiping session exists and the email address can
      * be connected to an existing user, 400 BAD REQUEST if the user indicated
-     * or any of the chosen activities does/do not exist or if the list of
-     * activities is in any way malformed.
+     * or any of the chosen activities does/do not exist, if the user exists
+     * has already made a choice or if the list of activities is in any way
+     * malformed.
      */
     public Result chooseActivities(long swipingSessionId, String email, String activities) {
 
         ObjectMapper mapper = new ObjectMapper();
 
         if (User.findByEmailAddress(email) == null) {
-            return buildBadRequestResponse(mapper, "No user with that email address found.");
+            return buildBadRequestResponse(mapper, NO_SUCH_ENTITY, "No user with that email address found.");
         }
 
         try {
 
             JsonNode jsonActivities = mapper.readTree(activities);
-            List<Activity> parsedActivities = new ArrayList<>();
+            Set<Activity> parsedActivities = new HashSet<>();
 
             jsonActivities.forEach(activityName -> parsedActivities.add(Activity.findByName(activityName.asText())));
 
@@ -151,15 +166,23 @@ public class SwipingSessionsController extends Controller {
                 swipingSession.setUserActivityChoice(email, parsedActivities);
                 swipingSession.save();
 
-            } catch(RuntimeException re) {
-                return buildBadRequestResponse(mapper,
-                        "Got exception - that user might already have made a choice during this session or maybe you tried to pass an activity that does not exist?");
+            } catch (NullPointerException npe) {
+                return buildBadRequestResponse(mapper, NO_SUCH_ENTITY,
+                        "That swiping session does not seem to exist.");
+            } catch (PersistenceException pe) {
+                return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
+                        "At least one of the users passed seem to have made a choice already.");
+            } catch(IllegalArgumentException iae) {
+                return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
+                        "Chosen activities must be picked from the original set of generated activities associated with the swiping session." +
+                                "You might have misspelled an activity name or chosen an activity that was not originally in the session.");
             }
 
             return ok();
 
         } catch (IOException e) {
-            return buildBadRequestResponse(mapper, "Malformed list of activities.");
+            return buildBadRequestResponse(mapper, MALFORMED_LIST,
+                    getMalformedListMessage("activities"));
         }
     }
 }

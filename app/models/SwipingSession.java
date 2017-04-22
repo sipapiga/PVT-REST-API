@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.*;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,6 +24,9 @@ public class SwipingSession extends Model {
     @ManyToMany
     public Set<User> participatingUsers = new HashSet<>();
 
+    @ManyToMany
+    public Set<Activity> generatedActivities;
+
     @OneToMany
     public List<ActivityChoice> chosenActivities;
 
@@ -31,9 +35,10 @@ public class SwipingSession extends Model {
 
     private static Finder<Long, SwipingSession> find = new Finder<>(SwipingSession.class);
 
-    public SwipingSession(Set<User> participatingUsers) {
+    public SwipingSession(Set<User> participatingUsers, Set<Activity> generatedActivities) {
 
         this.participatingUsers = participatingUsers;
+        this.generatedActivities = generatedActivities;
         this.initializationDate = new Date();
 
     }
@@ -44,8 +49,14 @@ public class SwipingSession extends Model {
      * @param userEmailAddress the email address of the user whose choice is to
      *                         be recorded.
      * @param activities the activities to associate with the user.
+     * @throws IllegalArgumentException if any of the activities chosen are not
+     * in the original set of generated activities.
      */
-    public void setUserActivityChoice(String userEmailAddress, List<Activity> activities) {
+    public void setUserActivityChoice(String userEmailAddress, Set<Activity> activities) {
+
+        if (!generatedActivities.containsAll(activities)) {
+            throw new IllegalArgumentException("Chosen activities must be picked from the original set of generated activities.");
+        }
 
         User user = User.findByEmailAddress(userEmailAddress);
         ActivityChoice choice = new ActivityChoice(user, this, activities);
@@ -63,7 +74,7 @@ public class SwipingSession extends Model {
      * @return a list containing the activities chosen by the user,
      * may be empty.
      */
-    public List<Activity> getChosenActivities(String userEmailAddress) {
+    public Set<Activity> getChosenActivities(String userEmailAddress) {
         return ActivityChoice.findBySwipingSessionAndUser(User.findByEmailAddress(userEmailAddress).id, id).activities;
     }
 
