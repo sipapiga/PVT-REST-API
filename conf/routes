@@ -10,8 +10,8 @@ POST    /logout                     controllers.SecurityController.logout
 
 POST    /facebook/login             controllers.FacebookSecurityController.login
 
-GET     /swipingsessions            controllers.SwipingSessionsController.getSwipingSession(initiatorEmail, buddyEmail)
-POST    /swipingsessions            controllers.SwipingSessionsController.createSwipingSession(initiatorEmail, buddyEmail)
+GET     /swipingsessions            controllers.SwipingSessionsController.getSwipingSession(emailAddresses)
+POST    /swipingsessions            controllers.SwipingSessionsController.createSwipingSession(emailAddresses)
 PUT     /swipingsessions            controllers.SwipingSessionsController.chooseActivities(swipingSessionId: Long, email, activities)
 
 # Map static resources from the /public folder to the /assets URL path

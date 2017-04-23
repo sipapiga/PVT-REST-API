@@ -1,14 +1,19 @@
 package models;
 
-import com.avaje.ebean.Model;
-import com.avaje.ebean.annotation.Index;
-import com.avaje.ebean.annotation.JsonIgnore;
+import com.avaje.ebean.*;
 import play.Logger;
-import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * An entity representing a swiping session between a set of users. Apart from
+ * having a set of users associated with it, each swiping session also keeps
+ * track of their chosen activities.
+ *
+ * @author Simon Olofsson
+ */
 @Entity
 public class SwipingSession extends Model {
 
@@ -16,29 +21,11 @@ public class SwipingSession extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
-    @Column(nullable = false)
-    @Constraints.Required
-    @ManyToOne
-    public User initiator;
+    @ManyToMany
+    public Set<User> participatingUsers = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "initiator_activities")
-    public List<Activity> initiatorActivities = new ArrayList<>();
-
-    @Column(nullable = false)
-    @Constraints.Required
-    @ManyToOne
-    public User buddy;
-
-    @ManyToMany
-    @JoinTable(name = "buddy_activities")
-    public List<Activity> buddyActivities = new ArrayList<>();
-
-    @ManyToMany
-    public List<User> participatingUsers = new ArrayList<>();
-
-    /*@ManyToMany
-    public Map<User, ActivityChoice> chosenActivities = new HashMap<>();*/
+    public Set<Activity> generatedActivities;
 
     @OneToMany
     public List<ActivityChoice> chosenActivities;
@@ -48,49 +35,77 @@ public class SwipingSession extends Model {
 
     private static Finder<Long, SwipingSession> find = new Finder<>(SwipingSession.class);
 
-    public SwipingSession(String initiatorEmail, String buddyEmail) {
-
-        this.initiator = User.findByEmailAddress(initiatorEmail);
-        this.buddy = User.findByEmailAddress(buddyEmail);
-
-        this.participatingUsers.add(User.findByEmailAddress(initiatorEmail));
-        this.participatingUsers.add(User.findByEmailAddress(buddyEmail));
-        this.initializationDate = new Date();
-        
-    }
-
-    public SwipingSession(List<User> participatingUsers) {
+    public SwipingSession(Set<User> participatingUsers, Set<Activity> generatedActivities) {
 
         this.participatingUsers = participatingUsers;
+        this.generatedActivities = generatedActivities;
         this.initializationDate = new Date();
 
     }
 
-    public void setUserActivityChoice(String userEmailAddress, List<Activity> activities) {
+    /**
+     * Method to record a user's choice of activities.
+     *
+     * @param userEmailAddress the email address of the user whose choice is to
+     *                         be recorded.
+     * @param activities the activities to associate with the user.
+     * @throws IllegalArgumentException if any of the activities chosen are not
+     * in the original set of generated activities.
+     */
+    public void setUserActivityChoice(String userEmailAddress, Set<Activity> activities) {
+
+        if (!generatedActivities.containsAll(activities)) {
+            throw new IllegalArgumentException("Chosen activities must be picked from the original set of generated activities.");
+        }
 
         User user = User.findByEmailAddress(userEmailAddress);
         ActivityChoice choice = new ActivityChoice(user, this, activities);
         choice.save();
 
         chosenActivities.add(choice);
-        //chosenActivities.put(User.findByEmailAddress(userEmailAddress), choice);
 
     }
 
-    public List<Activity> getChosenActivities(String userEmailAddress) {
-        //return chosenActivities.get(User.findByEmailAddress(userEmailAddress)).chosenActivities;
-        return ActivityChoice.findBySwipingSessionAndUser(User.findByEmailAddress(userEmailAddress).id, id).chosenActivities;
+    /**
+     * Method to get the activities chosen by a user during this swiping session.
+     *
+     * @param userEmailAddress the email address of the user whose activities
+     *                         are to be returned.
+     * @return A list containing the activities chosen by the user,
+     * may be empty.
+     */
+    public Set<Activity> getChosenActivities(String userEmailAddress) {
+        return ActivityChoice.findBySwipingSessionAndUser(User.findByEmailAddress(userEmailAddress).id, id).activities;
     }
 
-    public static List<SwipingSession> findByEmail(String initiatorEmail, String buddyEmail) {
+    /**
+     * Method to get all swiping sessions where all of the users and exactly
+     * those users associate with the passed email addresses have taken part.
+     * That is, will only return those swiping sessions whose set of users
+     * are exactly equal to those indicated by the email addresses.
+     *
+     * @param emails a list of emails to match swiping sessions against.
+     * @return a list of swiping sessions that are associated with exactly
+     * those users indicated by the email addresses passed.
+     */
+    public static List<SwipingSession> findByEmail(List<String> emails) {
 
-        User initiator = User.findByEmailAddress(initiatorEmail);
-        User buddy = User.findByEmailAddress(buddyEmail);
+        Set<User> users = new HashSet<>();
+        emails.forEach(email -> users.add(User.findByEmailAddress(email)));
 
-        return find.where().eq("initiator_id", initiator.id).eq("buddy_id", buddy.id).findList();
+        List<SwipingSession> allSwipingSessions = find.all();
+
+        return allSwipingSessions.stream()
+                .filter(swipingSession -> swipingSession.participatingUsers.equals(users)).collect(Collectors.toList());
 
     }
 
+    /**
+     * Method to find a swiping session by its id.
+     *
+     * @param id the id of the swiping session to get.
+     * @return the swiping session indicated by the id, null if there is none.
+     */
     public static SwipingSession findById(long id) {
         return find.byId(id);
     }

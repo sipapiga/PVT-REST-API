@@ -4,7 +4,14 @@ import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.List;
 
+/**
+ * An entity representing an activity gathered from the open API's, such as a
+ * museum or an art gallery.
+ *
+ * @author Simon Olofsson
+ */
 @Entity
 public class Activity extends Model {
 
@@ -28,5 +35,9 @@ public class Activity extends Model {
 
     public static Activity findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    public static List<Activity> getAll() {
+        return find.all();
     }
 }
