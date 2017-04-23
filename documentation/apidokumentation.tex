@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\begin{document}
+
+	\section*{Endpoints}
+
+	\subsection*{facebook/login}
+
+		\subsubsection*{POST}
+
+	\subsection*{swipingsessions/}
+
+		\subsubsection*{GET}
+
+		Hämtar alla swipingsessioner där de angivna användarna deltagit.
+
+		Parametrar:
+	
+		\begin{itemize}
+			
+			\item emailAddresses -- en array i json-format innehållandes en serie emailadresser. Matchningen kommer att göras på alla
+				emailadresser som skickas, med andra ord kommer bara swipingsessioner där alla användare kopplade till emailaddresserna
+				deltagit att hämtas. Matchningen är också exakt i det att den inte heller kommer att göras på de swipingsessioner där
+				några andra användare, utöver dessa, deltagit.
+
+		\end{itemize}
+
+		\subsubsection*{POST}
+
+		Skapar en ny swipingsession med alla angivna användare som deltagare. Returnerar en lista med aktiviteter.
+
+		\paragraph{Parametrar:}
+
+		\begin{itemize}		
+
+			\item emailAddresses -- en array i json-format innehållandes en serie emailaddresser.			
+
+		\end{itemize}		
+
+		\subsubsection*{DELETE}
+
+\end{document}
