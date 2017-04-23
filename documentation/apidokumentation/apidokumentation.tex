@@ -1,0 +1,106 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\title{API-dokumentation för doSTHLMs REST-API}
+\author{Simon Olofsson}
+\date{}
+
+\begin{document}
+
+\lstset{showspaces=false,showstringspaces=false,literate={Ä}{{\"A}}1{Ö}{{\"O}}1}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section*{Endpoints}
+\addcontentsline{toc}{section}{Endpoints}
+
+\subsection*{/facebook/login}
+\addcontentsline{toc}{subsection}{/facebook/login}
+
+\subsubsection*{POST}
+\addcontentsline{toc}{subsubsection}{POST}
+
+Loggar in en användare via facebook. Förväntar sig en HTTP-body med följande utseende:
+
+\begin{lstlisting}
+{
+	emailAddress: ANVÄNDARENS EMAILADRESS,
+	password: ANVÄNDARENS LÖSENORD
+}
+\end{lstlisting}
+
+\noindent Returnerar en autentiseringstoken som kan kommas åt antingen via en cookie som sätts
+eller själva response-bodyn, som har formatet:
+
+\begin{lstlisting}
+{
+	authToken: AUTENTISERINGSTOKEN
+}
+\end{lstlisting}
+
+\noindent Förutsatt att vi lagrar svaret i en variabel kallad \textit{response} kan alltså denna token 
+kommas åt som \textit{response.authToken}.
+
+\subsection*{/swipingsessions}
+\addcontentsline{toc}{subsection}{/swipingsessions}
+
+\subsubsection*{GET}
+\addcontentsline{toc}{subsubsection}{GET}
+
+Hämtar alla swipingsessioner där de angivna användarna deltagit.
+
+\paragraph{Parametrar:}
+
+\begin{itemize}
+	
+	\item emailAddresses -- en array i json-format innehållandes en serie emailadresser. Matchningen kommer att göras på alla
+		emailadresser som skickas, med andra ord kommer bara swipingsessioner där alla användare kopplade till emailaddresserna
+		deltagit att hämtas. Matchningen är också exakt i det att den inte heller kommer att göras på de swipingsessioner där
+		några andra användare, utöver dessa, deltagit.
+
+\end{itemize}
+
+\paragraph{Exempel:} /swipingsessions?emailAddresses=["user1@example.com","user2@example.com"] 
+
+\subsubsection*{POST}
+\addcontentsline{toc}{subsubsection}{POST}
+
+Skapar en ny swipingsession med alla angivna användare som deltagare. Returnerar den nya swipingsessionens id samt en lista med aktiviteter.
+
+\paragraph{Parametrar:}
+
+\begin{itemize}		
+
+	\item emailAddresses -- en array i json-format innehållandes en serie emailaddresser.			
+
+\end{itemize}		
+
+\paragraph{Exempel:} /swipingsessions?emailAddresses=["user1@example.com","user2@example.com"] 
+
+\subsubsection*{PUT}
+\addcontentsline{toc}{subsubsection}{PUT}
+
+Uppdaterar en swipingsession med valda aktiviteter för den angivna användaren.
+
+\paragraph{Parametrar:}
+
+\begin{itemize}
+
+	\item swipingSessionId -- id:t för den swipingsession som ska uppdateras. Fås vid skapandet av swipingsessionen eller genom en
+		GET-request till denna endpoint.
+	\item email -- den emailadress associerad med den användare som just valt aktiviteter.
+	\item activities -- en array i json-format innehållandes namnet på de aktiviteter som valts.
+
+\end{itemize}
+
+\paragraph{Exempel:} /swipingsessions?swipingSessionId=1\&email=user1@example.com\&activities=["Moderna Museet","Medelhavsmuseet"]
+
+\end{document}
