@@ -22,3 +22,6 @@ routesGenerator := InjectedRoutesGenerator
 
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
 javaSource in Test := baseDirectory.value / "test"
+
+
+fork in run := true
