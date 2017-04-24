@@ -78,3 +78,11 @@
   * Time: 3 hours.
 
 ===============================================================================
+
+* See if it's possible to check if request parameters are set or not. As it is
+  now it's difficult to debug requests if you misspelled or forgot a parameter.
+
+  * Priority: 3.
+  * Time: 2 hours.
+
+===============================================================================
