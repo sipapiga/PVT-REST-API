@@ -5,6 +5,7 @@
 package testResources;
 
 import models.Activity;
+import models.Authorization;
 import models.SwipingSession;
 import models.User;
 import play.Configuration;
@@ -23,6 +24,7 @@ public class TestData {
 
     private User user1;
     private User user2;
+    private User admin;
 
     private SwipingSession session;
     private Activity modernaMuseet;
@@ -39,6 +41,10 @@ public class TestData {
 
             user2 = new User("user2@demo.com", "password", "Jane Doe");
             user2.save();
+
+            admin = new User("admin@demo.com", "password", "Sven Svensson");
+            admin.authorization = Authorization.ADMIN;
+            admin.save();
 
             Set<User> participants = new HashSet<>();
 
@@ -66,6 +72,10 @@ public class TestData {
 
     public User getUser2() {
         return user2;
+    }
+
+    public User getAdmin() {
+        return admin;
     }
 
     public SwipingSession getSession() {

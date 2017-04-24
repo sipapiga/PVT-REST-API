@@ -23,6 +23,7 @@ public class DemoData {
 
     public User user1;
     public User user2;
+    public User admin;
 
     public SwipingSession session;
     public Activity modernaMuseet;
@@ -41,6 +42,10 @@ public class DemoData {
 
                 user2 = new User("user2@demo.com", "password", "Jane Doe");
                 user2.save();
+
+                admin = new User("admin@demo.com", "password", "Sven Svensson");
+                admin.authorization = Authorization.ADMIN;
+                admin.save();
 
                 Set<User> participants = new HashSet<>();
 

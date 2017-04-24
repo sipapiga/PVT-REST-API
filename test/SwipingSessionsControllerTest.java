@@ -382,8 +382,6 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
         JsonNode putJson = Json.parse(contentAsString(putResult));
 
-        Logger.debug(putJson.findValue("message").toString());
-
         assertEquals(BAD_REQUEST, putResult.status());
         assertEquals(SwipingSessionsController.FORBIDDEN_ACTIVITY_CHOICE, putJson.findValue("type").asText());
 

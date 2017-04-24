@@ -5,7 +5,7 @@ import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
 
-import play.Logger;
+import java.util.function.Predicate;
 
 /**
  * Authenticator class to be used with @Security.Authenticated to
@@ -15,23 +15,27 @@ import play.Logger;
  */
 public class Secured extends Security.Authenticator {
 
-    @Override
-    public String getUsername(Context ctx) {
-    
+    String evaluateUserPrivileges(Context ctx, Predicate<User> predicate) {
+
         String[] authTokenHeaderValues = ctx.request().headers().get(SecurityController.AUTH_TOKEN_HEADER);
 
         if ((authTokenHeaderValues != null) && (authTokenHeaderValues.length == 1) && (authTokenHeaderValues[0] != null)) {
 
             User user = models.User.findByAuthToken(authTokenHeaderValues[0]);
 
-            if (user != null) {
-                
+            if (predicate.test(user)) {
+
                 ctx.args.put("user", user);
                 return user.getEmailAddress();
             }
         }
         return null;
 
+    }
+
+    @Override
+    public String getUsername(Context ctx) {
+        return evaluateUserPrivileges(ctx, (user) -> user != null);
     }
 
     @Override

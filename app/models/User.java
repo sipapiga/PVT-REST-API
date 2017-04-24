@@ -60,6 +60,9 @@ public class User extends Model {
     @OneToOne
     public FacebookData facebookData;
 
+    @ManyToOne
+    public Authorization authorization = Authorization.USER;
+
     private static Finder<Long, User> find = new Finder<>(User.class);
 
     public User() {
