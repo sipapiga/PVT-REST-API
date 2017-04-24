@@ -368,15 +368,15 @@ public class SwipingSessionsControllerTest extends BaseTest {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode activities = mapper.createArrayNode();
 
-        Activity medelhavsmuseet = new Activity("Medelhavsmuseet");
-        medelhavsmuseet.save();
-
-        activities.add(medelhavsmuseet.name);
-
         Result postResult = makePostRequestWithCorrectEmails();
         JsonNode postJson = Json.parse(contentAsString(postResult));
 
         long swipingSessionId = Long.parseLong(postJson.get("swipingSessionId").toString());
+
+        Activity medelhavsmuseet = new Activity("Medelhavsmuseet");
+        medelhavsmuseet.save();
+
+        activities.add(medelhavsmuseet.name);
 
         Result putResult = makePutRequestWithCorrectEmail(swipingSessionId, activities.toString());
 
