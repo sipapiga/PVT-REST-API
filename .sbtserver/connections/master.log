@@ -1,1 +1,10 @@
 New log file opened at Mon Apr 24 18:07:07 CEST 2017 by 14396@DESKTOP-5I7CM7G
+Taking next connection to: 52774
+New client attempting to connect on port: 52775-52774
+  Address = /83.233.179.16:52774
+This client on port 52775 has uuid 77547981-e217-4397-96c6-8b36e1a30d0e configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-77547981-e217-4397-96c6-8b36e1a30d0e
+Taking next connection to: 52774
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 52774
