@@ -2,6 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
+
 # Interesting tidbit which indicate POST might be better than GET for passing sensitive information:
 # https://security.stackexchange.com/questions/12531/ssl-with-get-and-post
 # Should be the second answer.
@@ -17,6 +20,4 @@ PUT     /swipingsessions                          controllers.SwipingSessionsCon
 
 GET     /gather                                   controllers.ActivityGatheringController.gather()
 
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
 
