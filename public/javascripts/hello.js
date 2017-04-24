@@ -1,3 +1,9 @@
-if (window.console) {
-  console.log("Welcome to your Play application's JavaScript!");
-}
+let requestBody = {
+    emailAddress: 'user1@demo.com',
+    password: 'password'
+};
+
+fetch('/login', {
+    method: 'POST',
+    body: requestBody
+});
