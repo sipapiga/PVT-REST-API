@@ -14,6 +14,10 @@ public class BaseTest extends WithApplication {
     protected String user2Email;
     protected String user2Password;
 
+    protected User admin;
+    protected String adminEmail;
+    protected String adminPassword;
+
     protected String facebookToken;
 
     @Before
@@ -28,6 +32,10 @@ public class BaseTest extends WithApplication {
         user2 = testData.getUser2();
         user2Email = user2.getEmailAddress();
         user2Password = user2.getPassword();
+
+        admin = testData.getAdmin();
+        adminEmail = admin.getEmailAddress();
+        adminPassword = admin.getPassword();
 
         facebookToken = testData.getFacebookToken();
 

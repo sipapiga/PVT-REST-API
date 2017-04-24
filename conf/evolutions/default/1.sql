@@ -67,6 +67,8 @@ create table user (
   full_name                     varchar(256) not null,
   creation_date                 datetime not null,
   facebook_data_id              bigint,
+  authorization                 integer,
+  constraint ck_user_authorization check (authorization in (0,1)),
   constraint uq_user_email_address unique (email_address),
   constraint uq_user_facebook_data_id unique (facebook_data_id),
   constraint pk_user primary key (id)
