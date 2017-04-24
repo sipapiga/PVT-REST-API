@@ -23,13 +23,11 @@
 \section*{Endpoints}
 \addcontentsline{toc}{section}{Endpoints}
 
-\subsection*{/facebook/login}
-\addcontentsline{toc}{subsection}{/facebook/login}
+\subsection*{/login}
 
 \subsubsection*{POST}
-\addcontentsline{toc}{subsubsection}{POST}
 
-Loggar in en användare via facebook. Förväntar sig en HTTP-body med följande utseende:
+Loggar in en användare. Förväntar sig en HTTP-body med följande utseende:
 
 \begin{lstlisting}
 {
@@ -50,11 +48,28 @@ eller själva response-bodyn, som har formatet:
 \noindent Förutsatt att vi lagrar svaret i en variabel kallad \textit{response} kan alltså denna token 
 kommas åt som \textit{response.authToken}.
 
+\subsection*{/facebook/login}
+\label{sub:/facebook/login}
+
+Loggar in en användare via Facebook.
+
+\paragraph{Headerfält:}
+\label{par:headerf_lt_}
+
+\begin{description}
+    \item FACEBOOK-AUTH-TOKEN -- en valid autentiseringstoken från Facebooks Graph API
+\end{description}
+
+\paragraph{Returvärden:}
+\label{par:facebook_login_returv_rden_}
+
+\begin{description}
+    \item Vänlista -- en lista innehållandes de av den angivna användarens Facebookvänner som också är registrerade användare av appen.
+\end{description}
+
 \subsection*{/swipingsessions}
-\addcontentsline{toc}{subsection}{/swipingsessions}
 
 \subsubsection*{GET}
-\addcontentsline{toc}{subsubsection}{GET}
 
 Hämtar alla swipingsessioner där de angivna användarna deltagit.
 
@@ -72,22 +87,26 @@ Hämtar alla swipingsessioner där de angivna användarna deltagit.
 \paragraph{Exempel:} /swipingsessions?emailAddresses=["user1@example.com","user2@example.com"] 
 
 \subsubsection*{POST}
-\addcontentsline{toc}{subsubsection}{POST}
 
 Skapar en ny swipingsession med alla angivna användare som deltagare. Returnerar den nya swipingsessionens id samt en lista med aktiviteter.
 
 \paragraph{Parametrar:}
 
 \begin{itemize}		
-
 	\item emailAddresses -- en array i json-format innehållandes en serie emailaddresser.			
-
 \end{itemize}		
+
+\paragraph{Returvärden:}
+\label{par:swipingsessions_returv_rden_}
+
+\begin{itemize}
+    \item swipingSessionId --  Den nya swipingsessionens id, används för att unikt identifiera den vid uppdateringar.
+    \item activities -- En lista på aktiviteter som användarna kan swipe:a på.
+\end{itemize}
 
 \paragraph{Exempel:} /swipingsessions?emailAddresses=["user1@example.com","user2@example.com"] 
 
 \subsubsection*{PUT}
-\addcontentsline{toc}{subsubsection}{PUT}
 
 Uppdaterar en swipingsession med valda aktiviteter för den angivna användaren.
 
