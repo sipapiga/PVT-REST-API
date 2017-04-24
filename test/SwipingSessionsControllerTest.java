@@ -10,16 +10,12 @@ import models.Activity;
 import models.SwipingSession;
 import org.junit.Test;
 
-import play.Logger;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Http;
 import testResources.BaseTest;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +33,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     private Result makeAuthenticatedGetRequest(String authToken, String emailAddresses) {
 
-        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSession(emailAddresses));
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSessionWithExactParticipants(emailAddresses));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
 
         return route(fakeRequest);
@@ -125,6 +121,29 @@ public class SwipingSessionsControllerTest extends BaseTest {
     @Test
     public void getSwipingSession() {
 
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSessionWithParticipant(user1Email));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, user1.createToken());
+
+        Result result = route(fakeRequest);
+
+        assertEquals(OK, result.status());
+
+        JsonNode json = Json.parse(contentAsString(result));
+
+        assertTrue(json.size() > 0);
+
+        for (JsonNode swipingSession : json) {
+
+            assertNotNull(swipingSession.get("id"));
+            assertNotNull(swipingSession.get("initializationDate"));
+
+        }
+
+    }
+
+    @Test
+    public void getSwipingSessionWithExactMatch() {
+
         Result result = makeGetRequestWithCorrectEmails();
         assertEquals(OK, result.status());
 
@@ -140,7 +159,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
     @Test
     public void getSwipingSessionWhenNotLoggedIn() {
 
-        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSession(buildListOfValidEmailAddresses())));
+        Result result = route(fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSessionWithExactParticipants(buildListOfValidEmailAddresses())));
         assertEquals(UNAUTHORIZED, result.status());
 
     }
@@ -245,11 +264,11 @@ public class SwipingSessionsControllerTest extends BaseTest {
         emails.add(user1Email);
         emails.add(user2Email);
 
-        List<SwipingSession> before = SwipingSession.findByEmail(emails);
+        List<SwipingSession> before = SwipingSession.findByEmails(emails);
 
         makePostRequestWithCorrectEmails();
 
-        List<SwipingSession> after = SwipingSession.findByEmail(emails);
+        List<SwipingSession> after = SwipingSession.findByEmails(emails);
 
         assertTrue(after.size() == (before.size() + 1));
 

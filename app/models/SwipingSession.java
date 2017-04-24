@@ -78,6 +78,11 @@ public class SwipingSession extends Model {
         return ActivityChoice.findBySwipingSessionAndUser(User.findByEmailAddress(userEmailAddress).id, id).activities;
     }
 
+
+    public static List<SwipingSession> findByEmail(String email) {
+        return find.where().in("participatingUsers", User.findByEmailAddress(email)).findList();
+    }
+
     /**
      * Method to get all swiping sessions where all of the users and exactly
      * those users associate with the passed email addresses have taken part.
@@ -88,7 +93,7 @@ public class SwipingSession extends Model {
      * @return a list of swiping sessions that are associated with exactly
      * those users indicated by the email addresses passed.
      */
-    public static List<SwipingSession> findByEmail(List<String> emails) {
+    public static List<SwipingSession> findByEmails(List<String> emails) {
 
         Set<User> users = new HashSet<>();
         emails.forEach(email -> users.add(User.findByEmailAddress(email)));
