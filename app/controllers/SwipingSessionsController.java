@@ -33,6 +33,22 @@ public class SwipingSessionsController extends Controller {
         return "The list of " + listContent.toLowerCase() + " is malformed, make sure it uses correct json array syntax.";
     }
 
+
+    public Result getSwipingSessionWithParticipant(String emailAddress) {
+
+        List<SwipingSession> swipingSessions = SwipingSession.findByEmail(emailAddress);
+
+        if (swipingSessions.size() < 1) {
+            return notFound();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        ArrayNode json = mapper.valueToTree(swipingSessions);
+        return ok(json);
+
+    }
+
     /**
      * Method for getting swiping sessions where all of the users indicated
      * by the passed email addresses are or have participated.
@@ -43,7 +59,7 @@ public class SwipingSessionsController extends Controller {
      * the list of emails is malformed and 404 NOT FOUND if there is no swiping
      * session associated with all of the email addresses passed.
      */
-    public Result getSwipingSession(String emailAddresses) {
+    public Result getSwipingSessionWithExactParticipants(String emailAddresses) {
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -54,7 +70,7 @@ public class SwipingSessionsController extends Controller {
 
             jsonEmails.forEach(emailAddress -> emailList.add(emailAddress.asText()));
 
-            List<SwipingSession> swipingSessions = SwipingSession.findByEmail(emailList);
+            List<SwipingSession> swipingSessions = SwipingSession.findByEmails(emailList);
 
             if (swipingSessions == null || swipingSessions.isEmpty()) {
                 return notFound();
