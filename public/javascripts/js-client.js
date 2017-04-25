@@ -1,4 +1,5 @@
 let SERVER = 'https://protected-gorge-44302.herokuapp.com';
+//let SERVER = 'http:/localhost:9000';
 
 // From http://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript
 let cookies;
@@ -65,7 +66,7 @@ let buildUri = function(endpoint, requestObject) {
 
 let facebookLogin = function(facebookToken) {
 
-    fetch('/facebook/login', {
+    fetch(SERVER + '/facebook/login', {
 
         method: 'POST',
         headers: {
@@ -75,11 +76,13 @@ let facebookLogin = function(facebookToken) {
 
     }).then(function(response) {
 
+        console.log(response);
         return response.json();
 
     }).then(function(responseObject) {
 
-        getSwipingSessions()
+        console.log(responseObject);
+        //getSwipingSessions()
 
     }).catch(function(error) {
 
@@ -87,6 +90,8 @@ let facebookLogin = function(facebookToken) {
 
     });
 };
+
+facebookLogin('EAACEdEose0cBAJv87a8liUo6Wr1w25ZBhfSGZB3ZA746JfjgVZAmD77Bbe6x4qCJ4jKKwLqv3QdIBfkI3BZBqn9FRPpoBeQkj2e5wlQ5xINWqwOCtd1XteDNLCsBgLxFLZCnFO5q3QzGUNpYfvLQ2I77kmdv0kzZAFLRI6garjiA1IQTppry5Jl');
 
 /*
  * 1. Login.
@@ -130,6 +135,7 @@ let getSwipingSessions = function(email, token) {
 
     }).then(response => {
 
+        console.log(response);
         return response.json();
 
     }).then(responseObject => {
@@ -220,4 +226,4 @@ let chooseActivities = function(swipingSessionId, user, activities, token) {
     });
 };
 
-localLogin('user1@demo.com', 'password'); // execute
+//localLogin('user1@demo.com', 'password'); // execute
