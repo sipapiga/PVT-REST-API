@@ -124,25 +124,12 @@ public class SwipingSessionsController extends Controller {
 
             json.put("swipingSessionId", swipingSession.id);
 
-            return ok(json);
+            return ok();
 
         } catch (IOException e) {
             return buildBadRequestResponse(mapper, MALFORMED_LIST,
                     getMalformedListMessage("emails"));
         }
-    }
-
-    private Result buildBadRequestResponse(ObjectMapper mapper, String errorType, String message) {
-
-        ObjectNode responseBody = mapper.createObjectNode();
-
-        ObjectNode error = responseBody.putObject("error");
-
-        error.put("type", errorType);
-        error.put("message", message);
-
-        return badRequest(responseBody);
-
     }
 
     /**
@@ -202,5 +189,18 @@ public class SwipingSessionsController extends Controller {
             return buildBadRequestResponse(mapper, MALFORMED_LIST,
                     getMalformedListMessage("activities"));
         }
+    }
+
+    private Result buildBadRequestResponse(ObjectMapper mapper, String errorType, String message) {
+
+        ObjectNode responseBody = mapper.createObjectNode();
+
+        ObjectNode error = responseBody.putObject("error");
+
+        error.put("type", errorType);
+        error.put("message", message);
+
+        return badRequest(responseBody);
+
     }
 }

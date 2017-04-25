@@ -1,3 +1,5 @@
+let SERVER = 'http://localhost:9000';
+
 // From http://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript
 let cookies;
 
@@ -28,7 +30,7 @@ let buildJsonArrayString = function(array) {
         if (first) {
             first = false;
         } else {
-            arrayString += ",";
+            arrayString += ',';
         }
 
         arrayString += '"' + value + '"';
@@ -95,7 +97,7 @@ let localLogin = function(email, password) {
     formData.append('emailAddress', email);
     formData.append('password', password);
 
-    fetch('/login', {
+    fetch(SERVER + '/login', {
 
         method: 'POST',
         credentials: 'include',
@@ -121,7 +123,7 @@ let localLogin = function(email, password) {
  */
 let getSwipingSessions = function(email, token) {
 
-    fetch('/swipingsessions/' + email, {
+    fetch(SERVER + '/swipingsessions/' + email, {
 
         method: 'GET',
         headers: {'X-AUTH-TOKEN': token}
@@ -162,7 +164,7 @@ let getSwipingSessions = function(email, token) {
  */
 let createSwipingSession = function(users, token) {
 
-    let uri = buildUri('/swipingsessions', {
+    let uri = buildUri(SERVER + '/swipingsessions', {
         emailAddresses: buildJsonArrayString(users)
     });
 
@@ -191,7 +193,7 @@ let createSwipingSession = function(users, token) {
  */
 let chooseActivities = function(swipingSessionId, user, activities, token) {
 
-    let uri = buildUri('/swipingsessions', {
+    let uri = buildUri(SERVER + '/swipingsessions', {
         swipingSessionId: swipingSessionId,
         email: user,
         activities: buildJsonArrayString(activities)
