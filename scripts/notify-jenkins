@@ -1,0 +1,2 @@
+#!/bin/sh
+curl https://pvt.dsv.su.se/jenkins/git/notifyCommit?url=https://github.com/simpa2k/PVT-REST-API.git
