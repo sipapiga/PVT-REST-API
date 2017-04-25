@@ -1,4 +1,4 @@
-let SERVER = 'http://localhost:9000';
+let SERVER = 'https://protected-gorge-44302.herokuapp.com';
 
 // From http://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript
 let cookies;
