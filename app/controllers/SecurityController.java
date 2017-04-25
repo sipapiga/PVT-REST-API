@@ -52,6 +52,8 @@ public class SecurityController extends Controller {
             authTokenJson.put(AUTH_TOKEN, authToken);
             response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authToken).withSecure(ctx().request().secure()).build());
 
+            Logger.debug("About to send OK");
+
             return ok(authTokenJson);
 
         }
