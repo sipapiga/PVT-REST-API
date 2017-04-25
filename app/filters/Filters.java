@@ -13,8 +13,7 @@ import javax.inject.Singleton;
 
 public class Filters extends DefaultHttpFilters {
     @Inject public Filters(CORSFilter corsFilter, LoggingFilter loggingFilter) {
-        //super(corsFilter, loggingFilter);
-        super(loggingFilter);
+        super(corsFilter, loggingFilter);
     }
 }
 
