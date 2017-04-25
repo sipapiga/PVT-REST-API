@@ -573,3 +573,199 @@ Copy resource mappings:
 Total time: 1 s, completed 2017-apr-25 05:46:12
 > server-post-command-cleanup
 > server-handle-next-server-request
+> compile
+Evaluating tasks: compile:compile
+Running task... Cancel: sbt.server.ServerTaskCancellation@bd351ca, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set()
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set()
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set()
+
+Total time: 0 s, completed 2017-apr-25 06:14:25
+> server-post-command-cleanup
+> server-handle-next-server-request
+> compile
+Evaluating tasks: compile:compile
+Running task... Cancel: sbt.server.ServerTaskCancellation@f79b7c8, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\ActivityGatherer.java)
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\ActivityGatherer.java)
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\ActivityGatherer.java)
+
+Read from stdout: Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Attempting to call com.sun.tools.javac.api.JavacTool@3e6eda45 directly...
+Java compilation took 0.368980619 s
+Java analysis took 0.022313699 s
+Java compile + analysis took 0.398447808 s
+New invalidations:
+	Set()
+Initial set of included nodes: Set()
+Previously invalidated, but (transitively) depend on new invalidations:
+	Set()
+All newly invalidated sources after taking into account (previously) recompiled sources:Set()
+Total time: 1 s, completed 2017-apr-25 06:20:37
+> server-post-command-cleanup
+> server-handle-next-server-request
+> compile
+Evaluating tasks: compile:compile
+Running task... Cancel: sbt.server.ServerTaskCancellation@7692f43b, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Read from stdout: Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Attempting to call com.sun.tools.javac.api.JavacTool@7555a4b9 directly...
+Read from stdout: D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java:60: no suitable method found for add(no arguments)
+Read from stdout: method java.util.Collection.add(models.Activity) is not applicable
+Read from stdout: (actual and formal argument lists differ in length)
+Read from stdout: method java.util.Set.add(models.Activity) is not applicable
+Read from stdout: (actual and formal argument lists differ in length)
+D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java:60: no suitable method found for add(no arguments)
+    method java.util.Collection.add(models.Activity) is not applicable
+      (actual and formal argument lists differ in length)
+    method java.util.Set.add(models.Activity) is not applicable
+      (actual and formal argument lists differ in length)
+Read from stdout: activities.add
+activities.add
+Read from stdout: (compile:compileIncremental) javac returned nonzero exit code
+(compile:compileIncremental) javac returned nonzero exit code
+Total time: 1 s, completed 2017-apr-25 06:20:39
+> server-post-command-error-handler
+> server-post-command-cleanup
+> server-handle-next-server-request
+> compile
+Evaluating tasks: compile:compile
+Running task... Cancel: sbt.server.ServerTaskCancellation@46af8b9d, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Read from stdout: Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Attempting to call com.sun.tools.javac.api.JavacTool@434f1ac3 directly...
+Read from stdout: D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java:62: cannot find symbol
+Read from stdout: symbol:   variable activities
+Read from stdout: location: class utils.DemoData
+D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java:62: cannot find symbol
+  symbol:   variable activities
+  location: class utils.DemoData
+Read from stdout: activities
+activities
+Read from stdout: (compile:compileIncremental) javac returned nonzero exit code
+(compile:compileIncremental) javac returned nonzero exit code
+Total time: 1 s, completed 2017-apr-25 06:21:18
+> server-post-command-error-handler
+> server-post-command-cleanup
+> server-handle-next-server-request
+> compile
+Evaluating tasks: compile:compile
+Running task... Cancel: sbt.server.ServerTaskCancellation@6015564b, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java)
+
+Read from stdout: Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Compiling 1 Java source to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes...
+Attempting to call com.sun.tools.javac.api.JavacTool@6dd7bd20 directly...
+Java compilation took 0.255861378 s
+Java analysis took 0.056306333 s
+Java compile + analysis took 0.323045221 s
+New invalidations:
+	Set()
+Initial set of included nodes: Set()
+Previously invalidated, but (transitively) depend on new invalidations:
+	Set()
+All newly invalidated sources after taking into account (previously) recompiled sources:Set()
+Total time: 1 s, completed 2017-apr-25 06:21:29
+> server-post-command-cleanup
+> server-handle-next-server-request
+> {file:/D:/Tobias/Documents/Git/PVT-REST-API/}root/*:playForkReload
+Evaluating tasks: *:playForkReload
+Running task... Cancel: sbt.server.ServerTaskCancellation@29813bde, check cycles: false
+
+Initial source changes: 
+	removed:Set()
+	added: Set()
+	modified: Set()
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set()
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set()
+
+Copy resource mappings: 
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\application.conf,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\application.conf)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\application.test.conf,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\application.test.conf)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\logback.xml,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\logback.xml)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\routes,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\routes)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions\default,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions\default)
+	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions\default\1.sql,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions\default\1.sql)
+Total time: 1 s, completed 2017-apr-25 06:21:45
+> server-post-command-cleanup
+> server-handle-next-server-request
