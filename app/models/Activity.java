@@ -14,14 +14,17 @@ import java.util.List;
  */
 @Entity
 public class Activity extends Model {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+	
+	@Id
+    @Constraints.Min(10)
+    public Long place_id;
 
     @Column(unique = true, nullable = false)
     @Constraints.Required
     public String name;
+    
+    @Column
+    public String formatted_address;
 
     private static Finder<Long, Activity> find = new Finder<>(Activity.class);
 

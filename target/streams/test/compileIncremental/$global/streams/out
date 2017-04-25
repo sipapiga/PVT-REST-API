@@ -1,0 +1,84 @@
+[debug] 
+[debug] Initial source changes: 
+[debug] 	removed:Set()
+[debug] 	added: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java)
+[debug] 	modified: Set()
+[debug] Removed products: Set()
+[debug] External API changes: API Changes: Set()
+[debug] Modified binary dependencies: Set()
+[debug] Initial directly invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java)
+[debug] 
+[debug] Sources indirectly invalidated by:
+[debug] 	product: Set()
+[debug] 	binary dep: Set()
+[debug] 	external source: Set()
+[debug] All initially invalidated sources: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java)
+[debug] Recompiling all 6 sources: invalidated sources (6) exceeded 50.0% of all sources
+[info] Compiling 6 Java sources to D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\test-classes...
+[debug] Attempting to call com.sun.tools.javac.api.JavacTool@1bcb390b directly...
+[debug] Java compilation took 1.493114705 s
+[debug] Java analysis took 0.272698825 s
+[debug] Java compile + analysis took 1.776817232 s
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java)
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java source file has the following regular definitions changed:
+[debug] 	user1, notify, admin, wait, equals, getSession, getModernaMuseet, getUser1, TestData, getUser2, getAdmin, notifyAll, facebookToken, modernaMuseet, getFacebookToken, <init>, user2, session, toString, getClass, hashCode.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\TestData.java
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java)
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java source file has the following regular definitions changed:
+[debug] 	notify, startPlay, testChooseActivitiesWhenNotLoggedIn, getSwipingSessionWhenNotLoggedIn, wait, getSwipingSessionOnNonExistentEmailAddress, getSwipingSessionWithExactMatch, getSwipingSession, equals, testInitiateSwipingSessionReturnsNonEmptyList, setupClass, testInitiateSwipingSessionWhenNotLoggedIn, makePutRequestWithCorrectEmail, lambda$buildListOfEmailAddresses$0, testCannotChooseActivitiesThatWereNotSent, getSwipingSessionOnNullEmailAddressList, makeAuthenticatedGetRequest, makePostRequest, makeAuthenticatedPutRequest, makeGetRequest, testChooseActivitiesOnCorrectCredentials, notifyAll, testCannotChooseActivitiesOnUserThatIsNotPartOfSwipingSession, stopPlay, makeAuthenticatedPostRequest, makePutRequest, <init>, makeGetRequestWithCorrectEmails, buildListOfEmailAddresses, SwipingSessionsControllerTest, compareListAndJsonList, getSwipingSessionOnEmailAddressNotPartOfSession, testCannotChooseActivitiesOnNonExistentSwipingSession, getSwipingSessionOnNonExistentSwipingSession, toString, testCannotInitiateSwipingSessionWithOneself, testInitiateSwipingSessionCreatesSwipingSession, getClass, testInitiateSwipingSessionOnIncorrectEmailsButCorrectSession, testInitiateSwipingSessionReturnsOkOnCorrectCredentials, makePostRequestWithCorrectEmails, testChooseActivitiesUpdatesSwipingSession, testCannotChooseActivitiesThatDoNotExist, testCannotChooseActivitiesMultipleTimes, buildListOfValidEmailAddresses, getSwipingSessionOnNullEmailAddress, hashCode, testChooseActivitiesOnIncorrectEmailsButCorrectSession.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java)
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java source file has the following regular definitions changed:
+[debug] 	notify, startPlay, wait, equals, ActivityGatheringControllerTest, setupClass, testUnauthorizedRequestOnOrdinaryUser, notifyAll, stopPlay, <init>, testAuthorizedRequestOnAdmin, toString, getClass, testUnauthorizedRequestOnNoCredentials, hashCode.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java)
+[debug] Including D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java by D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Including D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java by D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Including D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java by D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Including D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java by D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java, D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java source file has the following regular definitions changed:
+[debug] 	user1, adminEmail, notify, admin, user1Email, startPlay, BaseTest, wait, user2Password, equals, setupClass, user2Email, notifyAll, facebookToken, stopPlay, <init>, user1Password, user2, adminPassword, toString, getClass, hashCode.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\SwipingSessionsControllerTest.java
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\testResources\BaseTest.java
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\ActivityGatheringControllerTest.java
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java)
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java source file has the following regular definitions changed:
+[debug] 	notify, loginWithBadPassword, logout, startPlay, wait, equals, loginWithBadUsername, SecurityControllerTest, setupClass, notifyAll, stopPlay, <init>, loginJson, toString, getClass, login, loginWithDifferentCaseUsername, loginWithNullPassword, setup, hashCode.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\SecurityControllerTest.java
+[debug] Invalidating D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java...
+[debug] Invalidating (transitively) by inheritance from D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java...
+[debug] Initial set of included nodes: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java)
+[debug] Invalidated by transitive inheritance dependency: Set(D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java)
+[debug] The D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java source file has the following regular definitions changed:
+[debug] 	notify, testLoginOnInvalidAccessToken, testLoginOnEmptyAccessToken, startPlay, wait, equals, setupClass, FacebookSecurityControllerTest, notifyAll, stopPlay, <init>, toString, getClass, hashCode.
+[debug] All member reference dependencies will be considered within this context.
+[debug] Name hashing optimization doesn't apply to non-Scala dependency: D:\Tobias\Documents\Git\PVT-REST-API\test\FacebookSecurityControllerTest.java
+[debug] New invalidations:
+[debug] 	Set()
+[debug] Initial set of included nodes: Set()
+[debug] Previously invalidated, but (transitively) depend on new invalidations:
+[debug] 	Set()
+[debug] All newly invalidated sources after taking into account (previously) recompiled sources:Set()

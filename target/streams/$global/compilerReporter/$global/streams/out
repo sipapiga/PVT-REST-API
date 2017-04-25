@@ -1,0 +1,4 @@
+[error] D:\Tobias\Documents\Git\PVT-REST-API\app\utils\DemoData.java:62: cannot find symbol
+[error]   symbol:   variable activities
+[error]   location: class utils.DemoData
+[error] activities

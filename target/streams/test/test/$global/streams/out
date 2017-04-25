@@ -1,0 +1,94 @@
+[debug] Forking tests - parallelism = false
+[debug] Create a single-thread test executor
+[debug] Runner for com.novocode.junit.JUnitFramework produced 4 initial tasks for 4 tests.
+[debug]   Running TaskDef(controllers.SwipingSessionsControllerTest, sbt.ForkMain$AnnotatedFingerscan@2411179c, false, [SuiteSelector])
+[debug] Test run started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesThatWereNotSent started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesThatWereNotSent finished, took 4.6 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionWhenNotLoggedIn started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionWhenNotLoggedIn finished, took 0.233 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionCreatesSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionCreatesSwipingSession finished, took 0.219 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesUpdatesSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesUpdatesSwipingSession finished, took 0.361 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionOnIncorrectEmailsButCorrectSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionOnIncorrectEmailsButCorrectSession finished, took 0.144 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNullEmailAddress started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNullEmailAddress finished, took 0.201 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNonExistentEmailAddress started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNonExistentEmailAddress finished, took 0.167 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnEmailAddressNotPartOfSession started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnEmailAddressNotPartOfSession finished, took 0.137 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesWhenNotLoggedIn started
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesWhenNotLoggedIn finished, took 0.242 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesOnUserThatIsNotPartOfSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesOnUserThatIsNotPartOfSwipingSession finished, took 0.309 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionWhenNotLoggedIn started
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionWhenNotLoggedIn finished, took 0.151 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSession finished, took 0.182 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesMultipleTimes started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesMultipleTimes finished, took 0.14 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionWithExactMatch started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionWithExactMatch finished, took 0.187 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesThatDoNotExist started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesThatDoNotExist finished, took 0.199 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionReturnsOkOnCorrectCredentials started
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionReturnsOkOnCorrectCredentials finished, took 0.115 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesOnCorrectCredentials started
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesOnCorrectCredentials finished, took 0.122 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesOnNonExistentSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotChooseActivitiesOnNonExistentSwipingSession finished, took 0.162 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNonExistentSwipingSession started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNonExistentSwipingSession finished, took 0.103 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotInitiateSwipingSessionWithOneself started
+[debug] Test controllers.SwipingSessionsControllerTest.testCannotInitiateSwipingSessionWithOneself finished, took 0.103 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionReturnsNonEmptyList started
+[debug] Test controllers.SwipingSessionsControllerTest.testInitiateSwipingSessionReturnsNonEmptyList finished, took 0.118 sec
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesOnIncorrectEmailsButCorrectSession started
+[debug] Test controllers.SwipingSessionsControllerTest.testChooseActivitiesOnIncorrectEmailsButCorrectSession finished, took 0.147 sec
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNullEmailAddressList started
+[debug] Test controllers.SwipingSessionsControllerTest.getSwipingSessionOnNullEmailAddressList finished, took 0.092 sec
+[debug] Test run finished: 0 failed, 0 ignored, 23 total, 8.447s
+[debug]     Produced 0 nested tasks and 23 events.
+[debug]   Running TaskDef(controllers.SecurityControllerTest, sbt.ForkMain$AnnotatedFingerscan@2aa1c432, false, [SuiteSelector])
+[debug] Test run started
+[debug] Test controllers.SecurityControllerTest.loginWithBadPassword started
+[debug] Test controllers.SecurityControllerTest.loginWithBadPassword finished, took 0.618 sec
+[debug] Test controllers.SecurityControllerTest.logout started
+[debug] Test controllers.SecurityControllerTest.logout finished, took 0.17 sec
+[debug] Test controllers.SecurityControllerTest.loginWithNullPassword started
+[debug] Test controllers.SecurityControllerTest.loginWithNullPassword finished, took 0.225 sec
+[debug] Test controllers.SecurityControllerTest.login started
+[debug] Test controllers.SecurityControllerTest.login finished, took 0.125 sec
+[debug] Test controllers.SecurityControllerTest.loginWithDifferentCaseUsername started
+[debug] Test controllers.SecurityControllerTest.loginWithDifferentCaseUsername finished, took 0.113 sec
+[debug] Test controllers.SecurityControllerTest.loginWithBadUsername started
+[debug] Test controllers.SecurityControllerTest.loginWithBadUsername finished, took 0.115 sec
+[debug] Test run finished: 0 failed, 0 ignored, 6 total, 1.367s
+[debug]     Produced 0 nested tasks and 6 events.
+[debug]   Running TaskDef(controllers.FacebookSecurityControllerTest, sbt.ForkMain$AnnotatedFingerscan@8929b53, false, [SuiteSelector])
+[debug] Test run started
+[debug] Test controllers.FacebookSecurityControllerTest.testLoginOnInvalidAccessToken started
+[debug] Test controllers.FacebookSecurityControllerTest.testLoginOnInvalidAccessToken finished, took 0.619 sec
+[debug] Test controllers.FacebookSecurityControllerTest.testLoginOnEmptyAccessToken started
+[debug] Test controllers.FacebookSecurityControllerTest.testLoginOnEmptyAccessToken finished, took 0.253 sec
+[debug] Test run finished: 0 failed, 0 ignored, 2 total, 0.872s
+[debug]     Produced 0 nested tasks and 2 events.
+[debug]   Running TaskDef(ActivityGatheringControllerTest, sbt.ForkMain$AnnotatedFingerscan@3e770c84, false, [SuiteSelector])
+[debug] Test run started
+[debug] Test ActivityGatheringControllerTest.testAuthorizedRequestOnAdmin started
+[debug] Test ActivityGatheringControllerTest.testAuthorizedRequestOnAdmin finished, took 0.114 sec
+[debug] Test ActivityGatheringControllerTest.testUnauthorizedRequestOnNoCredentials started
+[debug] Test ActivityGatheringControllerTest.testUnauthorizedRequestOnNoCredentials finished, took 0.113 sec
+[debug] Test ActivityGatheringControllerTest.testUnauthorizedRequestOnOrdinaryUser started
+[debug] Test ActivityGatheringControllerTest.testUnauthorizedRequestOnOrdinaryUser finished, took 0.096 sec
+[debug] Test run finished: 0 failed, 0 ignored, 3 total, 0.324s
+[debug]     Produced 0 nested tasks and 3 events.
+[debug] Summary for JUnit not available.
+[info] Passed: Total 34, Failed 0, Errors 0, Passed 34
+[debug] Passed tests:
+[debug] 	controllers.SwipingSessionsControllerTest
+[debug] 	controllers.SecurityControllerTest
+[debug] 	ActivityGatheringControllerTest
+[debug] 	controllers.FacebookSecurityControllerTest

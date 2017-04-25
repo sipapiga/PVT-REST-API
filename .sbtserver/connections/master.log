@@ -1,10 +1,58 @@
-New log file opened at Mon Apr 24 18:07:07 CEST 2017 by 14396@DESKTOP-5I7CM7G
-Taking next connection to: 52774
-New client attempting to connect on port: 52775-52774
-  Address = /83.233.179.16:52774
-This client on port 52775 has uuid 77547981-e217-4397-96c6-8b36e1a30d0e configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
-Connected Clients: activator-77547981-e217-4397-96c6-8b36e1a30d0e
-Taking next connection to: 52774
+New log file opened at Tue Apr 25 05:25:15 CEST 2017 by 6624@DESKTOP-5I7CM7G
+Taking next connection to: 62913
+New client attempting to connect on port: 62914-62913
+  Address = /83.233.179.16:62913
+This client on port 62914 has uuid 417a7c00-2ac3-4d7a-9799-e43b162e110b configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-417a7c00-2ac3-4d7a-9799-e43b162e110b
+Taking next connection to: 62913
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 52774
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+New client attempting to connect on port: 64044-62913
+  Address = /83.233.179.16:62913
+Handshake exception on socket: 64044
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.net.SocketException: Software caused connection abort: recv failed
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:265)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 62913
+New client attempting to connect on port: 64045-62913
+  Address = /83.233.179.16:62913
+This client on port 64045 has uuid 47fe1893-c321-4286-bcee-373a8faabe9a configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: activator-417a7c00-2ac3-4d7a-9799-e43b162e110b, play-fork-run-47fe1893-c321-4286-bcee-373a8faabe9a
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 62913

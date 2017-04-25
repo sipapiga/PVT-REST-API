@@ -1,0 +1,8 @@
+[debug] Copy resource mappings: 
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\application.conf,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\application.conf)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\application.test.conf,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\application.test.conf)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\logback.xml,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\logback.xml)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\routes,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\routes)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions\default,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions\default)
+[debug] 	(D:\Tobias\Documents\Git\PVT-REST-API\conf\evolutions\default\1.sql,D:\Tobias\Documents\Git\PVT-REST-API\target\scala-2.11\classes\evolutions\default\1.sql)

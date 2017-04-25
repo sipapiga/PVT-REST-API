@@ -4,6 +4,7 @@
 
 package utils;
 
+import com.avaje.ebean.annotation.Sql;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.*;
@@ -52,14 +53,14 @@ public class DemoData {
                 participants.add(user1);
                 participants.add(user2);
 
-                modernaMuseet = new Activity("Moderna Museet");
-                modernaMuseet.save();
+//                modernaMuseet = new Activity("Moderna Museet");
+//                modernaMuseet.save();
+//
+//                Set<Activity> activities = new HashSet<>();
+//                activities.add();
 
-                Set<Activity> activities = new HashSet<>();
-                activities.add(modernaMuseet);
-
-                session = new SwipingSession(participants, activities);
-                session.save();
+//                session = new SwipingSession(participants, activities);
+//                session.save();
 
 
             }
