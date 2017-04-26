@@ -1,4 +1,5 @@
-let SERVER = 'http:/localhost:9000';
+//let SERVER = 'http:/localhost:9000';
+let SERVER = 'https://protected-gorge-44302.herokuapp.com';
 
 // From http://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript
 let cookies;
@@ -89,6 +90,8 @@ let facebookLogin = function(facebookToken) {
 
     });
 };
+
+facebookLogin('EAACEdEose0cBAAn2cNtXXROPzalQo8GZA7MlsKvYHEMpQq1SiJcnxGjJl01ZBDHpE6JZBVCB32XJGzkjBRfSrXjhQl4bB0ZCxmjKpivRZC92rZASsxvQ5rKGy1rHTzKM1ZC3WZCr1uiKldosyHKx8ZA9leWTJC7TZB4R1jLf3ZBoS5WUSJWbDRs44BH');
 
 /*
  * 1. Login.
