@@ -123,4 +123,55 @@ Uppdaterar en swipingsession med valda aktiviteter för den angivna användaren.
 
 \paragraph{Exempel:} /swipingsessions?swipingSessionId=1\&email=user1@example.com\&activities=["Moderna Museet","Medelhavsmuseet"]
 
+\section*{Förslag på nya endpoints}
+\label{sec:Förslag på nya endpoints}
+
+\subsection*{/accommodation}
+\label{sub:/accommodation}
+
+Hämtar hyresobjekt. Främst tänkt för hyresgästen men kan troligtvis användas för hyresvärden för att hämta det objekt som denne hyr ut.
+
+Parametrar:
+
+\begin{itemize}
+    \item count
+    \item offset
+    \item price -- bör stödja olika operatorer som \(=, <, >, <=\) och \(>=\)
+    \item size -- bör stödja olika operatorer som \(=, <, >, <=\) och \(>=\)
+    \item Olika parametrar baserat på den öppna datan.
+\end{itemize}
+
+Returnerar en lista med hyresobjekt.
+
+\subsection*{/tenants}
+\label{sub:/tenants}
+
+För hyresvärden. Hämtar de intressenter som swipe:at ja på hyresobjektet.
+
+Parametrar:
+
+\begin{itemize}
+    \item renterId
+    \item count
+    \item offset
+\end{itemize}
+
+Returnerar en lista på potentiella hyresgäster.
+
+\subsection*{/matches}
+\label{sub:/matches}
+
+För hyresgästen. Hämta de objekt vars hyresvärd swipe:at ja på hyresgästen i fråga.
+
+Parametrar:
+
+\begin{itemize}
+    \item tentantId
+    \item count
+    \item offset
+\end{itemize}
+
+Returnerar en lista med hyresobjekt, troligtvis bör också information om hyresvärden följa med. Inte nödvändigtvis för att hyresgästen ska kunna se
+den, men för att frontenden ska kunna koppla ihop hyresgäst och hyresvärd för chatt.
+
 \end{document}
