@@ -1,0 +1,201 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref} 
+
+\hypersetup{
+    linktoc=all
+}
+
+\title{API-dokumentation för rentSTHLMs REST-API}
+\author{Simon Olofsson}
+\date{}
+
+\begin{document}
+
+\lstset{showspaces=false,showstringspaces=false,literate={Ä}{{\"A}}1{Ö}{{\"O}}1}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section {Endpoints}
+\label{sec:Endpoints}
+
+\subsection {/accommodation}
+\label{sub:/accommodation}
+
+\subsubsection {GET}
+\label{ssub:GET}
+
+Hämtar hyresobjekt. Främst tänkt för hyresgästen men kan troligtvis användas för hyresvärden för att hämta det objekt som denne hyr ut.
+
+\\URL-parametrar:
+
+\begin{itemize}
+    \item id
+    \item count
+    \item offset
+    \item price -- bör stödja olika operatorer som \(=, <, >, <=\) och \(>=\)
+    \item size -- bör stödja olika operatorer som \(=, <, >, <=\) och \(>=\)
+    \item Olika parametrar baserat på den öppna datan.
+\end{itemize}
+
+Returnerar en lista med hyresobjekt.
+
+\subsubsection {POST}
+\label{ssub:POST}
+
+Skapar ett hyresobjekt.
+
+\\Body-Parametrar:
+
+\begin{itemize}
+    \item price
+    \item size
+    \item location
+    \item bilder
+\end{itemize}
+
+\subsubsection {PUT}
+\label{ssub:PUT}
+
+Uppdaterar ett hyresobjekt.
+
+\\URL-parametrar:
+
+\begin{itemize}
+    \item id
+\end{itemize}
+
+\\Body-parametrar:
+
+\begin{itemize}
+    \item price
+    \item size
+    \item location
+    \item images 
+\end{itemize}
+
+Returnerar det uppdaterade hyresobjektet.
+
+\subsubsection {DELETE}
+\label{ssub:DELETE}
+
+Tar bort ett hyresobjekt.
+
+\\URL-parametrar:
+
+\begin{itemize}
+    \item id
+\end{itemize}
+
+\subsection {/tenants}
+\label{sub:/tenants}
+
+\subsubsection {GET}
+\label{ssub:GET}
+
+För hyresvärden. Hämtar de intressenter som swipe:at ja på hyresobjektet.
+
+\\URL-parametrar:
+
+\begin{itemize}
+    \item renterId
+    \item count
+    \item offset
+\end{itemize}
+
+Returnerar en lista på potentiella hyresgäster.
+
+\subsubsection {POST}
+\label{ssub:POST}
+
+För inloggning av hyresgäst.
+
+\\Body-parametrar:
+
+\begin{itemize}
+    \item token -- en Facebooktoken.
+\end{itemize}
+
+Returnerar en applikationsspecifik autentiseringstoken som används vid vidare kommunikation med servern.
+
+\subsubsection {PUT}
+\label{ssub:PUT}
+
+Används för att spara profilinformation om en användare. Eftersom användaren tekniskt sett redan är skapad vid inloggning blir all uppdatering av
+dennes profil en uppdatering av användaren.
+
+\\URL-parametrar:
+
+\begin{itemize}
+    \item id
+    \item description
+    \item age
+    \item numberoftenants
+    \item income
+\end{itemize}
+
+\\Body-parametrar:
+
+\begin{itemize}
+    \item images
+\end{itemize}
+
+Returnerar den uppdaterade användaren.
+
+\subsection {/matches}
+\label{sub:/matches}
+
+\subsubsection {GET}
+\label{ssub:GET}
+
+Hämta de objekt vars hyresvärd swipe:at ja på hyresgästen i fråga eller de hyresgäster en hyresvärd swipe:at ja på.
+
+Parametrar:
+
+\begin{itemize}
+    \item userId 
+    \item count
+    \item offset
+\end{itemize}
+
+Returnerar en lista med hyresobjekt eller en lista med hyresgäster, beroende på vem som gjort requesten. Med listan av hyresobjekt bör troligtvis också
+information om hyresvärden följa. Inte nödvändigtvis för att hyresgästen ska kunna se den, men för att frontenden ska kunna koppla ihop hyresgäst och
+hyresvärd för chatt.
+
+\subsubsection {POST}
+\label{ssub:POST}
+
+Skapar en matchning. Bör troligtvis också kunna hantera att skicka flera matchningar på en gång, så att inte en request behöver göras varje gång en
+matchning görs.
+
+\\Body-parametrar:
+
+\begin{itemize}
+    \item tenantId
+    \item renterId
+    \item accommodationId -- om det ska vara möjligt att lägga upp flera objekt.
+\end{itemize}
+
+\subsubsection {DELETE}
+\label{ssub:DELETE}
+
+Ångra en matchning.
+
+Url-parametrar:
+
+\begin{itemize}
+    \item tentantId
+    \item renterId
+    \item accommodationId -- om det ska vara möjligt att lägga upp flera objekt.
+\end{itemize}
+
+\end{document}
