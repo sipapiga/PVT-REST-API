@@ -124,7 +124,7 @@ public class SwipingSessionsController extends Controller {
 
             json.put("swipingSessionId", swipingSession.id);
 
-            return ok();
+            return ok(json);
 
         } catch (IOException e) {
             return buildBadRequestResponse(mapper, MALFORMED_LIST,
