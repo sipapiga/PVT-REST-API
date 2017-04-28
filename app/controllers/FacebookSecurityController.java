@@ -10,6 +10,7 @@ import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.*;
+import utils.FacebookDataGatherer;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
@@ -71,6 +72,27 @@ public class FacebookSecurityController extends Controller {
                         return CompletableFuture.completedFuture(userData);
                     }
 
+                    FacebookDataGatherer fbDataGatherer = new FacebookDataGatherer();
+                    return fbDataGatherer.gather(ws, facebookToken, userData);
+
+                }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
+
+                    if (response.getStatus() != OK) {
+                        return status(response.getStatus(), response.asJson());
+                    }
+
+                    setAuthTokenCookie();
+                    return ok(response.asJson());
+
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
+
+        /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
+                .thenCompose(userData -> {
+
+                    if (userData.asJson().findValue("error") != null) {
+                        return CompletableFuture.completedFuture(userData);
+                    }
+
                     String userId = processUserData(facebookToken, userData);
                     return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
 
@@ -83,7 +105,7 @@ public class FacebookSecurityController extends Controller {
                     setAuthTokenCookie();
                     return ok(response.asJson());
 
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
     }
 
     private void setAuthTokenCookie() {
