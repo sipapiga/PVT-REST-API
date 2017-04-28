@@ -84,7 +84,7 @@ public class FacebookSecurityController extends Controller {
                     setAuthTokenCookie();
                     return ok(response.asJson());
 
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
 
         /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
                 .thenCompose(userData -> {
