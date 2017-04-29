@@ -44,6 +44,46 @@ Body-parametrar:
 
 Returnerar en applikationsspecifik autentiseringstoken som används vid vidare kommunikation med servern.
 
+\subsection{/users}
+\label{sub:_user}
+
+\subsubsection{GET}
+\label{ssub:GET}
+
+Hämtar en användare.
+
+Parametrar:
+
+\begin{itemize}
+    \item id -- användarens id.
+\end{itemize}
+
+Returnerar användarens profil.
+
+\subsubsection {PUT}
+\label{ssub:PUT}
+
+Används för att spara profilinformation om en användare. Eftersom användaren tekniskt sett redan är skapad vid inloggning blir all uppdatering av
+dennes profil en uppdatering av användaren.
+
+URL-parametrar:
+
+\begin{itemize}
+    \item id
+    \item description
+    \item age
+    \item numberoftenants
+    \item income
+\end{itemize}
+
+Body-parametrar:
+
+\begin{itemize}
+    \item images
+\end{itemize}
+
+Returnerar den uppdaterade användaren.
+
 \subsection {/accommodation}
 \label{sub:/accommodation}
 
@@ -129,30 +169,6 @@ URL-parametrar:
 \end{itemize}
 
 Returnerar en lista på potentiella hyresgäster.
-
-\subsubsection {PUT}
-\label{ssub:PUT}
-
-Används för att spara profilinformation om en användare. Eftersom användaren tekniskt sett redan är skapad vid inloggning blir all uppdatering av
-dennes profil en uppdatering av användaren.
-
-URL-parametrar:
-
-\begin{itemize}
-    \item id
-    \item description
-    \item age
-    \item numberoftenants
-    \item income
-\end{itemize}
-
-Body-parametrar:
-
-\begin{itemize}
-    \item images
-\end{itemize}
-
-Returnerar den uppdaterade användaren.
 
 \subsection {/matches}
 \label{sub:/matches}
