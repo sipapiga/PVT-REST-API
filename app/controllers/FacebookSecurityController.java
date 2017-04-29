@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.FacebookData;
 import models.User;
+import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
 import play.libs.ws.WSClient;
@@ -65,7 +66,7 @@ public class FacebookSecurityController extends Controller {
 
         String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
 
-        return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
+        /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
                 .thenCompose(userData -> {
 
                     if (userData.asJson().findValue("error") != null) {
@@ -84,9 +85,9 @@ public class FacebookSecurityController extends Controller {
                     setAuthTokenCookie();
                     return ok(response.asJson());
 
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
 
-        /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
+        return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
                 .thenCompose(userData -> {
 
                     if (userData.asJson().findValue("error") != null) {
@@ -105,7 +106,7 @@ public class FacebookSecurityController extends Controller {
                     setAuthTokenCookie();
                     return ok(response.asJson());
 
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
+                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
     }
 
     private void setAuthTokenCookie() {
