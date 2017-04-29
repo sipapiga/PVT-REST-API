@@ -1,0 +1,109 @@
+FORMAT: 1A
+HOST: https://protected-gorge-44302.herokuapp.com/
+
+# rentSTHLM
+A REST API for use with the rentSTHLM mobile app.
+
+# Group users 
+
+## Tenant [/users/tenants]
+
+A tenant has the following attributes:
+ 
++ Attributes
+    + (facebookData)
+    + description
+    + age
+    + numberoftenants
+    + income
+    + maxrent
+    + occupation
+    + deposition
+    + rentalperiod
+        + start: `2017-05-01`
+        + end: `2018-05-01`
+    + images
+
+## View a tenant's profile [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: an authentication token
+
++ Response 200 (application/json)
+
+    {
+        "id": 2,
+        "emailAddress": "kalle@example.com",
+        "firstName": "Kalle",
+        "lastName": "Blomkvist",
+        "gender": "male",
+        "description": "Hej, jag heter Kalle och behöver någonstans att bo.",
+        "age": "23",
+        "numberoftenants": "1",
+        "income": "18000",
+        "maxrent": "5000",
+        "occupation": "Karaktär i berättelse",
+        "deposition": "8000",
+        "rentalperiod": {
+            "start": "2017-05-01",
+            "end": "2018-05-01"
+        },
+        "images": {}
+    }
+
+## Renter [/users/renters]
+
+A renter has the following attributes:
+
++ Attributes
+    + description
+    + images
+
+## View a renter's profile [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: an authentication token
+
++ Response 200 (application/json)
+
+    {
+        "id": 2,
+        "emailAddress": "anna@example.com",
+        "firstName": "Anna",
+        "lastName": "Svensson",
+        "gender": "female",
+        "description": "Hej, jag heter Anna och är en skön prick.",
+        "age": "35",
+        "images": {}
+    }
+
+## TenantTest [/users/tenantstest]
+
+A tenant has the following attributes:
+
++ Attributes
+    + (TestTenant)
+
+## View a renter's profile [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: an authentication token
+
++ Response 200 (application/json)
+    + Attributes 
+        - (TestTenant)
+
+
+## Data Structures
+### TestTenant (object)
+- id: `1` (string)
+
+### facebookData
++ emailAddress
++ firstName
++ lastName
++ gender
+
