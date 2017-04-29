@@ -19,18 +19,16 @@ REST-API för rentSTHLMs mobilapp
 
 # Group Användare
 
-## Användare [/users?id={id}]
+## Användare [/users{?id}]
 
 ## Hämta en användares profil [GET]
++ Parameters
+    + id: 2 (number, optional) - Observera att denna parameter endast är nödvändig om den användare som ska hämtas inte är den som identifieras av den token som skickas i headern. Denna token är tillräcklig för att identifiera användaren som gör requesten. Parametern är tänkt för att till exempel låta en hyresvärd hämta information om en hyresgäst.
 
 + Request
-
     + Headers
         X-AUTH-TOKEN: en valid autentiseringstoken
-
-    + Parameters
-        + id: 2 (number, optional)
-
+        
 + Response 200 (application/json)
     + Attributes (LocalUser)
 
