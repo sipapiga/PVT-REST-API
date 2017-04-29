@@ -4,6 +4,19 @@ HOST: https://protected-gorge-44302.herokuapp.com
 # rentSTHLM
 REST-API för rentSTHLMs mobilapp
 
+# Group Inloggning
+
+## Facebook-inloggning [/facebook/login]
+
+## Logga in en användare via Facebook [POST]
+
++ Request (application/json)
+
+    + Attributes
+        + facebookAuthToken: En token för auktorisering mot Facebooks Graph API.
+        
++ Response 204
+
 # Group Användare
 
 ## Användare [/users]
@@ -11,8 +24,12 @@ REST-API för rentSTHLMs mobilapp
 ## Hämta en användares profil [GET]
 
 + Request
+
     + Headers
         X-AUTH-TOKEN: en valid autentiseringstoken
+
+    + Parameters
+        + id: 1
 
 + Response 200 (application/json)
     + Attributes (LocalUser)
@@ -32,6 +49,18 @@ REST-API för rentSTHLMs mobilapp
     + Attributes
         + error: fel
 
+## Uppdatera en hyresgästs profil [PUT]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
+    + Body
+        + Attributes (Tenant)
+
++ Response 200 (application/json)
+    + Attributes (Tenant)
+
 ## Hyresvärd [/users/renters]
 
 ## Hämta en hyresvärds profil [GET]
@@ -44,9 +73,37 @@ REST-API för rentSTHLMs mobilapp
 
     + Attributes (Renter)
 
+## Uppdatera en hyresvärds profil [PUT]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
++ Response 200 (application/json)
+    + Attributes (Renter)
+
+# Group Hyresobjekt 
+
+## Hyresobjekt [/accommodation]
+
+## Hämta hyresobjekt [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
+# Group Intresseanmälningar
+
+## Intresseanmälningar [/interests]
+
+## Hämta intresseanmälningar [GET]
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
 ## Data Structures
 
-### FacebookUser 
+### FacebookUser
 + emailAddress: kalle@example.com
 + firstName: Kalle
 + lastName: Blomkvist
@@ -55,6 +112,7 @@ REST-API för rentSTHLMs mobilapp
 ### LocalUser (FacebookUser)
 + id: 2
 + images: bilder (array)
+
 
 ### Tenant (LocalUser)
 + description: `Hej, jag heter Kalle och behöver någonstans att bo.`
@@ -88,5 +146,5 @@ REST-API för rentSTHLMs mobilapp
 + streetNumber: 3
 + streetNumberLetter: A
 + area: Hägerstensåsen
-+ longitude
-+ latitude
++ longitude: ""
++ latitude: ""
