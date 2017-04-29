@@ -1,0 +1,92 @@
+FORMAT: 1A
+HOST: https://protected-gorge-44302.herokuapp.com
+
+# rentSTHLM
+REST-API för rentSTHLMs mobilapp
+
+# Group Användare
+
+## Användare [/users]
+
+## Hämta en användares profil [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
++ Response 200 (application/json)
+    + Attributes (LocalUser)
+
+## Hyresgäst [/users/tenants]
+
+## Hämta en hyresgästs profil [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
++ Response 200 (application/json)
+    + Attributes (Tenant)
+
++ Response 401 (application/json)
+    + Attributes
+        + error: fel
+
+## Hyresvärd [/users/renters]
+
+## Hämta en hyresvärds profil [GET]
+
++ Request
+    + Headers
+        X-AUTH-TOKEN: en valid autentiseringstoken
+
++ Response 200 (application/json)
+
+    + Attributes (Renter)
+
+## Data Structures
+
+### FacebookUser 
++ emailAddress: kalle@example.com
++ firstName: Kalle
++ lastName: Blomkvist
++ gender: male
+
+### LocalUser (FacebookUser)
++ id: 2
++ images: bilder (array)
+
+### Tenant (LocalUser)
++ description: `Hej, jag heter Kalle och behöver någonstans att bo.`
++ age: 23
++ numberoftenants: 1
++ income: 18000
++ maxrent: 5000
++ occupation: Karaktär i berättelse
++ deposition: 8000
++ rentalperiod
+    + start: 2017-05-01
+    + end: 2018-05-01
+
+### Renter (LocalUser)
++ accommodation (Accommodation)
+
+### Accommodation
++ rent: 5000
++ size: 20
++ rooms: 1
++ deposition: 8000
++ smokingAllowed: false (boolean)
++ animalsAllowed: false (boolean)
++ tv: true (boolean)
++ broadband: true (boolean)
++ description: `Schysst etta i lugnt område`
++ address (Address)
+
+### Address
++ streetName: Dymlingsgränd
++ streetNumber: 3
++ streetNumberLetter: A
++ area: Hägerstensåsen
++ longitude
++ latitude
