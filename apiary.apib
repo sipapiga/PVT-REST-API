@@ -4,6 +4,10 @@ HOST: https://protected-gorge-44302.herokuapp.com
 # rentSTHLM
 Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs REST-API.
 
+Följande requests opererar på olika resurser som finns på servern. Om inget annat
+specificeras utförs operationerna på den användare som indikeras av den autentiseringstoken
+som skickas med varje request.
+
 # Group Inloggning
 
 ## Facebook-inloggning [/facebook/login]
@@ -203,7 +207,9 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 
 + Response 204
 
-## Markera en intresseanmälan som antingen ömsesidig eller icke-ömsesidig. En nyskapad intresseanmälan är alltid icke-ömsesidig. [PUT]
+## Markera en intresseanmälan som antingen ömsesidig eller icke-ömsesidig. [PUT]
+
+Notera att en nyskapad intresseanmälan alltid är icke-ömsesidig.
  
 + Parameters
     + tenantId: 1 (number, required)
