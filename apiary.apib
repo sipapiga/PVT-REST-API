@@ -13,12 +13,13 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request (application/json)
 
     + Attributes
-        + facebookAuthToken: En token för auktorisering mot Facebooks Graph API.
+        + facebookAuthToken: `EAACEdEose0cBAIID5sKglHcm01UYAGWP0cHgDEcAxrbDg0oZAzZCZC1Tlhw62ZBkhqMO6imdMtcQJqDfAGc8bKl08Q1FrR0Vz7SgVWh9sMEqUkUow07a3Vk3LwdHBMZANCXeTTKrlQGz2jOuOQJwGFZAk8RnHGpd1nU6F36OGtxtqZC50m7gSfo` -
+        En token för auktorisering mot Facebooks Graph API.
         
 + Response 200 (application/json)
 
     + Attributes
-        + authToken: En token för vidare autentisering mot API:t
+        + authToken: `990c4d5e-3764-4473-9525-f317dabf5dc2` - En token för vidare autentisering mot API:t.
 
 # Group Användare
 
@@ -31,7 +32,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken.
         
 + Response 200 (application/json)
 
@@ -44,7 +46,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
 + Response 200 (application/json)
 
@@ -60,7 +63,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request (application/json)
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
     + Attributes (Tenant)
 
@@ -74,7 +78,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
 + Response 200 (application/json)
 
@@ -85,13 +90,14 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
-    + Attributes (Renter)
+    + Attributes (LocalUser)
 
 + Response 200 (application/json)
 
-    + Attributes (Renter)
+    + Attributes (LocalUser)
 
 # Group Hyresobjekt 
 
@@ -115,8 +121,10 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
     + end: `2018-05-01` (optional)
 
 + Request
+
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
 + Response 200 (application/json)
     + Attributes (array[Accommodation])
@@ -126,7 +134,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request (application/json)
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
     + Attributes (Accommodation)
 
@@ -137,7 +146,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request (application/json)
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
     + Attributes (Accommodation)
 
@@ -145,7 +155,7 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 
     + Attributes (Accommodation)
 
-# Ta bort ett hryesobjekt. [DELETE]
+# Ta bort ett hyresobjekt. [DELETE]
 
 + Parameters
     + id: 1 (number, optional) - Denna parameter kommer bara att behövas om flera hyresobjekt per hyresvärd tillåts. Annars kan hyresobjektet identifieras av den token som skickats.
@@ -153,7 +163,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
 + Response 204
 
@@ -173,9 +184,10 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
-+ Response
++ Response 200 (application/json)
     
     + Attributes (array[Interest])
 
@@ -184,7 +196,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
     + Attributes (Interest)
 
@@ -199,7 +212,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
     + Attributes
         + mutual: false (boolean, required)
@@ -217,7 +231,8 @@ Välkommen! På den här sidan hittar du API-dokumentationen för rentSTHLMs RES
 + Request
 
     + Headers
-        X-AUTH-TOKEN: en valid autentiseringstoken
+    
+            X-AUTH-TOKEN: en valid autentiseringstoken
 
 + Response 204
 
