@@ -84,15 +84,19 @@ REST-API för rentSTHLMs mobilapp
 
 # Group Hyresobjekt 
 
-## Hyresobjekt [/accommodation]
+## Hyresobjekt [/accommodation{?count}]
 
 ## Hämta hyresobjekt [GET]
 
-+ Parameters (Accommodation)
++ Parameters
+    + count: 2
 
 + Request
     + Headers
         X-AUTH-TOKEN: en valid autentiseringstoken
+
++ Response 200 (application/json)
+    + Attributes (array[Accommodation])
 
 # Group Intresseanmälningar
 
