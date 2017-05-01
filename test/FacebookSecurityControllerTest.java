@@ -42,7 +42,7 @@ public class FacebookSecurityControllerTest extends BaseTest {
         return createRequestBody(facebookToken);
     }
 
-    @Test
+    /*@Test
     public void testLogin() {
 
         if (facebookToken != null) {
@@ -73,7 +73,7 @@ public class FacebookSecurityControllerTest extends BaseTest {
                     "Please specify one in 'conf/application.secrets.conf' under the key 'facebookToken'." +
                     "Valid access tokens can be obtained from https://developers.facebook.com/tools/explorer");
         }
-    }
+    }*/
 
     @Test
     public void testLoginOnEmptyAccessToken() {
