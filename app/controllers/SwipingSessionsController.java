@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Activity;
-import play.Logger;
 import play.mvc.*;
 import models.SwipingSession;
-import models.User;
+import models.user.User;
 import utils.ActivityGenerator;
 
 import javax.persistence.PersistenceException;

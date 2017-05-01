@@ -5,18 +5,14 @@
 package testResources;
 
 import models.Activity;
-import models.Authorization;
+import models.user.Authorization;
 import models.SwipingSession;
-import models.User;
+import models.user.User;
 import play.Configuration;
-import play.Environment;
-import play.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Singleton

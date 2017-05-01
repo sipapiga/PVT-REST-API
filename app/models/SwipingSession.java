@@ -1,7 +1,7 @@
 package models;
 
 import com.avaje.ebean.*;
-import play.Logger;
+import models.user.User;
 
 import javax.persistence.*;
 import java.util.*;

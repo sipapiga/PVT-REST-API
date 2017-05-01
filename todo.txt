@@ -29,7 +29,7 @@
 
     * For:
       * SwipingSessionsController
-      * models.User
+      * models.user.User
       * models.SwipingSession
 
     * Priority: 3.

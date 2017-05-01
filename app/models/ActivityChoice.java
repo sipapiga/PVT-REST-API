@@ -1,14 +1,10 @@
 package models;
 
 import com.avaje.ebean.Model;
-import com.avaje.ebean.annotation.Index;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import models.user.User;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /**

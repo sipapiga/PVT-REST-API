@@ -1,6 +1,6 @@
 package testResources;
 
-import models.User;
+import models.user.User;
 import org.junit.Before;
 import play.test.WithApplication;
 

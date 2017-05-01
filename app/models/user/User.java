@@ -1,4 +1,4 @@
-package models;
+package models.user;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,9 +8,7 @@ import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -18,6 +16,8 @@ import java.util.UUID;
  * Modified from https://github.com/jamesward/play-rest-security
  */
 @Entity
+@Inheritance // Ebeans does not support any other strategy than SINGLE_TABLE. This works fine, but remember that no fields in subclasses can be non-nullable.
+@DiscriminatorValue("USER")
 public class User extends Model {
 
     @Id
@@ -57,6 +57,10 @@ public class User extends Model {
     @Column(nullable = false, columnDefinition = "datetime") // columnDefinition prevents ebeans from generating
     public Date creationDate;                                // SQL that the DSV mysql server cannot handle.
 
+    public String description;
+
+    public int age;
+
     @OneToOne
     public FacebookData facebookData;
 
@@ -83,6 +87,16 @@ public class User extends Model {
         setEmailAddress(emailAddress);
         this.fullName = fullName;
         this.creationDate = new Date();
+
+    }
+
+    public User(String emailAddress, String fullName, String description, int age) {
+
+        setEmailAddress(emailAddress);
+        this.fullName = fullName;
+        this.creationDate = new Date();
+        this.description = description;
+        this.age = age;
 
     }
 

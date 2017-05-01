@@ -1,6 +1,7 @@
 package controllers;
 
-import models.User;
+import models.user.User;
+import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -21,7 +22,7 @@ public class Secured extends Security.Authenticator {
 
         if ((authTokenHeaderValues != null) && (authTokenHeaderValues.length == 1) && (authTokenHeaderValues[0] != null)) {
 
-            User user = models.User.findByAuthToken(authTokenHeaderValues[0]);
+            User user = User.findByAuthToken(authTokenHeaderValues[0]);
 
             if (predicate.test(user)) {
 
