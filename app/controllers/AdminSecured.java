@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Authorization;
+import models.user.Authorization;
 import play.mvc.Http.Context;
 
 /**

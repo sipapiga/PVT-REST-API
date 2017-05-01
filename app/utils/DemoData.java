@@ -4,18 +4,15 @@
 
 package utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.*;
-import play.Configuration;
+import models.user.Authorization;
+import models.user.User;
 import play.Environment;
 import play.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Singleton
@@ -46,6 +43,8 @@ public class DemoData {
                 admin = new User("admin@demo.com", "password", "Sven Svensson");
                 admin.authorization = Authorization.ADMIN;
                 admin.save();
+
+                Logger.debug(User.findByEmailAddress("admin@demo.com").fullName);
 
                 Set<User> participants = new HashSet<>();
 

@@ -1,4 +1,4 @@
-package models;
+package models.user;
 
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
