@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.typesafe.config.ConfigException;
 import models.FacebookData;
 import models.User;
 import play.Logger;
@@ -12,6 +13,7 @@ import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.*;
 import utils.FacebookDataGatherer;
+import utils.ResponseBuilder;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +26,6 @@ import java.util.concurrent.CompletionStage;
  */
 public class FacebookSecurityController extends Controller {
 
-    public static final String AUTH_TOKEN_HEADER = "FACEBOOK-AUTH-TOKEN";
     public static final String AUTH_TOKEN = "authToken";
 
     private String userToken;
@@ -64,7 +65,19 @@ public class FacebookSecurityController extends Controller {
      */
     public CompletionStage<Result> login() {
 
-        String facebookToken = request().getHeader(AUTH_TOKEN_HEADER);
+        String facebookToken;
+
+        try {
+
+            JsonNode body = request().body().asJson();
+            facebookToken = body.findValue("facebookAuthToken").asText();
+
+        } catch (NullPointerException e) {
+
+            Result result = ResponseBuilder.buildBadRequest("Request body required", ResponseBuilder.MALFORMED_REQUEST_BODY);
+            return CompletableFuture.completedFuture(result);
+
+        }
 
         /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
                 .thenCompose(userData -> {
