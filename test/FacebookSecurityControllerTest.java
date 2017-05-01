@@ -28,7 +28,7 @@ public class FacebookSecurityControllerTest extends BaseTest {
     private JsonNode createRequestBody(String facebookToken) {
 
         ObjectNode bodyJson = mapper.createObjectNode();
-        bodyJson.put("facebookAuthToken", facebookToken);
+        bodyJson.put(FacebookSecurityController.FACEBOOK_AUTH_TOKEN_BODY_FIELD, facebookToken);
 
         return bodyJson;
 
