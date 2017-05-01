@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Model;
 import models.accommodation.Accommodation;
 import models.user.User;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
  * @autor Simon Olofsson
  */
 @Entity
-public class Interest {
+public class Interest extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
