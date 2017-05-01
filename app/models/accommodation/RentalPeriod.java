@@ -1,5 +1,7 @@
 package models.accommodation;
 
+import com.avaje.ebean.Model;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
  * @author Simon Olofsson
  */
 @Entity
-public class RentalPeriod {
+public class RentalPeriod extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
