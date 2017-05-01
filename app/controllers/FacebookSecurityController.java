@@ -1,18 +1,17 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.typesafe.config.ConfigException;
 import models.FacebookData;
 import models.User;
-import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.*;
-import utils.FacebookDataGatherer;
 import utils.ResponseBuilder;
 
 import javax.inject.Inject;
@@ -79,54 +78,32 @@ public class FacebookSecurityController extends Controller {
 
         }
 
-        /*return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
-                .thenCompose(userData -> {
-
-                    if (userData.asJson().findValue("error") != null) {
-                        return CompletableFuture.completedFuture(userData);
-                    }
-
-                    FacebookDataGatherer fbDataGatherer = new FacebookDataGatherer();
-                    return fbDataGatherer.gather(ws, facebookToken, userData);
-
-                }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
-
-                    if (response.getStatus() != OK) {
-                        return status(response.getStatus(), response.asJson());
-                    }
-
-                    setAuthTokenCookie();
-                    return ok(response.asJson());
-
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.*/
-
         return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
-                .thenCompose(userData -> {
+                .thenApplyAsync(userData -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
 
                     if (userData.asJson().findValue("error") != null) {
-                        return CompletableFuture.completedFuture(userData);
+                        return status(userData.getStatus(), userData.asJson());
                     }
 
-                    String userId = processUserData(facebookToken, userData);
-                    return ws.url("https://graph.facebook.com/" + userId + "/friendlists?access_token=" + facebookToken).get();
+                    String userToken = processUserData(facebookToken, userData);
 
-                }).thenApplyAsync(response -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
+                    ObjectMapper mapper = new ObjectMapper();
+                    ObjectNode responseJson = mapper.createObjectNode();
 
-                    if (response.getStatus() != OK) {
-                        return status(response.getStatus(), response.asJson());
-                    }
+                    responseJson.put(AUTH_TOKEN, userToken);
+                    setAuthTokenCookie(userToken);
 
-                    setAuthTokenCookie();
-                    return ok(response.asJson());
+                    return ok(responseJson);
 
                 }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
+
     }
 
-    private void setAuthTokenCookie() {
+    private void setAuthTokenCookie(String authToken) {
 
         ObjectNode authTokenJson = Json.newObject();
-        authTokenJson.put(AUTH_TOKEN, userToken);
-        response().setCookie(Cookie.builder(AUTH_TOKEN, userToken).withSecure(request().secure()).build());
+        authTokenJson.put(AUTH_TOKEN, authToken);
+        response().setCookie(Cookie.builder(AUTH_TOKEN, authToken).withSecure(request().secure()).build());
 
     }
 
@@ -153,11 +130,7 @@ public class FacebookSecurityController extends Controller {
         }
 
         setUserAttributes(user, userData.asJson(), facebookToken);
-
-        String userId = userData.asJson().findValue("id").textValue();
-        userToken = user.createToken();
-
-        return userId;
+        return user.createToken();
 
     }
 

@@ -92,6 +92,14 @@ public class FacebookSecurityControllerTest extends BaseTest {
     }
 
     @Test
+    public void testLoginOnNoRequestBody() {
+
+        Result result = route(fakeRequest(controllers.routes.FacebookSecurityController.login()));
+        assertEquals(BAD_REQUEST, result.status());
+
+    }
+
+    @Test
     public void testLoginOnEmptyRequestBody() {
 
         ObjectNode bodyJson = mapper.createObjectNode();
