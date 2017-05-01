@@ -25,9 +25,8 @@ import java.util.concurrent.CompletionStage;
  */
 public class FacebookSecurityController extends Controller {
 
+    public static final String FACEBOOK_AUTH_TOKEN_BODY_FIELD = "facebookAuthToken";
     public static final String AUTH_TOKEN = "authToken";
-
-    private String userToken;
 
     private WSClient ws;
 
@@ -69,7 +68,7 @@ public class FacebookSecurityController extends Controller {
         try {
 
             JsonNode body = request().body().asJson();
-            facebookToken = body.findValue("facebookAuthToken").asText();
+            facebookToken = body.findValue(FACEBOOK_AUTH_TOKEN_BODY_FIELD).asText();
 
         } catch (NullPointerException e) {
 
