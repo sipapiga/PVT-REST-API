@@ -35,9 +35,9 @@ public class InterestsController extends Controller {
 
         List<Function<ExpressionList<Interest>, ExpressionList<Interest>>> functions = Arrays.asList(
 
-                exprList -> tenantId.isDefined() ? exprList.eq("tenant_id", tenantId.get()) : exprList,
-                exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList,
-                exprList -> mutual.isDefined() ? exprList.eq("mutual", mutual.get()) : exprList
+            exprList -> tenantId.isDefined()        ? exprList.eq("tenant_id", tenantId.get())                        : exprList,
+            exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList,
+            exprList -> mutual.isDefined()          ? exprList.eq("mutual", mutual.get())                             : exprList
 
         );
 
@@ -53,7 +53,6 @@ public class InterestsController extends Controller {
     public Result create() {
 
         JsonNode body = request().body().asJson();
-        Logger.debug(ctx().args.get("user").toString());
 
         try {
 
@@ -68,6 +67,26 @@ public class InterestsController extends Controller {
             return ResponseBuilder.buildBadRequest(iae.getMessage(), ResponseBuilder.ILLEGAL_ARGUMENT);
         } catch (ClassCastException cce) {
             return ResponseBuilder.buildBadRequest("User must be a valid tenant.", ResponseBuilder.NO_SUCH_ENTITY);
+        }
+    }
+
+    public Result setMutual() {
+
+        JsonNode body = request().body().asJson();
+
+        try {
+
+            Renter renter = (Renter) ctx().args.get("user");
+
+            long tenantId = body.findValue("tenantId").asLong();
+            long accommodationId = body.findValue("accommodationId").asLong();
+
+            Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
+
+            return noContent();
+
+        } catch (ClassCastException cce) {
+            return ResponseBuilder.buildBadRequest("User must be a valid renter.", ResponseBuilder.NO_SUCH_ENTITY);
         }
     }
 }
