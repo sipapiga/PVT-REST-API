@@ -21,7 +21,17 @@ public class Tenant extends User {
     @OneToMany(cascade = CascadeType.ALL)
     public List<Interest> interests;
 
+    private static Finder<Long, Tenant> find = new Finder<>(Tenant.class);
+
     public Tenant() {
         super();
+    }
+
+    public static Tenant findByAuthToken(String authToken) {
+        return find.where().eq("auth_token", authToken).findUnique();
+    }
+
+    public static Tenant findByEmailAddress(String emailAddress) {
+        return find.where().eq("email_address", emailAddress).findUnique();
     }
 }

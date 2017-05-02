@@ -1,5 +1,7 @@
 package testResources;
 
+import models.accommodation.Accommodation;
+import models.user.Renter;
 import models.user.User;
 import org.junit.Before;
 import play.test.WithApplication;
@@ -17,6 +19,12 @@ public class BaseTest extends WithApplication {
     protected User admin;
     protected String adminEmail;
     protected String adminPassword;
+
+    protected Renter renter1;
+    protected String renter1Email;
+    protected String renter1Password;
+
+    protected Accommodation renter1Accommodation;
 
     protected String facebookToken;
 
@@ -36,6 +44,12 @@ public class BaseTest extends WithApplication {
         admin = testData.getAdmin();
         adminEmail = admin.getEmailAddress();
         adminPassword = admin.getPassword();
+
+        renter1 = testData.getRenter1();
+        renter1Email = renter1.getEmailAddress();
+        renter1Password = renter1.getPassword();
+
+        renter1Accommodation = testData.getRenter1Accommodation();
 
         facebookToken = testData.getFacebookToken();
 
