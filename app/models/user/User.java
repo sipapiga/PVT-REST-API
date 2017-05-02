@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * An entity representing a user.
+ * An entity representing a tenant.
  * Modified from https://github.com/jamesward/play-rest-security
  */
 @Entity

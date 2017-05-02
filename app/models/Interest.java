@@ -1,39 +1,52 @@
 package models;
 
-import com.avaje.ebean.Expression;
 import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.*;
 import models.accommodation.Accommodation;
+import models.user.Tenant;
 import models.user.User;
+import play.Logger;
+import scala.Option;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.function.Function;
 
 /**
- * @autor Simon Olofsson
+ * @author Simon Olofsson
  */
 @Entity
 public class Interest extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     public long id;
 
+    /*
+     * The JsonIdentity annotations make sure that only id is serialized.
+     */
     @OneToOne
-    public User user;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("tenantId")
+    public Tenant tenant;
 
     @OneToOne
     @JoinColumn(name = "interest_accommodation_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("accommodationId")
     public Accommodation accommodation;
 
     public boolean mutual = false;
 
     private static Finder<Long, Interest> find = new Finder<>(Interest.class);
 
-    public Interest(User user, Accommodation accommodation) {
+    public Interest(Tenant tenant, Accommodation accommodation) {
 
-        this.user = user;
+        this.tenant = tenant;
         this.accommodation = accommodation;
 
     }

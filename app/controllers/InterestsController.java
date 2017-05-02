@@ -34,7 +34,7 @@ public class InterestsController extends Controller {
         List<Function<ExpressionList<Interest>, ExpressionList<Interest>>> functions = Arrays.asList(
 
                 exprList -> tenantId.isDefined() ? exprList.eq("tenant_id", tenantId.get()) : exprList,
-                exprList -> accommodationId.isDefined() ? exprList.eq("accommodation_id", accommodationId.get()) : exprList
+                exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList
 
         );
 
@@ -44,5 +44,6 @@ public class InterestsController extends Controller {
         ArrayNode arrayNode = mapper.valueToTree(interests);
 
         return ok(arrayNode);
+
     }
 }

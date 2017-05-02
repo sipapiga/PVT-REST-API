@@ -70,11 +70,10 @@ create table facebook_data (
 
 create table interest (
   id                            bigint auto_increment not null,
-  tenant_id                     bigint not null,
-  user_id                       bigint,
+  tenant_id                     bigint,
   interest_accommodation_id     bigint,
   mutual                        boolean,
-  constraint uq_interest_user_id unique (user_id),
+  constraint uq_interest_tenant_id unique (tenant_id),
   constraint uq_interest_interest_accommodation_id unique (interest_accommodation_id),
   constraint pk_interest primary key (id)
 );
@@ -150,9 +149,6 @@ create index ix_activity_choice_activity_activity on activity_choice_activity (a
 alter table facebook_data add constraint fk_facebook_data_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table interest add constraint fk_interest_tenant_id foreign key (tenant_id) references user (id) on delete restrict on update restrict;
-create index ix_interest_tenant_id on interest (tenant_id);
-
-alter table interest add constraint fk_interest_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table interest add constraint fk_interest_interest_accommodation_id foreign key (interest_accommodation_id) references accommodation (id) on delete restrict on update restrict;
 
@@ -195,9 +191,6 @@ drop index if exists ix_activity_choice_activity_activity;
 alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
 
 alter table interest drop constraint if exists fk_interest_tenant_id;
-drop index if exists ix_interest_tenant_id;
-
-alter table interest drop constraint if exists fk_interest_user_id;
 
 alter table interest drop constraint if exists fk_interest_interest_accommodation_id;
 

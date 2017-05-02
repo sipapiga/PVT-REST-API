@@ -40,14 +40,14 @@ public class FacebookSecurityController extends Controller {
     }
 
     public static User getUser() {
-        return (User) Http.Context.current().args.get("user");
+        return (User) Http.Context.current().args.get("tenant");
     }
 
     /**
      * Method for handling a request for authorization via Facebook. Accepts a
-     * Facebook access token, collects basic user data and uses the user id to
+     * Facebook access token, collects basic tenant data and uses the tenant id to
      * make further requests for data to Facebook. Currently, the only further
-     * data collected is the first page of the user's list of friends. Sends
+     * data collected is the first page of the tenant's list of friends. Sends
      * a custom authentication token back on successful requests, to be used
      * for authenticating further requests to the server.
      *
@@ -106,12 +106,12 @@ public class FacebookSecurityController extends Controller {
     }
 
     /**
-     * Takes data from Facebook and determines whether the user already exists
-     * or not, and creates or updates the user and its fields accordingly.
+     * Takes data from Facebook and determines whether the tenant already exists
+     * or not, and creates or updates the tenant and its fields accordingly.
      *
      * @param facebookToken a Facebook authorization token.
-     * @param userData a WSResponse object containing the user data.
-     * @return the user id extracted from the data.
+     * @param userData a WSResponse object containing the tenant data.
+     * @return the tenant id extracted from the data.
      */
     private String processUserData(String facebookToken, WSResponse userData) {
 
@@ -133,11 +133,11 @@ public class FacebookSecurityController extends Controller {
     }
 
     /**
-     * Sets user attributes according to the data passed to the method. Only
+     * Sets tenant attributes according to the data passed to the method. Only
      * operates on existing users and will create a new FacebookData entry
      * from the data passed.
      *
-     * @param user the user to operate on.
+     * @param user the tenant to operate on.
      * @param userData the data to create a FacebookData entry from.
      * @param facebookToken the Facebook authorization token used to
      *                      obtain the data. Will be included in the

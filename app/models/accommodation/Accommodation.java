@@ -1,6 +1,7 @@
 package models.accommodation;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.*;
 import models.user.Renter;
 
 import javax.persistence.*;
@@ -26,7 +27,13 @@ public class Accommodation extends Model {
     public boolean broadband;
     public String description;
 
+    /*
+     * The JsonIdentity annotations make sure that only id is serialized.
+     */
     @OneToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("renterId")
     public Renter renter;
 
     @ManyToOne
@@ -49,6 +56,10 @@ public class Accommodation extends Model {
         this.description = description;
         this.renter = renter;
 
+    }
+
+    public static Accommodation findById(long id) {
+        return find.byId(id);
     }
 
     public static List<Accommodation> findAll() {

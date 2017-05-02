@@ -14,7 +14,7 @@
       Or:
 
       PUT   /swipingsessions?initiatorEmail=email1&buddyEmail=email2&buddyChosen=[activity1, activity3])
-      Records chosen activities for the specified user.
+      Records chosen activities for the specified tenant.
 
       Note that all of these endpoints currently only handle two users. This is,
       of course, easy to fix JSON-wise but might require a bit more thinking when
@@ -29,7 +29,7 @@
 
     * For:
       * SwipingSessionsController
-      * models.user.User
+      * models.tenant.User
       * models.SwipingSession
 
     * Priority: 3.
@@ -59,7 +59,7 @@
 
 ===============================================================================
 
-* Make FacebookSecurityController record more data than just basic user data.
+* Make FacebookSecurityController record more data than just basic tenant data.
 
   * Will involve:
     * Determining what data to gather and store. It is probably a good idea to

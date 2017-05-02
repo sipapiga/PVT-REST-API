@@ -44,11 +44,11 @@ public class SwipingSession extends Model {
     }
 
     /**
-     * Method to record a user's choice of activities.
+     * Method to record a tenant's choice of activities.
      *
-     * @param userEmailAddress the email address of the user whose choice is to
+     * @param userEmailAddress the email address of the tenant whose choice is to
      *                         be recorded.
-     * @param activities the activities to associate with the user.
+     * @param activities the activities to associate with the tenant.
      * @throws IllegalArgumentException if any of the activities chosen are not
      * in the original set of generated activities.
      */
@@ -67,11 +67,11 @@ public class SwipingSession extends Model {
     }
 
     /**
-     * Method to get the activities chosen by a user during this swiping session.
+     * Method to get the activities chosen by a tenant during this swiping session.
      *
-     * @param userEmailAddress the email address of the user whose activities
+     * @param userEmailAddress the email address of the tenant whose activities
      *                         are to be returned.
-     * @return A list containing the activities chosen by the user,
+     * @return A list containing the activities chosen by the tenant,
      * may be empty.
      */
     public Set<Activity> getChosenActivities(String userEmailAddress) {
