@@ -44,10 +44,7 @@ public class InterestsController extends Controller {
         interests = interests.subList(offset.isDefined() ? offset.get() : 0,
                 count.isDefined() && count.get() < interests.size() ? count.get() : interests.size());
 
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode arrayNode = mapper.valueToTree(interests);
-
-        return ok(arrayNode);
+        return ResponseBuilder.buildOKList(interests);
 
     }
 }
