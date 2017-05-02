@@ -30,7 +30,7 @@ public class InterestsController extends Controller {
                                      Option<Long> tenantId, Option<Long> accommodationId, Option<Boolean> mutual) {
 
         if (!tenantId.isDefined() && !accommodationId.isDefined()) {
-            return ResponseBuilder.buildBadRequest("At least one of tenantId and accommodationId has to be defined", ResponseBuilder.MALFORMED_URI_PARAMETERS);
+            return ResponseBuilder.buildBadRequest("At least one of tenantId and accommodationId has to be defined.", ResponseBuilder.MALFORMED_URI_PARAMETERS);
         }
 
         List<Function<ExpressionList<Interest>, ExpressionList<Interest>>> functions = Arrays.asList(

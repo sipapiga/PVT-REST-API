@@ -55,7 +55,6 @@ public class Tenant extends User {
        interest.save();
 
        interests.add(interest);
-       Logger.debug("Tenant: " + fullName + "\n" + interests.toString());
 
        save();
 

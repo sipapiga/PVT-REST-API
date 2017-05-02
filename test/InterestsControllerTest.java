@@ -18,6 +18,7 @@ import scala.None;
 import scala.Option;
 import scala.tools.cmd.Opt;
 import testResources.BaseTest;
+import utils.ResponseBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,6 +205,15 @@ public class InterestsControllerTest extends BaseTest {
 
         Result result = makePostRequest(tenant2.createToken(), tenant2.id, renter1Accommodation.id);
         assertNotNull(Interest.findByTenantAndAccommodation(tenant2.id, renter1Accommodation.id));
+
+    }
+
+    @Test
+    public void correctErrorTypeOnNonTenantPost() {
+
+        Result result = makePostRequest(renter1.createToken(), tenant1.id, renter1Accommodation.id);
+        JsonNode responseJson = Json.parse(contentAsString(result));
+        assertEquals(ResponseBuilder.NO_SUCH_ENTITY, responseJson.findValue("type").asText());
 
     }
 }
