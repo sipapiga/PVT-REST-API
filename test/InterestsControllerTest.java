@@ -209,7 +209,7 @@ public class InterestsControllerTest extends BaseTest {
     }
 
     @Test
-    public void correctErrorTypeOnNonTenantPost() {
+    public void noSuchEntityErrorTypeOnNonTenantPost() {
 
         Result result = makePostRequest(renter1.createToken(), tenant1.id, renter1Accommodation.id);
         JsonNode responseJson = Json.parse(contentAsString(result));
