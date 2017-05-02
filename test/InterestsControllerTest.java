@@ -95,4 +95,11 @@ public class InterestsControllerTest extends BaseTest {
 
         }
     }
+
+    @Test
+    public void returnsOnlySpecifiedRange() {
+
+
+
+    }
 }
