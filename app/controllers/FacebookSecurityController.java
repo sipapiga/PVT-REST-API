@@ -40,7 +40,7 @@ public class FacebookSecurityController extends Controller {
     }
 
     public static User getUser() {
-        return (User) Http.Context.current().args.get("tenant");
+        return (User) Http.Context.current().args.get("user");
     }
 
     /**
