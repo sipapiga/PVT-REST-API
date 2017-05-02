@@ -2,6 +2,9 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.accommodation.Accommodation;
+import models.accommodation.Address;
+import models.user.Renter;
 import org.junit.Test;
 import play.Logger;
 import play.api.libs.iteratee.RunQueue;
@@ -68,6 +71,8 @@ public class InterestsControllerTest extends BaseTest {
         Result result = makeAuthenticatedRequest(count, offset, tenantId, accommodationId, mutual);
         JsonNode responseBody = Json.parse(contentAsString(result));
 
+        assertTrue(responseBody.size() > 0);
+
         for (JsonNode interest : responseBody) {
 
             assertNotNull(interest.findValue("tenantId"));
@@ -99,6 +104,34 @@ public class InterestsControllerTest extends BaseTest {
     @Test
     public void returnsOnlySpecifiedRange() {
 
+        Renter renter2 = new Renter("eva@example.com", "password", "Eva Hellman", "Tja! Här vare' boende.", 52);
+        renter2.save();
+
+        Address address = new Address("Hägerstensvägen", 108, "Mälarhöjden", 100, 100);
+        address.save();
+
+        Accommodation renter2Accommodation = renter2.createAccommodation(5500, 25, 1, 6000,
+                false, false, true, true, "Schyrrebyrre", address);
+
+        tenant1.addInterest(renter2Accommodation);
+
+        Option<Integer> count = Option.apply(1);
+        Option<Integer> offset = Option.apply(0);
+        Option<Long> tenantId = Option.apply(tenant1.id);
+        Option<Long> accommodationId = Option.empty();
+        Option<Boolean> mutual = Option.empty();
+
+        String authToken = tenant1.createToken();
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.get(count, offset, tenantId, accommodationId, mutual));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+
+        Result result = route(fakeRequest);
+        JsonNode responseBody = Json.parse(contentAsString(result));
+
+        Logger.debug(responseBody.toString());
+
+        assertEquals(1, responseBody.size());
 
 
     }

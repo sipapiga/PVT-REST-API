@@ -43,7 +43,7 @@ public class Accommodation extends Model {
 
     public Accommodation(double rent, double size, double rooms, double deposit,
                          boolean smokingAllowed, boolean animalsAllowed, boolean tv, boolean broadband,
-                         String description, Renter renter) {
+                         String description, Address address, Renter renter) {
 
         this.rent = rent;
         this.size = size;
@@ -54,6 +54,7 @@ public class Accommodation extends Model {
         this.tv = tv;
         this.broadband = broadband;
         this.description = description;
+        this.address = address;
         this.renter = renter;
 
     }
