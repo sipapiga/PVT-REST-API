@@ -5,8 +5,10 @@
 package testResources;
 
 import models.Activity;
+import models.accommodation.Accommodation;
 import models.user.Authorization;
 import models.SwipingSession;
+import models.user.Renter;
 import models.user.User;
 import play.Configuration;
 
@@ -21,6 +23,9 @@ public class TestData {
     private User user1;
     private User user2;
     private User admin;
+
+    private Renter renter1;
+    private Accommodation renter1Accommodation;
 
     private SwipingSession session;
     private Activity modernaMuseet;
@@ -56,6 +61,15 @@ public class TestData {
             session = new SwipingSession(participants, activities);
             session.save();
 
+            renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
+            renter1.save();
+
+            renter1Accommodation = new Accommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", renter1);
+            renter1Accommodation.save();
+
+            renter1.accommodation = renter1Accommodation;
+            renter1.save();
+
         }
 
         facebookToken = config.getString("facebookToken");
@@ -72,6 +86,14 @@ public class TestData {
 
     public User getAdmin() {
         return admin;
+    }
+
+    public Renter getRenter1() {
+        return renter1;
+    }
+
+    public Accommodation getRenter1Accommodation() {
+        return renter1Accommodation;
     }
 
     public SwipingSession getSession() {

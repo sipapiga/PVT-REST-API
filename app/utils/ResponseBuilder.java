@@ -7,11 +7,12 @@ import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 
 /**
- * Created by simon on 2017-05-01.
+ * @author Simon Olofsson
  */
 public class ResponseBuilder {
 
     public static final String MALFORMED_REQUEST_BODY = "Malformed request body.";
+    public static final String MALFORMED_URI_PARAMETERS = "Malformed URI parameters.";
     public static final String MALFORMED_LIST = "Malformed list.";
     public static final String NO_SUCH_ENTITY = "No such entity.";
     public static final String FORBIDDEN_ACTIVITY_CHOICE = "Forbidden activity choice.";
