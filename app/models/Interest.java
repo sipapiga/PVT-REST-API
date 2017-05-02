@@ -63,4 +63,12 @@ public class Interest extends Model {
         return expressionList.findList();
 
     }
+
+    public static List<Interest> findAll() {
+        return find.all();
+    }
+
+    public static Interest findByTenantAndAccommodation(Long tenantId, Long accommodationId) {
+        return find.where().eq("tenant_id", tenantId).eq("interest_accommodation_id", accommodationId).findUnique();
+    }
 }

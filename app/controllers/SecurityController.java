@@ -26,7 +26,7 @@ public class SecurityController extends Controller {
     public static final String AUTH_TOKEN = "authToken";
 
     public static User getUser() {
-        return (User) Http.Context.current().args.get("tenant");
+        return (User) Http.Context.current().args.get("user");
     }
 
     // return an authToken

@@ -26,7 +26,7 @@ public class Secured extends Security.Authenticator {
 
             if (predicate.test(user)) {
 
-                ctx.args.put("tenant", user);
+                ctx.args.put("user", user);
                 return user.getEmailAddress();
             }
         }

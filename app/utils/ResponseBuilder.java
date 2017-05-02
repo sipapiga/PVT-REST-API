@@ -15,6 +15,7 @@ import static play.mvc.Results.ok;
  */
 public class ResponseBuilder {
 
+    public static final String ILLEGAL_ARGUMENT = "Illegal argument.";
     public static final String MALFORMED_REQUEST_BODY = "Malformed request body.";
     public static final String MALFORMED_URI_PARAMETERS = "Malformed URI parameters.";
     public static final String MALFORMED_LIST = "Malformed list.";

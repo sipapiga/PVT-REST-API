@@ -1,9 +1,11 @@
 package controllers;
 
 import com.avaje.ebean.ExpressionList;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.Interest;
+import models.accommodation.Accommodation;
 import models.user.Renter;
 import models.user.Tenant;
 import models.user.User;
@@ -46,5 +48,26 @@ public class InterestsController extends Controller {
 
         return ResponseBuilder.buildOKList(interests);
 
+    }
+
+    public Result create() {
+
+        JsonNode body = request().body().asJson();
+        Logger.debug(ctx().args.get("user").toString());
+
+        try {
+
+            Tenant tenant = (Tenant) ctx().args.get("user");
+            long accommodationId = body.findValue("accommodationId").asLong();
+
+            tenant.addInterest(Accommodation.findById(accommodationId));
+
+            return noContent();
+
+        } catch (IllegalArgumentException iae) {
+            return ResponseBuilder.buildBadRequest(iae.getMessage(), ResponseBuilder.ILLEGAL_ARGUMENT);
+        } catch (ClassCastException cce) {
+            return ResponseBuilder.buildBadRequest("User must be a valid tenant.", ResponseBuilder.NO_SUCH_ENTITY);
+        }
     }
 }

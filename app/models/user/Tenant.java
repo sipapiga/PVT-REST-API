@@ -3,9 +3,11 @@ package models.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import models.Interest;
 import models.accommodation.Accommodation;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Simon Olofsson
@@ -22,7 +24,7 @@ public class Tenant extends User {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
-    public List<Interest> interests;
+    public Set<Interest> interests;
 
     private static Finder<Long, Tenant> find = new Finder<>(Tenant.class);
 
@@ -45,10 +47,15 @@ public class Tenant extends User {
 
     public void addInterest(Accommodation accommodation) {
 
+       if (Interest.findByTenantAndAccommodation(id, accommodation.id) != null) {
+           throw new IllegalArgumentException("You may not add an interest that has already been added.");
+       }
+
        Interest interest = new Interest(this, accommodation);
        interest.save();
 
        interests.add(interest);
+       Logger.debug("Tenant: " + fullName + "\n" + interests.toString());
 
        save();
 
