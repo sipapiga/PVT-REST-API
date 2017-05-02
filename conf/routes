@@ -14,7 +14,7 @@ POST    /logout                                   controllers.SecurityController
 
 POST    /facebook/login                           controllers.FacebookSecurityController.login
 
-GET     /accommodation                            controllers.AccommodationController.get(count: Option[java.lang.Integer], offset: Option[java.lang.Integer])
+GET     /accommodation                            controllers.AccommodationController.get(count: Option[java.lang.Integer], offset: Option[java.lang.Integer], rent: Option[java.lang.Double], size: Option[java.lang.Double], smokingAllowed: Option[java.lang.Boolean], animalsAllowed: Option[java.lang.Boolean])
 
 GET     /swipingsessions                          controllers.SwipingSessionsController.getSwipingSessionWithExactParticipants(emailAddresses)
 GET     /swipingsessions/:emailAddress            controllers.SwipingSessionsController.getSwipingSessionWithParticipant(emailAddress)
