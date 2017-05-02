@@ -7,6 +7,7 @@ package testResources;
 import models.Activity;
 import models.Interest;
 import models.accommodation.Accommodation;
+import models.accommodation.Address;
 import models.user.Authorization;
 import models.SwipingSession;
 import models.user.Renter;
@@ -79,7 +80,10 @@ public class TestData {
         renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
         renter1.save();
 
-        renter1Accommodation = renter1.createAccommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!");
+        Address address = new Address("Dymlingsgränd", 3, 'A', "Hägerstensåsen", 50, 50);
+        address.save();
+
+        renter1Accommodation = renter1.createAccommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", address);
 
         tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
                 "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
@@ -107,6 +111,14 @@ public class TestData {
 
     public Accommodation getRenter1Accommodation() {
         return renter1Accommodation;
+    }
+
+    public Tenant getTenant1() {
+        return tenant1;
+    }
+
+    public Interest getInterest1() {
+        return interest1;
     }
 
     public SwipingSession getSession() {

@@ -16,6 +16,7 @@ import java.util.function.Function;
 /**
  * @author Simon Olofsson
  */
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "interest_accommodation_id"}))
 @Entity
 public class Interest extends Model {
 
@@ -27,13 +28,13 @@ public class Interest extends Model {
     /*
      * The JsonIdentity annotations make sure that only id is serialized.
      */
-    @OneToOne
+    @ManyToOne
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("tenantId")
     public Tenant tenant;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "interest_accommodation_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)

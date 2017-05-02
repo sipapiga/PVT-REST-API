@@ -2,6 +2,7 @@ package testResources;
 
 import models.accommodation.Accommodation;
 import models.user.Renter;
+import models.user.Tenant;
 import models.user.User;
 import org.junit.Before;
 import play.test.WithApplication;
@@ -23,6 +24,10 @@ public class BaseTest extends WithApplication {
     protected Renter renter1;
     protected String renter1Email;
     protected String renter1Password;
+
+    protected Tenant tenant1;
+    protected String tenant1Email;
+    protected String tenant1Password;
 
     protected Accommodation renter1Accommodation;
 
@@ -50,6 +55,10 @@ public class BaseTest extends WithApplication {
         renter1Password = renter1.getPassword();
 
         renter1Accommodation = testData.getRenter1Accommodation();
+
+        tenant1 = testData.getTenant1();
+        tenant1Email = tenant1.getEmailAddress();
+        tenant1Password = tenant1.getPassword();
 
         facebookToken = testData.getFacebookToken();
 

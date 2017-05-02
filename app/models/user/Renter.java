@@ -1,6 +1,7 @@
 package models.user;
 
 import models.accommodation.Accommodation;
+import models.accommodation.Address;
 
 import javax.persistence.*;
 
@@ -26,10 +27,10 @@ public class Renter extends User {
 
     public Accommodation createAccommodation(double rent, double size, double rooms, double deposit,
                                              boolean smokingAllowed, boolean animalsAllowed,
-                                             boolean tv, boolean broadband, String description) {
+                                             boolean tv, boolean broadband, String description, Address address) {
 
         Accommodation accommodation = new Accommodation(rent, size, rooms, deposit,
-                smokingAllowed, animalsAllowed, tv, broadband, description, this);
+                smokingAllowed, animalsAllowed, tv, broadband, description, address, this);
 
         accommodation.save();
 
