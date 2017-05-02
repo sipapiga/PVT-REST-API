@@ -13,7 +13,6 @@ import scala.Option;
 import scala.tools.cmd.Opt;
 import testResources.BaseTest;
 
-import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;

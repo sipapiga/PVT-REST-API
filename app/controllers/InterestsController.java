@@ -40,6 +40,9 @@ public class InterestsController extends Controller {
 
         List<Interest> interests = Interest.filterBy(functions);
 
+        interests = interests.subList(offset.isDefined() ? offset.get() : 0,
+                count.isDefined() && count.get() < interests.size() ? count.get() : interests.size());
+
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.valueToTree(interests);
 
