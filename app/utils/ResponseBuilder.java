@@ -1,10 +1,14 @@
 package utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.mvc.Result;
 
+import java.util.List;
+
 import static play.mvc.Results.badRequest;
+import static play.mvc.Results.ok;
 
 /**
  * @author Simon Olofsson
@@ -34,6 +38,13 @@ public class ResponseBuilder {
 
     private String getMalformedListMessage(String listContent) {
         return "The list of " + listContent.toLowerCase() + " is malformed, make sure it uses correct json array syntax.";
+    }
+
+    public static Result buildOKList(List list) {
+
+        ArrayNode arrayNode = mapper.valueToTree(list);
+        return ok(arrayNode);
+
     }
 
 }
