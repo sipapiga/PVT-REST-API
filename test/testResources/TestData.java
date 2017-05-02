@@ -5,10 +5,12 @@
 package testResources;
 
 import models.Activity;
+import models.Interest;
 import models.accommodation.Accommodation;
 import models.user.Authorization;
 import models.SwipingSession;
 import models.user.Renter;
+import models.user.Tenant;
 import models.user.User;
 import play.Configuration;
 
@@ -26,6 +28,9 @@ public class TestData {
 
     private Renter renter1;
     private Accommodation renter1Accommodation;
+
+    private Tenant tenant1;
+    private Interest interest1;
 
     private SwipingSession session;
     private Activity modernaMuseet;
@@ -61,18 +66,30 @@ public class TestData {
             session = new SwipingSession(participants, activities);
             session.save();
 
-            renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
-            renter1.save();
-
-            renter1Accommodation = new Accommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", renter1);
-            renter1Accommodation.save();
-
-            renter1.accommodation = renter1Accommodation;
-            renter1.save();
+            addInterestSpecificData();
 
         }
 
         facebookToken = config.getString("facebookToken");
+
+    }
+
+    private void addInterestSpecificData() {
+
+        renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
+        renter1.save();
+
+        renter1Accommodation = new Accommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", renter1);
+        renter1Accommodation.save();
+
+        renter1.accommodation = renter1Accommodation;
+        renter1.save();
+
+        tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
+                "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
+        tenant1.save();
+
+        tenant1.addInterest(renter1Accommodation);
 
     }
 

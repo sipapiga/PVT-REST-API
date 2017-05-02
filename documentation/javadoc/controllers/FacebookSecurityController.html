@@ -254,8 +254,8 @@ extends play.mvc.Controller</pre>
 <td class="colFirst"><code>private java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../controllers/FacebookSecurityController.html#processUserData-java.lang.String-play.libs.ws.WSResponse-">processUserData</a></span>(java.lang.String&nbsp;facebookToken,
                play.libs.ws.WSResponse&nbsp;userData)</code>
-<div class="block">Takes data from Facebook and determines whether the user already exists
- or not, and creates or updates the user and its fields accordingly.</div>
+<div class="block">Takes data from Facebook and determines whether the tenant already exists
+ or not, and creates or updates the tenant and its fields accordingly.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -264,10 +264,10 @@ extends play.mvc.Controller</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>private void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../controllers/FacebookSecurityController.html#setUserAttributes-models.User-com.fasterxml.jackson.databind.JsonNode-java.lang.String-">setUserAttributes</a></span>(<a href="../models/User.html" title="class in models">User</a>&nbsp;user,
+<td class="colLast"><code><span class="memberNameLink"><a href="../controllers/FacebookSecurityController.html#setUserAttributes-models.User-com.fasterxml.jackson.databind.JsonNode-java.lang.String-">setUserAttributes</a></span>(<a href="../models/User.html" title="class in models">User</a>&nbsp;tenant,
                  com.fasterxml.jackson.databind.JsonNode&nbsp;userData,
                  java.lang.String&nbsp;facebookToken)</code>
-<div class="block">Sets user attributes according to the data passed to the method.</div>
+<div class="block">Sets tenant attributes according to the data passed to the method.</div>
 </td>
 </tr>
 </table>
@@ -403,9 +403,9 @@ public&nbsp;FacebookSecurityController(play.libs.ws.WSClient&nbsp;ws,
 <h4>login</h4>
 <pre>public&nbsp;java.util.concurrent.CompletionStage&lt;play.mvc.Result&gt;&nbsp;login()</pre>
 <div class="block">Method for handling a request for authorization via Facebook. Accepts a
- Facebook access token, collects basic user data and uses the user id to
+ Facebook access token, collects basic tenant data and uses the tenant id to
  make further requests for data to Facebook. Currently, the only further
- data collected is the first page of the user's list of friends. Sends
+ data collected is the first page of the tenant's list of friends. Sends
  a custom authentication token back on successful requests, to be used
  for authenticating further requests to the server.
 
@@ -438,14 +438,14 @@ public&nbsp;FacebookSecurityController(play.libs.ws.WSClient&nbsp;ws,
 <h4>processUserData</h4>
 <pre>private&nbsp;java.lang.String&nbsp;processUserData(java.lang.String&nbsp;facebookToken,
                                          play.libs.ws.WSResponse&nbsp;userData)</pre>
-<div class="block">Takes data from Facebook and determines whether the user already exists
- or not, and creates or updates the user and its fields accordingly.</div>
+<div class="block">Takes data from Facebook and determines whether the tenant already exists
+ or not, and creates or updates the tenant and its fields accordingly.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>facebookToken</code> - a Facebook authorization token.</dd>
-<dd><code>userData</code> - a WSResponse object containing the user data.</dd>
+<dd><code>userData</code> - a WSResponse object containing the tenant data.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the user id extracted from the data.</dd>
+<dd>the tenant id extracted from the data.</dd>
 </dl>
 </li>
 </ul>
@@ -455,15 +455,15 @@ public&nbsp;FacebookSecurityController(play.libs.ws.WSClient&nbsp;ws,
 <ul class="blockList">
 <li class="blockList">
 <h4>setUserAttributes</h4>
-<pre>private&nbsp;void&nbsp;setUserAttributes(<a href="../models/User.html" title="class in models">User</a>&nbsp;user,
+<pre>private&nbsp;void&nbsp;setUserAttributes(<a href="../models/User.html" title="class in models">User</a>&nbsp;tenant,
                                com.fasterxml.jackson.databind.JsonNode&nbsp;userData,
                                java.lang.String&nbsp;facebookToken)</pre>
-<div class="block">Sets user attributes according to the data passed to the method. Only
+<div class="block">Sets tenant attributes according to the data passed to the method. Only
  operates on existing users and will create a new FacebookData entry
  from the data passed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>user</code> - the user to operate on.</dd>
+<dd><code>tenant</code> - the tenant to operate on.</dd>
 <dd><code>userData</code> - the data to create a FacebookData entry from.</dd>
 <dd><code>facebookToken</code> - the Facebook authorization token used to
                       obtain the data. Will be included in the

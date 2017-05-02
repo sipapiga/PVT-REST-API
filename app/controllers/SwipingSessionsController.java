@@ -115,7 +115,7 @@ public class SwipingSessionsController extends Controller {
                 swipingSession.save();
             } catch (RuntimeException re) {
                 return buildBadRequestResponse(mapper, NO_SUCH_ENTITY,
-                        "Invalid email - at least one of the email addresses is not associated with any registered user.");
+                        "Invalid email - at least one of the email addresses is not associated with any registered tenant.");
             }
 
             ObjectNode json = mapper.createObjectNode();
@@ -132,19 +132,19 @@ public class SwipingSessionsController extends Controller {
     }
 
     /**
-     * Method for recording a choice of activities on behalf of the user with
+     * Method for recording a choice of activities on behalf of the tenant with
      * the email address passed. Will update the database record for the
      * indicated swiping session with the activities passed.
      *
      * @param swipingSessionId the id of the swiping session, provided on
      *                         its creation.
-     * @param email the email address of the user who made the choice.
+     * @param email the email address of the tenant who made the choice.
      * @param activities a json array of activities, indicating the users
      *                   choice.
      * @return 200 OK if the swiping session exists and the email address can
-     * be connected to an existing user, 400 BAD REQUEST if the user indicated
+     * be connected to an existing tenant, 400 BAD REQUEST if the tenant indicated
      * or any of the chosen activities does/do not exist or was not among the
-     * originally generated activities for the swiping session, if the user
+     * originally generated activities for the swiping session, if the tenant
      * exists but has already made a choice or if the list of activities is in
      * any way malformed.
      */
@@ -153,7 +153,7 @@ public class SwipingSessionsController extends Controller {
         ObjectMapper mapper = new ObjectMapper();
 
         if (User.findByEmailAddress(email) == null) {
-            return buildBadRequestResponse(mapper, NO_SUCH_ENTITY, "No user with that email address found.");
+            return buildBadRequestResponse(mapper, NO_SUCH_ENTITY, "No tenant with that email address found.");
         }
 
         try {
@@ -175,7 +175,7 @@ public class SwipingSessionsController extends Controller {
                         "That swiping session does not seem to exist.");
             } catch (PersistenceException pe) {
                 return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
-                        "The user passed seems to have made a choice already.");
+                        "The tenant passed seems to have made a choice already.");
             } catch(IllegalArgumentException iae) {
                 return buildBadRequestResponse(mapper, FORBIDDEN_ACTIVITY_CHOICE,
                         "Chosen activities must be picked from the original set of generated activities associated with the swiping session." +

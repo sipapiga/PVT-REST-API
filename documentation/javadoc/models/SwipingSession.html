@@ -224,14 +224,14 @@ extends com.avaje.ebean.Model</pre>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.Set&lt;<a href="../models/Activity.html" title="class in models">Activity</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../models/SwipingSession.html#getChosenActivities-java.lang.String-">getChosenActivities</a></span>(java.lang.String&nbsp;userEmailAddress)</code>
-<div class="block">Method to get the activities chosen by a user during this swiping session.</div>
+<div class="block">Method to get the activities chosen by a tenant during this swiping session.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../models/SwipingSession.html#setUserActivityChoice-java.lang.String-java.util.Set-">setUserActivityChoice</a></span>(java.lang.String&nbsp;userEmailAddress,
                      java.util.Set&lt;<a href="../models/Activity.html" title="class in models">Activity</a>&gt;&nbsp;activities)</code>
-<div class="block">Method to record a user's choice of activities.</div>
+<div class="block">Method to record a tenant's choice of activities.</div>
 </td>
 </tr>
 </table>
@@ -351,12 +351,12 @@ extends com.avaje.ebean.Model</pre>
 <h4>setUserActivityChoice</h4>
 <pre>public&nbsp;void&nbsp;setUserActivityChoice(java.lang.String&nbsp;userEmailAddress,
                                   java.util.Set&lt;<a href="../models/Activity.html" title="class in models">Activity</a>&gt;&nbsp;activities)</pre>
-<div class="block">Method to record a user's choice of activities.</div>
+<div class="block">Method to record a tenant's choice of activities.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userEmailAddress</code> - the email address of the user whose choice is to
+<dd><code>userEmailAddress</code> - the email address of the tenant whose choice is to
                          be recorded.</dd>
-<dd><code>activities</code> - the activities to associate with the user.</dd>
+<dd><code>activities</code> - the activities to associate with the tenant.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if any of the activities chosen are not
  in the original set of generated activities.</dd>
@@ -370,13 +370,13 @@ extends com.avaje.ebean.Model</pre>
 <li class="blockList">
 <h4>getChosenActivities</h4>
 <pre>public&nbsp;java.util.Set&lt;<a href="../models/Activity.html" title="class in models">Activity</a>&gt;&nbsp;getChosenActivities(java.lang.String&nbsp;userEmailAddress)</pre>
-<div class="block">Method to get the activities chosen by a user during this swiping session.</div>
+<div class="block">Method to get the activities chosen by a tenant during this swiping session.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userEmailAddress</code> - the email address of the user whose activities
+<dd><code>userEmailAddress</code> - the email address of the tenant whose activities
                          are to be returned.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>A list containing the activities chosen by the user,
+<dd>A list containing the activities chosen by the tenant,
  may be empty.</dd>
 </dl>
 </li>

@@ -1,8 +1,9 @@
+package controllers;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import controllers.SecurityController;
-import controllers.routes;
 import org.junit.Test;
+import play.Logger;
 import play.api.libs.iteratee.RunQueue;
 import play.libs.Json;
 import play.mvc.Http;
@@ -32,7 +33,7 @@ public class InterestsControllerTest extends BaseTest {
     Option<Integer> count = Option.apply(10);
     Option<Integer> offset = Option.apply(0);
     Option<Long> tenantId = Option.empty();
-    Option<Long> accommodationId = Option.apply(1l);
+    Option<Long> accommodationId = Option.apply(1L);
     Option<Boolean> mutual = Option.apply(false);
 
     private Result makeAuthenticatedRequest(Option<Integer> count, Option<Integer> offset, Option<Long> tenantId, Option<Long> accommodationId, Option<Boolean> mutual) {
