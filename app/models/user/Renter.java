@@ -24,6 +24,22 @@ public class Renter extends User {
         super(emailAddress, password, fullName, description, age);
     }
 
+    public Accommodation createAccommodation(double rent, double size, double rooms, double deposit,
+                                             boolean smokingAllowed, boolean animalsAllowed,
+                                             boolean tv, boolean broadband, String description) {
+
+        Accommodation accommodation = new Accommodation(rent, size, rooms, deposit,
+                smokingAllowed, animalsAllowed, tv, broadband, description, this);
+
+        accommodation.save();
+
+        this.accommodation = accommodation;
+        save();
+
+        return accommodation;
+
+    }
+
     public static Renter findByAuthToken(String authToken) {
         return find.where().eq("auth_token", authToken).findUnique();
     }

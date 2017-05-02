@@ -79,11 +79,7 @@ public class TestData {
         renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
         renter1.save();
 
-        renter1Accommodation = new Accommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", renter1);
-        renter1Accommodation.save();
-
-        renter1.accommodation = renter1Accommodation;
-        renter1.save();
+        renter1Accommodation = renter1.createAccommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!");
 
         tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
                 "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
