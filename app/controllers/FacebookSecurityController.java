@@ -20,6 +20,7 @@ import java.util.concurrent.CompletionStage;
 /**
  * Endpoint controller for handling requests for Facebook authorization.
  *
+ *
  * @author Simon Olofsson
  */
 public class FacebookSecurityController extends Controller {
@@ -61,7 +62,12 @@ public class FacebookSecurityController extends Controller {
      * the server.
      */
     public CompletionStage<Result> login() {
-
+    	//not sure this is the correct way to handle this
+	    //see https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
+	    //URL here doesn't match the one at the dev-fb-page
+	    //OUR:      https://graph.facebook.com/me?
+	    //THEIR:    https://www.facebook.com/v2.9/dialog/oauth?
+	    
         String facebookToken;
 
         try {
