@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.user.FacebookData;
 import models.user.User;
+import play.Configuration;
 import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
@@ -30,20 +31,27 @@ public class FacebookSecurityController extends Controller {
     public static final String FACEBOOK_AUTH_TOKEN_BODY_FIELD = "facebookAuthToken";
     public static final String AUTH_TOKEN = "authToken";
 
-    private static final String APP_ID = "";
-    private static final String APP_NAME = "";
+    private String APP_ID;
+    private String APP_TOKEN;
+    private String APP_NAME;
 
     private static final String FIELDS = "email,first_name,last_name,gender,locale,name,timezone";
 
     private WSClient ws;
 
     private HttpExecutionContext ec;
+    private Configuration config;
 
     @Inject
-    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec) {
+    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec, Configuration config) {
 
         this.ws = ws;
         this.ec = ec;
+        this.config = config;
+
+        APP_ID = config.getString("appId");
+        APP_TOKEN = config.getString("appToken");
+        APP_NAME = config.getString("appName");
 
     }
 
@@ -97,7 +105,7 @@ public class FacebookSecurityController extends Controller {
 
         WSRequest inspectionRequest = ws.url("https://graph.facebook.com/debug_token")
             .setQueryParameter("input_token", facebookToken)
-            .setQueryParameter("access_token", "");
+            .setQueryParameter("access_token", APP_TOKEN);
 
         return inspectionRequest.get().thenCompose(inspectionData -> {
 
