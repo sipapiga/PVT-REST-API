@@ -14,6 +14,8 @@ import models.user.Renter;
 import models.user.Tenant;
 import models.user.User;
 import play.Configuration;
+import play.Logger;
+import play.libs.ws.WSClient;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

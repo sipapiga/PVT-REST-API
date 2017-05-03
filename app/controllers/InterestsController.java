@@ -92,4 +92,17 @@ public class InterestsController extends Controller {
             return ResponseBuilder.buildBadRequest("User must be a valid renter.", ResponseBuilder.NO_SUCH_ENTITY);
         }
     }
+
+    public Result withdrawInterest(long tenantId, long accommodationId) {
+
+        if (((User) ctx().args.get("user")).id != tenantId) {
+            return ResponseBuilder.buildUnauthorizedRequest("Owner of token and owner of tenant id do not match. A user may only withdraw own interests.");
+        }
+
+        Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
+        interest.delete();
+
+        return noContent();
+
+    }
 }
