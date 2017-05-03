@@ -39,6 +39,9 @@ public class TestData {
     private Activity modernaMuseet;
 
     private String facebookToken;
+    private String appToken;
+    private String appName;
+    private String appId;
 
     @Inject
     public TestData(Configuration config) {
@@ -74,6 +77,9 @@ public class TestData {
         }
 
         facebookToken = config.getString("facebookToken");
+        appToken = config.getString("appToken");
+        appName = config.getString("appName");
+        appId = config.getString("appId");
 
     }
 
@@ -133,5 +139,17 @@ public class TestData {
 
     public String getFacebookToken() {
         return facebookToken;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getAppId() {
+        return appId;
     }
 }

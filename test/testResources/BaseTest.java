@@ -35,6 +35,9 @@ public class BaseTest extends WithApplication {
     protected Accommodation renter1Accommodation;
 
     protected String facebookToken;
+    protected String appToken;
+    protected String appName;
+    protected String appId;
 
     @Before
     public void setupClass() {
@@ -66,6 +69,9 @@ public class BaseTest extends WithApplication {
         interest1 = testData.getInterest1();
 
         facebookToken = testData.getFacebookToken();
+        appToken = testData.getAppToken();
+        appName = testData.getAppName();
+        appId = testData.getAppId();
 
     }
 }

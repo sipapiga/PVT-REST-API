@@ -10,10 +10,11 @@ import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
 import play.libs.ws.WSClient;
-import play.libs.ws.WSRequest;
 import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.*;
+import services.FacebookCaller;
+import services.FacebookService;
 import utils.ResponseBuilder;
 
 import javax.inject.Inject;
@@ -31,27 +32,28 @@ public class FacebookSecurityController extends Controller {
     public static final String FACEBOOK_AUTH_TOKEN_BODY_FIELD = "facebookAuthToken";
     public static final String AUTH_TOKEN = "authToken";
 
-    private String APP_ID;
-    private String APP_TOKEN;
-    private String APP_NAME;
+    private String appId;
+    private String appToken;
+    private String appName;
 
     private static final String FIELDS = "email,first_name,last_name,gender,locale,name,timezone";
 
     private WSClient ws;
-
     private HttpExecutionContext ec;
     private Configuration config;
+    private FacebookService fbService;
 
     @Inject
-    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec, Configuration config) {
+    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec, Configuration config, FacebookService fbService) {
 
         this.ws = ws;
         this.ec = ec;
         this.config = config;
+        this.fbService = fbService;
 
-        APP_ID = config.getString("appId");
-        APP_TOKEN = config.getString("appToken");
-        APP_NAME = config.getString("appName");
+        appId = config.getString("appId");
+        appToken = config.getString("appToken");
+        appName = config.getString("appName");
 
     }
 
@@ -98,14 +100,68 @@ public class FacebookSecurityController extends Controller {
 
         } catch (NullPointerException e) {
 
-            Result result = ResponseBuilder.buildBadRequest("Request body required", ResponseBuilder.MALFORMED_REQUEST_BODY);
+            Result result = ResponseBuilder.buildBadRequest("Request body required.", ResponseBuilder.MALFORMED_REQUEST_BODY);
             return CompletableFuture.completedFuture(result);
 
         }
 
-        WSRequest inspectionRequest = ws.url("https://graph.facebook.com/debug_token")
+        return fbService.inspectionRequest(facebookToken, appId, appToken, appName).thenApplyAsync(userData -> {
+
+            if (userData.asJson().findValue("error") != null) {
+                return badRequest(userData.asJson());
+            }
+
+            String userToken = processUserData(facebookToken, userData);
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode responseJson = mapper.createObjectNode();
+
+            responseJson.put(AUTH_TOKEN, userToken);
+            setAuthTokenCookie(userToken);
+
+            return ok(responseJson);
+
+        }, ec.current());
+
+        /*return fbCaller.inspectionRequest(facebookToken, appToken).thenCompose(inspectionData -> {
+
+            if (inspectionData.asJson().findValue("error") != null) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            JsonNode inspectionJson = inspectionData.asJson();
+
+            String appId = inspectionJson.findValue("app_id").asText();
+            String appName = inspectionJson.findValue("application").asText();
+            boolean valid = inspectionJson.findValue("is_valid").asBoolean();
+
+            if (!appId.equals(this.appId) || !appName.equals(this.appName) || !valid) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            return fbCaller.dataRequest(facebookToken, FIELDS);
+
+        }).thenApplyAsync(userData -> {
+
+            if (userData.asJson().findValue("error") != null) {
+                return badRequest(userData.asJson());
+            }
+
+            String userToken = processUserData(facebookToken, userData);
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode responseJson = mapper.createObjectNode();
+
+            responseJson.put(AUTH_TOKEN, userToken);
+            setAuthTokenCookie(userToken);
+
+            return ok(responseJson);
+
+        }, ec.current());*/
+
+        /*WSRequest inspectionRequest = ws.url("https://graph.facebook.com/debug_token")
             .setQueryParameter("input_token", facebookToken)
-            .setQueryParameter("access_token", APP_TOKEN);
+            .setQueryParameter("access_token", appToken);
 
         return inspectionRequest.get().thenCompose(inspectionData -> {
 
@@ -119,7 +175,7 @@ public class FacebookSecurityController extends Controller {
             String appName = inspectionJson.findValue("application").asText();
             boolean valid = inspectionJson.findValue("is_valid").asBoolean();
 
-            if (!appId.equals(APP_ID) || !appName.equals(APP_NAME) || !valid) {
+            if (!appId.equals(this.appId) || !appName.equals(this.appName) || !valid) {
                 return CompletableFuture.completedFuture(inspectionData);
             }
 
@@ -145,7 +201,7 @@ public class FacebookSecurityController extends Controller {
 
             return ok(responseJson);
 
-        }, ec.current());
+        }, ec.current());*/
     }
 
     private void setAuthTokenCookie(String authToken) {
