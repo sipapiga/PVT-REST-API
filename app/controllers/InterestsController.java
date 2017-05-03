@@ -70,20 +70,23 @@ public class InterestsController extends Controller {
         }
     }
 
-    public Result setMutual() {
+    public Result setMutual(long tenantId, long accommodationId) {
 
         JsonNode body = request().body().asJson();
 
         try {
 
             Renter renter = (Renter) ctx().args.get("user");
+            String mutual = body.findValue("mutual").textValue();
 
-            long tenantId = body.findValue("tenantId").asLong();
-            long accommodationId = body.findValue("accommodationId").asLong();
+            if (!mutual.equals("true") && !mutual.equals("false")) {
+                return ResponseBuilder.buildBadRequest("Attribute 'mutual' must be set to either 'true' or 'false'.", ResponseBuilder.ILLEGAL_ARGUMENT);
+            }
 
             Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
+            interest.setMutual(Boolean.parseBoolean(mutual));
 
-            return noContent();
+            return ResponseBuilder.buildOKObject(interest);
 
         } catch (ClassCastException cce) {
             return ResponseBuilder.buildBadRequest("User must be a valid renter.", ResponseBuilder.NO_SUCH_ENTITY);

@@ -216,4 +216,43 @@ public class InterestsControllerTest extends BaseTest {
         assertEquals(ResponseBuilder.NO_SUCH_ENTITY, responseJson.findValue("type").asText());
 
     }
+
+    /*
+     * PUT
+     */
+
+    @Test
+    public void authorizedPutReturnsUpdatedInterest() {
+
+        String authToken = renter1.createToken();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode bodyJson = mapper.createObjectNode();
+
+        bodyJson.put("mutual", "true");
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.setMutual(interest1.tenant.id, interest1.accommodation.id));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+        fakeRequest.bodyJson(bodyJson);
+
+        Result result = route(fakeRequest);
+        assertEquals(OK, result.status());
+
+        JsonNode responseJson = Json.parse(contentAsString(result));
+
+        assertEquals("true", responseJson.findValue("mutual").asText());
+        assertEquals(5L, responseJson.findValue("tenantId").asLong());
+        assertEquals(1L, responseJson.findValue("accommodationId").asLong());
+
+    }
+
+    @Test
+    public void authorizedPutReturnsBadRequestOnNoRequestBody() {
+        // Implement this
+    }
+
+    @Test
+    public void authorizedPutReturnsBadRequestOnNonBooleanBodyValue() {
+        // Implement this
+    }
 }

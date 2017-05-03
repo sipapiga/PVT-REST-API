@@ -89,7 +89,7 @@ public class TestData {
                 "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
         tenant1.save();
 
-        tenant1.addInterest(renter1Accommodation);
+        interest1 = tenant1.addInterest(renter1Accommodation);
 
     }
 

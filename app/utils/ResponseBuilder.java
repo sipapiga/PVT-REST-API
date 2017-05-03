@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Interest;
 import play.mvc.Result;
 
 import java.util.List;
@@ -48,4 +49,10 @@ public class ResponseBuilder {
 
     }
 
+    public static Result buildOKObject(Object object) {
+
+        ObjectNode objectNode = mapper.valueToTree(object);
+        return ok(objectNode);
+
+    }
 }
