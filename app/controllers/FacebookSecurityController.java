@@ -5,12 +5,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.user.FacebookData;
 import models.user.User;
+import play.Configuration;
+import play.Logger;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.Json;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.*;
+import services.FacebookCaller;
+import services.FacebookService;
 import utils.ResponseBuilder;
 
 import javax.inject.Inject;
@@ -20,6 +24,7 @@ import java.util.concurrent.CompletionStage;
 /**
  * Endpoint controller for handling requests for Facebook authorization.
  *
+ *
  * @author Simon Olofsson
  */
 public class FacebookSecurityController extends Controller {
@@ -27,15 +32,28 @@ public class FacebookSecurityController extends Controller {
     public static final String FACEBOOK_AUTH_TOKEN_BODY_FIELD = "facebookAuthToken";
     public static final String AUTH_TOKEN = "authToken";
 
-    private WSClient ws;
+    private String appId;
+    private String appToken;
+    private String appName;
 
+    private static final String FIELDS = "email,first_name,last_name,gender,locale,name,timezone";
+
+    private WSClient ws;
     private HttpExecutionContext ec;
+    private Configuration config;
+    private FacebookService fbService;
 
     @Inject
-    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec) {
+    public FacebookSecurityController(WSClient ws, HttpExecutionContext ec, Configuration config, FacebookService fbService) {
 
         this.ws = ws;
         this.ec = ec;
+        this.config = config;
+        this.fbService = fbService;
+
+        appId = config.getString("appId");
+        appToken = config.getString("appToken");
+        appName = config.getString("appName");
 
     }
 
@@ -45,9 +63,9 @@ public class FacebookSecurityController extends Controller {
 
     /**
      * Method for handling a request for authorization via Facebook. Accepts a
-     * Facebook access token, collects basic user data and uses the user id to
+     * Facebook access token, collects basic tenant data and uses the tenant id to
      * make further requests for data to Facebook. Currently, the only further
-     * data collected is the first page of the user's list of friends. Sends
+     * data collected is the first page of the tenant's list of friends. Sends
      * a custom authentication token back on successful requests, to be used
      * for authenticating further requests to the server.
      *
@@ -62,6 +80,17 @@ public class FacebookSecurityController extends Controller {
      */
     public CompletionStage<Result> login() {
 
+    	/*not sure this is the correct way to handle this
+	     *see https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
+	     *URL here doesn't match the one at the dev-fb-page
+	     *OUR:      https://graph.facebook.com/me?
+	     *THEIR:    https://www.facebook.com/v2.9/dialog/oauth?
+         *
+         * From what I can see, that URI is for exchanging an access code for an access token.
+         * This code presumes that an access token has been generated client-side. We don't
+         * seem to be using the correct way of verifying that token, though, so good call.
+         */
+	    
         String facebookToken;
 
         try {
@@ -71,30 +100,108 @@ public class FacebookSecurityController extends Controller {
 
         } catch (NullPointerException e) {
 
-            Result result = ResponseBuilder.buildBadRequest("Request body required", ResponseBuilder.MALFORMED_REQUEST_BODY);
+            Result result = ResponseBuilder.buildBadRequest("Request body required.", ResponseBuilder.MALFORMED_REQUEST_BODY);
             return CompletableFuture.completedFuture(result);
 
         }
 
-        return ws.url("https://graph.facebook.com/me?access_token=" + facebookToken).get()
-                .thenApplyAsync(userData -> { // thenApplyAsync is needed if an HttpExecutionContext needs to be passed, see comment below.
+        return fbService.inspectionRequest(facebookToken, appId, appToken, appName).thenApplyAsync(userData -> {
 
-                    if (userData.asJson().findValue("error") != null) {
-                        return status(userData.getStatus(), userData.asJson());
-                    }
+            if (userData.asJson().findValue("error") != null) {
+                return badRequest(userData.asJson());
+            }
 
-                    String userToken = processUserData(facebookToken, userData);
+            String userToken = processUserData(facebookToken, userData);
 
-                    ObjectMapper mapper = new ObjectMapper();
-                    ObjectNode responseJson = mapper.createObjectNode();
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode responseJson = mapper.createObjectNode();
 
-                    responseJson.put(AUTH_TOKEN, userToken);
-                    setAuthTokenCookie(userToken);
+            responseJson.put(AUTH_TOKEN, userToken);
+            setAuthTokenCookie(userToken);
 
-                    return ok(responseJson);
+            return ok(responseJson);
 
-                }, ec.current()); // Passing HttpExecutionContext to be able to set cookies, context not otherwise available in async calls.
+        }, ec.current());
 
+        /*return fbCaller.inspectionRequest(facebookToken, appToken).thenCompose(inspectionData -> {
+
+            if (inspectionData.asJson().findValue("error") != null) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            JsonNode inspectionJson = inspectionData.asJson();
+
+            String appId = inspectionJson.findValue("app_id").asText();
+            String appName = inspectionJson.findValue("application").asText();
+            boolean valid = inspectionJson.findValue("is_valid").asBoolean();
+
+            if (!appId.equals(this.appId) || !appName.equals(this.appName) || !valid) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            return fbCaller.dataRequest(facebookToken, FIELDS);
+
+        }).thenApplyAsync(userData -> {
+
+            if (userData.asJson().findValue("error") != null) {
+                return badRequest(userData.asJson());
+            }
+
+            String userToken = processUserData(facebookToken, userData);
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode responseJson = mapper.createObjectNode();
+
+            responseJson.put(AUTH_TOKEN, userToken);
+            setAuthTokenCookie(userToken);
+
+            return ok(responseJson);
+
+        }, ec.current());*/
+
+        /*WSRequest inspectionRequest = ws.url("https://graph.facebook.com/debug_token")
+            .setQueryParameter("input_token", facebookToken)
+            .setQueryParameter("access_token", appToken);
+
+        return inspectionRequest.get().thenCompose(inspectionData -> {
+
+            if (inspectionData.asJson().findValue("error") != null) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            JsonNode inspectionJson = inspectionData.asJson();
+
+            String appId = inspectionJson.findValue("app_id").asText();
+            String appName = inspectionJson.findValue("application").asText();
+            boolean valid = inspectionJson.findValue("is_valid").asBoolean();
+
+            if (!appId.equals(this.appId) || !appName.equals(this.appName) || !valid) {
+                return CompletableFuture.completedFuture(inspectionData);
+            }
+
+            WSRequest dataRequest = ws.url("https://graph.facebook.com/me")
+                    .setQueryParameter("access_token", facebookToken)
+                    .setQueryParameter("fields", FIELDS);
+
+            return dataRequest.get();
+
+        }).thenApplyAsync(userData -> {
+
+            if (userData.asJson().findValue("error") != null) {
+                return badRequest(userData.asJson());
+            }
+
+            String userToken = processUserData(facebookToken, userData);
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode responseJson = mapper.createObjectNode();
+
+            responseJson.put(AUTH_TOKEN, userToken);
+            setAuthTokenCookie(userToken);
+
+            return ok(responseJson);
+
+        }, ec.current());*/
     }
 
     private void setAuthTokenCookie(String authToken) {
@@ -106,12 +213,12 @@ public class FacebookSecurityController extends Controller {
     }
 
     /**
-     * Takes data from Facebook and determines whether the user already exists
-     * or not, and creates or updates the user and its fields accordingly.
+     * Takes data from Facebook and determines whether the tenant already exists
+     * or not, and creates or updates the tenant and its fields accordingly.
      *
      * @param facebookToken a Facebook authorization token.
-     * @param userData a WSResponse object containing the user data.
-     * @return the user id extracted from the data.
+     * @param userData a WSResponse object containing the tenant data.
+     * @return the tenant id extracted from the data.
      */
     private String processUserData(String facebookToken, WSResponse userData) {
 
@@ -133,11 +240,11 @@ public class FacebookSecurityController extends Controller {
     }
 
     /**
-     * Sets user attributes according to the data passed to the method. Only
+     * Sets tenant attributes according to the data passed to the method. Only
      * operates on existing users and will create a new FacebookData entry
      * from the data passed.
      *
-     * @param user the user to operate on.
+     * @param user the tenant to operate on.
      * @param userData the data to create a FacebookData entry from.
      * @param facebookToken the Facebook authorization token used to
      *                      obtain the data. Will be included in the

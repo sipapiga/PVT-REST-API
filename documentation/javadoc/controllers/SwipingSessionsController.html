@@ -234,7 +234,7 @@ extends play.mvc.Controller</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../controllers/SwipingSessionsController.html#chooseActivities-long-java.lang.String-java.lang.String-">chooseActivities</a></span>(long&nbsp;swipingSessionId,
                 java.lang.String&nbsp;email,
                 java.lang.String&nbsp;activities)</code>
-<div class="block">Method for recording a choice of activities on behalf of the user with
+<div class="block">Method for recording a choice of activities on behalf of the tenant with
  the email address passed.</div>
 </td>
 </tr>
@@ -427,21 +427,21 @@ extends play.mvc.Controller</pre>
 <pre>public&nbsp;play.mvc.Result&nbsp;chooseActivities(long&nbsp;swipingSessionId,
                                         java.lang.String&nbsp;email,
                                         java.lang.String&nbsp;activities)</pre>
-<div class="block">Method for recording a choice of activities on behalf of the user with
+<div class="block">Method for recording a choice of activities on behalf of the tenant with
  the email address passed. Will update the database record for the
  indicated swiping session with the activities passed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>swipingSessionId</code> - the id of the swiping session, provided on
                          its creation.</dd>
-<dd><code>email</code> - the email address of the user who made the choice.</dd>
+<dd><code>email</code> - the email address of the tenant who made the choice.</dd>
 <dd><code>activities</code> - a json array of activities, indicating the users
                    choice.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>200 OK if the swiping session exists and the email address can
- be connected to an existing user, 400 BAD REQUEST if the user indicated
+ be connected to an existing tenant, 400 BAD REQUEST if the tenant indicated
  or any of the chosen activities does/do not exist or was not among the
- originally generated activities for the swiping session, if the user
+ originally generated activities for the swiping session, if the tenant
  exists but has already made a choice or if the list of activities is in
  any way malformed.</dd>
 </dl>

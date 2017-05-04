@@ -5,10 +5,17 @@
 package testResources;
 
 import models.Activity;
+import models.Interest;
+import models.accommodation.Accommodation;
+import models.accommodation.Address;
 import models.user.Authorization;
 import models.SwipingSession;
+import models.user.Renter;
+import models.user.Tenant;
 import models.user.User;
 import play.Configuration;
+import play.Logger;
+import play.libs.ws.WSClient;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,10 +29,19 @@ public class TestData {
     private User user2;
     private User admin;
 
+    private Renter renter1;
+    private Accommodation renter1Accommodation;
+
+    private Tenant tenant1;
+    private Interest interest1;
+
     private SwipingSession session;
     private Activity modernaMuseet;
 
     private String facebookToken;
+    private String appToken;
+    private String appName;
+    private String appId;
 
     @Inject
     public TestData(Configuration config) {
@@ -56,9 +72,32 @@ public class TestData {
             session = new SwipingSession(participants, activities);
             session.save();
 
+            addInterestSpecificData();
+
         }
 
         facebookToken = config.getString("facebookToken");
+        appToken = config.getString("appToken");
+        appName = config.getString("appName");
+        appId = config.getString("appId");
+
+    }
+
+    private void addInterestSpecificData() {
+
+        renter1 = new Renter("anna@example.com", "password", "Anna Svensson", "Hej! Jag är en skön prick.", 35);
+        renter1.save();
+
+        Address address = new Address("Dymlingsgränd", 3, 'A', "Hägerstensåsen", 50, 50);
+        address.save();
+
+        renter1Accommodation = renter1.createAccommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", address);
+
+        tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
+                "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
+        tenant1.save();
+
+        interest1 = tenant1.addInterest(renter1Accommodation);
 
     }
 
@@ -74,6 +113,22 @@ public class TestData {
         return admin;
     }
 
+    public Renter getRenter1() {
+        return renter1;
+    }
+
+    public Accommodation getRenter1Accommodation() {
+        return renter1Accommodation;
+    }
+
+    public Tenant getTenant1() {
+        return tenant1;
+    }
+
+    public Interest getInterest1() {
+        return interest1;
+    }
+
     public SwipingSession getSession() {
         return session;
     }
@@ -84,5 +139,17 @@ public class TestData {
 
     public String getFacebookToken() {
         return facebookToken;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getAppId() {
+        return appId;
     }
 }

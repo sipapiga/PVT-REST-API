@@ -2,6 +2,7 @@ package models.user;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import models.Interest;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -9,10 +10,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * An entity representing a user.
+ * An entity representing a tenant.
  * Modified from https://github.com/jamesward/play-rest-security
  */
 @Entity
@@ -90,9 +92,11 @@ public class User extends Model {
 
     }
 
-    public User(String emailAddress, String fullName, String description, int age) {
+    public User(String emailAddress, String password, String fullName, String description, int age) {
 
         setEmailAddress(emailAddress);
+        setPassword(password);
+
         this.fullName = fullName;
         this.creationDate = new Date();
         this.description = description;

@@ -70,12 +70,10 @@ create table facebook_data (
 
 create table interest (
   id                            bigint auto_increment not null,
-  tenant_id                     bigint not null,
-  user_id                       bigint,
-  accommodation_id              bigint,
+  tenant_id                     bigint,
+  interest_accommodation_id     bigint,
   mutual                        boolean,
-  constraint uq_interest_user_id unique (user_id),
-  constraint uq_interest_accommodation_id unique (accommodation_id),
+  constraint uq_interest_tenant_id_interest_accommodation_id unique (tenant_id,interest_accommodation_id),
   constraint pk_interest primary key (id)
 );
 
@@ -152,9 +150,8 @@ alter table facebook_data add constraint fk_facebook_data_user_id foreign key (u
 alter table interest add constraint fk_interest_tenant_id foreign key (tenant_id) references user (id) on delete restrict on update restrict;
 create index ix_interest_tenant_id on interest (tenant_id);
 
-alter table interest add constraint fk_interest_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
-
-alter table interest add constraint fk_interest_accommodation_id foreign key (accommodation_id) references accommodation (id) on delete restrict on update restrict;
+alter table interest add constraint fk_interest_interest_accommodation_id foreign key (interest_accommodation_id) references accommodation (id) on delete restrict on update restrict;
+create index ix_interest_interest_accommodation_id on interest (interest_accommodation_id);
 
 alter table swiping_session_user add constraint fk_swiping_session_user_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
 create index ix_swiping_session_user_swiping_session on swiping_session_user (swiping_session_id);
@@ -197,9 +194,8 @@ alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
 alter table interest drop constraint if exists fk_interest_tenant_id;
 drop index if exists ix_interest_tenant_id;
 
-alter table interest drop constraint if exists fk_interest_user_id;
-
-alter table interest drop constraint if exists fk_interest_accommodation_id;
+alter table interest drop constraint if exists fk_interest_interest_accommodation_id;
+drop index if exists ix_interest_interest_accommodation_id;
 
 alter table swiping_session_user drop constraint if exists fk_swiping_session_user_swiping_session;
 drop index if exists ix_swiping_session_user_swiping_session;
