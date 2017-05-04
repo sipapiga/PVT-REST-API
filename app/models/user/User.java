@@ -20,6 +20,7 @@ import java.util.UUID;
 @Entity
 @Inheritance // Ebeans does not support any other strategy than SINGLE_TABLE. This works fine, but remember that no fields in subclasses can be non-nullable.
 @DiscriminatorValue("USER")
+@Table(name = "users")
 public class User extends Model {
 
     @Id

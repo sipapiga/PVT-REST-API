@@ -43,7 +43,7 @@ public class FacebookServiceTest extends BaseTest {
         }
      */
 
-    @Before
+    /*@Before
     public void setup() {
 
         String graphApi = "https://graph.facebook.com/";
@@ -75,9 +75,9 @@ public class FacebookServiceTest extends BaseTest {
         ws = WS.newClient(server.httpPort());
         facebookService = new FacebookService(ws);
 
-    }
+    }*/
 
-    @After
+    /*@After
     public void tearDown() throws IOException {
 
         try {
@@ -86,7 +86,7 @@ public class FacebookServiceTest extends BaseTest {
         finally {
             server.stop();
         }
-    }
+    }*/
 
     @Test
     public void canMakeValidRequest() throws Exception {

@@ -9,10 +9,10 @@ create table accommodation (
   size                          double,
   rooms                         double,
   deposit                       double,
-  smoking_allowed               boolean,
-  animals_allowed               boolean,
-  tv                            boolean,
-  broadband                     boolean,
+  smoking_allowed               tinyint(1) default 0,
+  animals_allowed               tinyint(1) default 0,
+  tv                            tinyint(1) default 0,
+  broadband                     tinyint(1) default 0,
   description                   varchar(255),
   renter_id                     bigint,
   address_id                    bigint,
@@ -72,7 +72,7 @@ create table interest (
   id                            bigint auto_increment not null,
   tenant_id                     bigint,
   interest_accommodation_id     bigint,
-  mutual                        boolean,
+  mutual                        tinyint(1) default 0,
   constraint uq_interest_tenant_id_interest_accommodation_id unique (tenant_id,interest_accommodation_id),
   constraint pk_interest primary key (id)
 );
@@ -90,10 +90,10 @@ create table swiping_session (
   constraint pk_swiping_session primary key (id)
 );
 
-create table swiping_session_user (
+create table swiping_session_users (
   swiping_session_id            bigint not null,
-  user_id                       bigint not null,
-  constraint pk_swiping_session_user primary key (swiping_session_id,user_id)
+  users_id                      bigint not null,
+  constraint pk_swiping_session_users primary key (swiping_session_id,users_id)
 );
 
 create table swiping_session_activity (
@@ -102,7 +102,7 @@ create table swiping_session_activity (
   constraint pk_swiping_session_activity primary key (swiping_session_id,activity_id)
 );
 
-create table user (
+create table users (
   dtype                         varchar(10) not null,
   id                            bigint auto_increment not null,
   auth_token                    varchar(255),
@@ -121,19 +121,19 @@ create table user (
   occupation                    varchar(255),
   deposit                       double,
   accommodation_id              bigint,
-  constraint ck_user_authorization check (authorization in (0,1)),
-  constraint uq_user_email_address unique (email_address),
-  constraint uq_user_facebook_data_id unique (facebook_data_id),
-  constraint uq_user_accommodation_id unique (accommodation_id),
-  constraint pk_user primary key (id)
+  constraint ck_users_authorization check (authorization in (0,1)),
+  constraint uq_users_email_address unique (email_address),
+  constraint uq_users_facebook_data_id unique (facebook_data_id),
+  constraint uq_users_accommodation_id unique (accommodation_id),
+  constraint pk_users primary key (id)
 );
 
-alter table accommodation add constraint fk_accommodation_renter_id foreign key (renter_id) references user (id) on delete restrict on update restrict;
+alter table accommodation add constraint fk_accommodation_renter_id foreign key (renter_id) references users (id) on delete restrict on update restrict;
 
 alter table accommodation add constraint fk_accommodation_address_id foreign key (address_id) references address (id) on delete restrict on update restrict;
 create index ix_accommodation_address_id on accommodation (address_id);
 
-alter table activity_choice add constraint fk_activity_choice_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
+alter table activity_choice add constraint fk_activity_choice_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
 create index ix_activity_choice_user_id on activity_choice (user_id);
 
 alter table activity_choice add constraint fk_activity_choice_swiping_session_id foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
@@ -145,19 +145,19 @@ create index ix_activity_choice_activity_activity_choice on activity_choice_acti
 alter table activity_choice_activity add constraint fk_activity_choice_activity_activity foreign key (activity_id) references activity (id) on delete restrict on update restrict;
 create index ix_activity_choice_activity_activity on activity_choice_activity (activity_id);
 
-alter table facebook_data add constraint fk_facebook_data_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
+alter table facebook_data add constraint fk_facebook_data_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
 
-alter table interest add constraint fk_interest_tenant_id foreign key (tenant_id) references user (id) on delete restrict on update restrict;
+alter table interest add constraint fk_interest_tenant_id foreign key (tenant_id) references users (id) on delete restrict on update restrict;
 create index ix_interest_tenant_id on interest (tenant_id);
 
 alter table interest add constraint fk_interest_interest_accommodation_id foreign key (interest_accommodation_id) references accommodation (id) on delete restrict on update restrict;
 create index ix_interest_interest_accommodation_id on interest (interest_accommodation_id);
 
-alter table swiping_session_user add constraint fk_swiping_session_user_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
-create index ix_swiping_session_user_swiping_session on swiping_session_user (swiping_session_id);
+alter table swiping_session_users add constraint fk_swiping_session_users_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
+create index ix_swiping_session_users_swiping_session on swiping_session_users (swiping_session_id);
 
-alter table swiping_session_user add constraint fk_swiping_session_user_user foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_swiping_session_user_user on swiping_session_user (user_id);
+alter table swiping_session_users add constraint fk_swiping_session_users_users foreign key (users_id) references users (id) on delete restrict on update restrict;
+create index ix_swiping_session_users_users on swiping_session_users (users_id);
 
 alter table swiping_session_activity add constraint fk_swiping_session_activity_swiping_session foreign key (swiping_session_id) references swiping_session (id) on delete restrict on update restrict;
 create index ix_swiping_session_activity_swiping_session on swiping_session_activity (swiping_session_id);
@@ -165,53 +165,53 @@ create index ix_swiping_session_activity_swiping_session on swiping_session_acti
 alter table swiping_session_activity add constraint fk_swiping_session_activity_activity foreign key (activity_id) references activity (id) on delete restrict on update restrict;
 create index ix_swiping_session_activity_activity on swiping_session_activity (activity_id);
 
-alter table user add constraint fk_user_facebook_data_id foreign key (facebook_data_id) references facebook_data (id) on delete restrict on update restrict;
+alter table users add constraint fk_users_facebook_data_id foreign key (facebook_data_id) references facebook_data (id) on delete restrict on update restrict;
 
-alter table user add constraint fk_user_accommodation_id foreign key (accommodation_id) references accommodation (id) on delete restrict on update restrict;
+alter table users add constraint fk_users_accommodation_id foreign key (accommodation_id) references accommodation (id) on delete restrict on update restrict;
 
 
 # --- !Downs
 
-alter table accommodation drop constraint if exists fk_accommodation_renter_id;
+alter table accommodation drop foreign key fk_accommodation_renter_id;
 
-alter table accommodation drop constraint if exists fk_accommodation_address_id;
-drop index if exists ix_accommodation_address_id;
+alter table accommodation drop foreign key fk_accommodation_address_id;
+drop index ix_accommodation_address_id on accommodation;
 
-alter table activity_choice drop constraint if exists fk_activity_choice_user_id;
-drop index if exists ix_activity_choice_user_id;
+alter table activity_choice drop foreign key fk_activity_choice_user_id;
+drop index ix_activity_choice_user_id on activity_choice;
 
-alter table activity_choice drop constraint if exists fk_activity_choice_swiping_session_id;
-drop index if exists ix_activity_choice_swiping_session_id;
+alter table activity_choice drop foreign key fk_activity_choice_swiping_session_id;
+drop index ix_activity_choice_swiping_session_id on activity_choice;
 
-alter table activity_choice_activity drop constraint if exists fk_activity_choice_activity_activity_choice;
-drop index if exists ix_activity_choice_activity_activity_choice;
+alter table activity_choice_activity drop foreign key fk_activity_choice_activity_activity_choice;
+drop index ix_activity_choice_activity_activity_choice on activity_choice_activity;
 
-alter table activity_choice_activity drop constraint if exists fk_activity_choice_activity_activity;
-drop index if exists ix_activity_choice_activity_activity;
+alter table activity_choice_activity drop foreign key fk_activity_choice_activity_activity;
+drop index ix_activity_choice_activity_activity on activity_choice_activity;
 
-alter table facebook_data drop constraint if exists fk_facebook_data_user_id;
+alter table facebook_data drop foreign key fk_facebook_data_user_id;
 
-alter table interest drop constraint if exists fk_interest_tenant_id;
-drop index if exists ix_interest_tenant_id;
+alter table interest drop foreign key fk_interest_tenant_id;
+drop index ix_interest_tenant_id on interest;
 
-alter table interest drop constraint if exists fk_interest_interest_accommodation_id;
-drop index if exists ix_interest_interest_accommodation_id;
+alter table interest drop foreign key fk_interest_interest_accommodation_id;
+drop index ix_interest_interest_accommodation_id on interest;
 
-alter table swiping_session_user drop constraint if exists fk_swiping_session_user_swiping_session;
-drop index if exists ix_swiping_session_user_swiping_session;
+alter table swiping_session_users drop foreign key fk_swiping_session_users_swiping_session;
+drop index ix_swiping_session_users_swiping_session on swiping_session_users;
 
-alter table swiping_session_user drop constraint if exists fk_swiping_session_user_user;
-drop index if exists ix_swiping_session_user_user;
+alter table swiping_session_users drop foreign key fk_swiping_session_users_users;
+drop index ix_swiping_session_users_users on swiping_session_users;
 
-alter table swiping_session_activity drop constraint if exists fk_swiping_session_activity_swiping_session;
-drop index if exists ix_swiping_session_activity_swiping_session;
+alter table swiping_session_activity drop foreign key fk_swiping_session_activity_swiping_session;
+drop index ix_swiping_session_activity_swiping_session on swiping_session_activity;
 
-alter table swiping_session_activity drop constraint if exists fk_swiping_session_activity_activity;
-drop index if exists ix_swiping_session_activity_activity;
+alter table swiping_session_activity drop foreign key fk_swiping_session_activity_activity;
+drop index ix_swiping_session_activity_activity on swiping_session_activity;
 
-alter table user drop constraint if exists fk_user_facebook_data_id;
+alter table users drop foreign key fk_users_facebook_data_id;
 
-alter table user drop constraint if exists fk_user_accommodation_id;
+alter table users drop foreign key fk_users_accommodation_id;
 
 drop table if exists accommodation;
 
@@ -231,9 +231,9 @@ drop table if exists rental_period;
 
 drop table if exists swiping_session;
 
-drop table if exists swiping_session_user;
+drop table if exists swiping_session_users;
 
 drop table if exists swiping_session_activity;
 
-drop table if exists user;
+drop table if exists users;
 

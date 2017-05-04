@@ -218,6 +218,11 @@ public class InterestsControllerTest extends BaseTest {
 
     }
 
+    @Test
+    public void canHandleNonExistingAccommodation() {
+        // Implement this
+    }
+
     /*
      * PUT
      */
