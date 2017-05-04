@@ -39,43 +39,44 @@ public class DemoData {
     public DemoData(Environment environment) {
         
         //if (environment.isDev()) {
+        if (!environment.isTest()) {
 
-        if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
+            if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
 
-            Logger.info("Loading Demo Data");
+                Logger.info("Loading Demo Data");
 
-            user1 = new User("user1@demo.com", "password", "John Doe");
-            user1.createToken();
-            user1.save();
+                user1 = new User("user1@demo.com", "password", "John Doe");
+                user1.createToken();
+                user1.save();
 
-            user2 = new User("user2@demo.com", "password", "Jane Doe");
-            user2.createToken();
-            user2.save();
+                user2 = new User("user2@demo.com", "password", "Jane Doe");
+                user2.createToken();
+                user2.save();
 
-            admin = new User("admin@demo.com", "password", "Sven Svensson");
-            admin.authorization = Authorization.ADMIN;
-            admin.save();
+                admin = new User("admin@demo.com", "password", "Sven Svensson");
+                admin.authorization = Authorization.ADMIN;
+                admin.save();
 
-            Logger.debug(User.findByEmailAddress("admin@demo.com").fullName);
+                Logger.debug(User.findByEmailAddress("admin@demo.com").fullName);
 
-            Set<User> participants = new HashSet<>();
+                Set<User> participants = new HashSet<>();
 
-            participants.add(user1);
-            participants.add(user2);
+                participants.add(user1);
+                participants.add(user2);
 
-            modernaMuseet = new Activity("Moderna Museet");
-            modernaMuseet.save();
+                modernaMuseet = new Activity("Moderna Museet");
+                modernaMuseet.save();
 
-            Set<Activity> activities = new HashSet<>();
-            activities.add(modernaMuseet);
+                Set<Activity> activities = new HashSet<>();
+                activities.add(modernaMuseet);
 
-            session = new SwipingSession(participants, activities);
-            session.save();
+                session = new SwipingSession(participants, activities);
+                session.save();
 
-            addInterestSpecificData();
+                addInterestSpecificData();
 
             }
-        //}
+        }
     }
 
     private void addInterestSpecificData() {
