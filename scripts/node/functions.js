@@ -61,32 +61,26 @@ let performPostRequest = function(server, endpoint, options, successCallback) {
     options.method = 'POST';
     options.credentials = 'include';
 
-    fetch(server + '/' + endpoint, options) .then(function(response) {
-
-        return response.json();
-
-    }).then(function(responseObject) {
-
-        successCallback(responseObject);
-
-    }).catch(function(error) {
-
-        console.log(error);
-
-    });
+    performRequest(server, endpoint, {}, options, successCallback);
 
 };
 
 let performAuthenticatedGetRequest = function(server, endpoint, authToken, parameters, successCallback) {
 
+    let options = {
+        method: 'GET',
+        headers: {"X-AUTH-TOKEN": authToken}
+    };
+
+    performRequest(server, endpoint, parameters, options, successCallback);
+
+};
+
+let performRequest = function(server, endpoint, parameters, options, successCallback) {
+
     let uri = buildUri(server + '/' + endpoint, parameters);
 
-    fetch(uri, {
-
-        method: 'GET',
-        headers: {"X-AUTH-TOKEN":authToken}
-
-    }).then(function(response) {
+    fetch(uri, options).then(function(response) {
 
         return response.json();
 
@@ -99,7 +93,6 @@ let performAuthenticatedGetRequest = function(server, endpoint, authToken, param
         console.log(error);
 
     });
-
 };
 
 let buildUri = function(endpoint, requestObject) {
