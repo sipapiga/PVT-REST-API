@@ -14,7 +14,7 @@ let facebookLogin = function(server, facebookToken, successCallback) {
         })
     };
 
-    performPostRequest(server, 'facebook/login', options, successCallback);
+    performPostRequest(server, '/facebook/login', options, successCallback);
 
 };
 
@@ -24,7 +24,7 @@ let localLogin = function(server, email, password, successCallback) {
 	formData.append('emailAddress', email);
 	formData.append('password', password);
 
-	performPostRequest(server, 'login', {body: formData}, successCallback)
+	performPostRequest(server, '/login', {body: formData}, successCallback)
 
 };
 
@@ -33,7 +33,7 @@ let localLogin = function(server, email, password, successCallback) {
  */
 
 let getInterests = function(server, authToken, parameters) {
-	performAuthenticatedGetRequest(server, 'interests', authToken, parameters, console.log);
+	performAuthenticatedGetRequest(server, '/interests', authToken, parameters, console.log);
 };
 
 /*
@@ -41,7 +41,7 @@ let getInterests = function(server, authToken, parameters) {
  */
 
 let getAccommodation = function(server, authToken, parameters) {
-    performAuthenticatedGetRequest(server, 'accommodation', authToken, parameters, console.log);
+    performAuthenticatedGetRequest(server, '/accommodation', authToken, parameters, console.log);
 };
 
 /*
@@ -49,7 +49,7 @@ let getAccommodation = function(server, authToken, parameters) {
  */
 
 let getTenantProfile = function(server, authToken) {
-    performAuthenticatedGetRequest(server, 'users/tenants', authToken, {}, console.log);
+    performAuthenticatedGetRequest(server, '/users/tenants', authToken, {}, console.log);
 };
 
 /*
@@ -78,7 +78,7 @@ let performAuthenticatedGetRequest = function(server, endpoint, authToken, param
 
 let performRequest = function(server, endpoint, parameters, options, successCallback) {
 
-    let uri = buildUri(server + '/' + endpoint, parameters);
+    let uri = buildUri(server + endpoint, parameters);
 
     fetch(uri, options).then(function(response) {
 
