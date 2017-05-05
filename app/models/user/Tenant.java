@@ -3,6 +3,7 @@ package models.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import models.Interest;
 import models.accommodation.Accommodation;
+import models.accommodation.RentalPeriod;
 import play.Logger;
 
 import javax.persistence.*;
@@ -21,6 +22,8 @@ public class Tenant extends User {
     public double income;
     public String occupation;
     public double deposit;
+    public RentalPeriod rentalPeriod;
+
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
@@ -45,7 +48,7 @@ public class Tenant extends User {
 
     }
 
-    public void addInterest(Accommodation accommodation) {
+    public Interest addInterest(Accommodation accommodation) {
 
        if (Interest.findByTenantAndAccommodation(id, accommodation.id) != null) {
            throw new IllegalArgumentException("You may not add an interest that has already been added.");
@@ -57,6 +60,8 @@ public class Tenant extends User {
        interests.add(interest);
 
        save();
+
+       return interest;
 
     }
 

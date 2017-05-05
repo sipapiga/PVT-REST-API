@@ -26,6 +26,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.contentAsString;
@@ -120,7 +121,7 @@ public class InterestsControllerTest extends BaseTest {
     }
 
     @Test
-    public void returnsAllInterestsOnAuthorizedGet() {
+    public void returnsAllInterestsForRenter() {
 
         Result result = makeAuthenticatedRequest(count, offset, tenantId, accommodationId, mutual);
         JsonNode responseBody = Json.parse(contentAsString(result));
@@ -209,11 +210,134 @@ public class InterestsControllerTest extends BaseTest {
     }
 
     @Test
-    public void correctErrorTypeOnNonTenantPost() {
+    public void noSuchEntityErrorTypeOnNonTenantPost() {
 
         Result result = makePostRequest(renter1.createToken(), tenant1.id, renter1Accommodation.id);
         JsonNode responseJson = Json.parse(contentAsString(result));
         assertEquals(ResponseBuilder.NO_SUCH_ENTITY, responseJson.findValue("type").asText());
 
     }
+
+    @Test
+    public void canHandleNonExistingAccommodation() {
+        // Implement this
+    }
+
+    /*
+     * PUT
+     */
+
+    @Test
+    public void authorizedPutReturnsUpdatedInterest() {
+
+        String authToken = renter1.createToken();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode bodyJson = mapper.createObjectNode();
+
+        bodyJson.put("mutual", "true");
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.setMutual(interest1.tenant.id, interest1.accommodation.id));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+        fakeRequest.bodyJson(bodyJson);
+
+        Result result = route(fakeRequest);
+        assertEquals(OK, result.status());
+
+        JsonNode responseJson = Json.parse(contentAsString(result));
+
+        assertEquals("true", responseJson.findValue("mutual").asText());
+        assertEquals(5L, responseJson.findValue("tenantId").asLong());
+        assertEquals(1L, responseJson.findValue("accommodationId").asLong());
+
+    }
+
+    @Test
+    public void authorizedPutReturnsBadRequestOnNoRequestBody() {
+        // Implement this
+    }
+
+    @Test
+    public void authorizedPutReturnsBadRequestOnNonBooleanBodyValue() {
+        // Implement this
+    }
+
+    /*
+     * DELETE
+     */
+
+    private Renter createSampleRenter() {
+
+        Renter renter = new Renter("renter@example.com", "password", "Renter Rentersson",
+                "I'm a renter", 35);
+
+        renter.save();
+
+        return renter;
+
+    }
+
+    private Address createSampleAddress() {
+        Address address = new Address("The Street", 1, 'A', "The Area", 10, 10);
+        address.save();
+        return address;
+    }
+
+    private Accommodation createSampleAccommodation(Renter renter, Address address, int rent, int size, int deposit, String accommodation) {
+        return renter.createAccommodation(rent, size, 1, deposit, false, false, true, true, accommodation, address);
+    }
+
+    private Tenant createSampleTenant() {
+        Tenant tenant = new Tenant("tenant@texample.com", "password", "Tenant Tenantsson",
+                "I'm a tenant", 35, 1, 5000, 18000, "Full-time tenant.", 8000);
+        tenant.save();
+        return tenant;
+    }
+
+    @Test
+    public void deleteInterestSavesResult() {
+
+        Renter renter = createSampleRenter();
+        Address address = createSampleAddress();
+
+        Accommodation accommodation = createSampleAccommodation(renter, address, 4000, 20, 8000, "Accommodation");
+
+        Tenant tenant = createSampleTenant();
+        tenant.addInterest(accommodation);
+
+        String authToken = tenant.createToken();
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.withdrawInterest(tenant.id, accommodation.id));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+
+        Result result = route(fakeRequest);
+
+        assertEquals(NO_CONTENT, result.status());
+        assertNull(Interest.findByTenantAndAccommodation(tenant.id, accommodation.id));
+
+    }
+
+    @Test
+    public void deleteInterestRemovesInterestFromTenant() {
+
+        Renter renter = createSampleRenter();
+        Address address = createSampleAddress();
+
+        Accommodation accommodation = createSampleAccommodation(renter, address, 4000, 20, 8000, "Accommodation");
+
+        Tenant tenant = createSampleTenant();
+        tenant.addInterest(accommodation);
+
+        String authToken = tenant.createToken();
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.withdrawInterest(tenant.id, accommodation.id));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+
+        route(fakeRequest);
+
+        Logger.debug(tenant.interests.toString());
+        //addInterest(accommodation, tenant);
+
+    }
+
 }

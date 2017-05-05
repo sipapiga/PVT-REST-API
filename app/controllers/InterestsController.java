@@ -35,9 +35,9 @@ public class InterestsController extends Controller {
 
         List<Function<ExpressionList<Interest>, ExpressionList<Interest>>> functions = Arrays.asList(
 
-                exprList -> tenantId.isDefined() ? exprList.eq("tenant_id", tenantId.get()) : exprList,
-                exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList,
-                exprList -> mutual.isDefined() ? exprList.eq("mutual", mutual.get()) : exprList
+            exprList -> tenantId.isDefined()        ? exprList.eq("tenant_id", tenantId.get())                        : exprList,
+            exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList,
+            exprList -> mutual.isDefined()          ? exprList.eq("mutual", mutual.get())                             : exprList
 
         );
 
@@ -53,7 +53,6 @@ public class InterestsController extends Controller {
     public Result create() {
 
         JsonNode body = request().body().asJson();
-        Logger.debug(ctx().args.get("user").toString());
 
         try {
 
@@ -69,5 +68,41 @@ public class InterestsController extends Controller {
         } catch (ClassCastException cce) {
             return ResponseBuilder.buildBadRequest("User must be a valid tenant.", ResponseBuilder.NO_SUCH_ENTITY);
         }
+    }
+
+    public Result setMutual(long tenantId, long accommodationId) {
+
+        JsonNode body = request().body().asJson();
+
+        try {
+
+            Renter renter = (Renter) ctx().args.get("user");
+            String mutual = body.findValue("mutual").textValue();
+
+            if (!mutual.equals("true") && !mutual.equals("false")) {
+                return ResponseBuilder.buildBadRequest("Attribute 'mutual' must be set to either 'true' or 'false'.", ResponseBuilder.ILLEGAL_ARGUMENT);
+            }
+
+            Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
+            interest.setMutual(Boolean.parseBoolean(mutual));
+
+            return ResponseBuilder.buildOKObject(interest);
+
+        } catch (ClassCastException cce) {
+            return ResponseBuilder.buildBadRequest("User must be a valid renter.", ResponseBuilder.NO_SUCH_ENTITY);
+        }
+    }
+
+    public Result withdrawInterest(long tenantId, long accommodationId) {
+
+        if (((User) ctx().args.get("user")).id != tenantId) {
+            return ResponseBuilder.buildUnauthorizedRequest("Owner of token and owner of tenant id do not match. A user may only withdraw own interests.");
+        }
+
+        Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
+        interest.delete();
+
+        return noContent();
+
     }
 }
