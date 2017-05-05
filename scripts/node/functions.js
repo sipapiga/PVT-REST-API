@@ -51,31 +51,46 @@ let localLogin = function(server, email, password, successCallback) {
 };
 
 let getInterests = function(server, authToken, parameters) {
+	performAuthenticatedGetRequest(server, 'interests', authToken, parameters, console.log);
+};
 
-	let uri = buildUri(server + '/interests', parameters);
+let getAccommodation = function(server, authToken, parameters) {
+    performAuthenticatedGetRequest(server, 'accommodation', authToken, parameters, console.log);
+};
 
-	fetch(uri, {
+let getTenantProfile = function(server, authToken) {
+    performAuthenticatedGetRequest(server, 'users/tenants', authToken, {}, console.log);
+};
 
-		method: 'GET',
-		headers: {"X-AUTH-TOKEN":authToken}
+let performAuthenticatedGetRequest = function(server, endpoint, authToken, parameters, successCallback) {
 
-	}).then(function(response) {
+    let uri = buildUri(server + '/' + endpoint, parameters);
 
-		return response.json();
+    fetch(uri, {
 
-	}).then(function(responseObject) {
+        method: 'GET',
+        headers: {"X-AUTH-TOKEN":authToken}
 
-		console.log(responseObject);
+    }).then(function(response) {
 
-	}).catch(function(error) {
+        return response.json();
 
-		console.log(error);
+    }).then(function(responseObject) {
 
-	});
+        successCallback(responseObject);
+
+    }).catch(function(error) {
+
+        console.log(error);
+
+    });
+
 };
 
 module.exports = {
 	localLogin: localLogin,
-	getInterests: getInterests
+	getInterests: getInterests,
+    getAccommodation: getAccommodation,
+    getTenantProfile: getTenantProfile
 };
 
