@@ -71,4 +71,11 @@ public class Interest extends Model {
     public static Interest findByTenantAndAccommodation(Long tenantId, Long accommodationId) {
         return find.where().eq("tenant_id", tenantId).eq("interest_accommodation_id", accommodationId).findUnique();
     }
+
+    public void setMutual(boolean mutual) {
+
+        this.mutual = mutual;
+        save();
+
+    }
 }

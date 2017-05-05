@@ -1,5 +1,6 @@
 package testResources;
 
+import models.Interest;
 import models.accommodation.Accommodation;
 import models.user.Renter;
 import models.user.Tenant;
@@ -29,9 +30,14 @@ public class BaseTest extends WithApplication {
     protected String tenant1Email;
     protected String tenant1Password;
 
+    protected Interest interest1;
+
     protected Accommodation renter1Accommodation;
 
     protected String facebookToken;
+    protected String appToken;
+    protected String appName;
+    protected String appId;
 
     @Before
     public void setupClass() {
@@ -60,7 +66,12 @@ public class BaseTest extends WithApplication {
         tenant1Email = tenant1.getEmailAddress();
         tenant1Password = tenant1.getPassword();
 
+        interest1 = testData.getInterest1();
+
         facebookToken = testData.getFacebookToken();
+        appToken = testData.getAppToken();
+        appName = testData.getAppName();
+        appId = testData.getAppId();
 
     }
 }

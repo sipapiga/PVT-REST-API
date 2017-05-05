@@ -8,15 +8,17 @@ import models.Activity;
 import models.Interest;
 import models.accommodation.Accommodation;
 import models.accommodation.Address;
-import models.user.Authorization;
+import models.accommodation.RentalPeriod;
+import models.user.*;
 import models.SwipingSession;
-import models.user.Renter;
-import models.user.Tenant;
-import models.user.User;
 import play.Configuration;
+import play.Logger;
+import play.libs.ws.WSClient;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +39,9 @@ public class TestData {
     private Activity modernaMuseet;
 
     private String facebookToken;
+    private String appToken;
+    private String appName;
+    private String appId;
 
     @Inject
     public TestData(Configuration config) {
@@ -72,6 +77,9 @@ public class TestData {
         }
 
         facebookToken = config.getString("facebookToken");
+        appToken = config.getString("appToken");
+        appName = config.getString("appName");
+        appId = config.getString("appId");
 
     }
 
@@ -85,13 +93,30 @@ public class TestData {
 
         renter1Accommodation = renter1.createAccommodation(5000, 20, 1, 8000, false, false, true, true, "Schysst ställe!", address);
 
-        tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
-                "Hej! Jag letar boende", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
-        tenant1.save();
+        FacebookData tenantFacebookData = new FacebookData("tenant1fb","kalle@example.com","Kalle", "Blomkvist", "male", "en_Us", 888);
+        tenantFacebookData.save();
 
-        tenant1.addInterest(renter1Accommodation);
+        tenant1 = new Tenant("kalle@example.com", "password", "Kalle Blomkvist",
+                "Hej, Jag heter Kalle och behöver någonstans att bo.", 23, 1, 5000, 18000, "Karaktär i berättelse", 8000);
+        try {
+            RentalPeriod rentalPeriod = new RentalPeriod("2017-05-01", "2018-05-01");
+
+            rentalPeriod.save();
+            tenant1.facebookData = tenantFacebookData;
+            tenant1.rentalPeriod = rentalPeriod;
+
+
+
+        }catch(ParseException e){
+            Logger.debug("Could not create rental period for tenant1");
+        }
+        tenant1.save();
+        Logger.debug("This is the place"+ tenant1.rentalPeriod.start.toString());
+        interest1 = tenant1.addInterest(renter1Accommodation);
 
     }
+
+
 
     public User getUser1() {
         return user1;
@@ -131,5 +156,17 @@ public class TestData {
 
     public String getFacebookToken() {
         return facebookToken;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getAppId() {
+        return appId;
     }
 }

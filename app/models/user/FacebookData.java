@@ -1,6 +1,7 @@
 package models.user;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -15,10 +16,12 @@ public class FacebookData extends Model {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @JsonIgnore
    public long id;
 
    @Column(unique = true, nullable = false)
    @Constraints.Required
+   @JsonIgnore
    public String facebookUserId;
 
    @Column(unique = true, nullable = false)
@@ -41,12 +44,15 @@ public class FacebookData extends Model {
 
    @Column(length = 10)
    @Constraints.MaxLength(10)
+   @JsonIgnore
    public String locale;
 
    @Column
+   @JsonIgnore
    public int timezone;
 
    @OneToOne
+   @JsonIgnore
    public User user;
 
    private static Finder<Long, FacebookData> find = new Finder<>(FacebookData.class);
