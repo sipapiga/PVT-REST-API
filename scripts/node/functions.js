@@ -1,25 +1,20 @@
 let fetch = require('node-fetch');
 let FormData = require('form-data');
 
-let buildUri = function(endpoint, requestObject) {
+/*
+ * Login
+ */
 
-    let uri = endpoint + '?';
-    let first = true;
+let facebookLogin = function(server, facebookToken, successCallback) {
 
-    for (let key in requestObject) {
+    let options = {
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            facebookAuthToken: facebookToken
+        })
+    };
 
-        if (first) {
-            first = false;
-        } else {
-            uri += '&';
-        }
-
-        if (requestObject.hasOwnProperty(key)) {
-            uri += (key + '=' + requestObject[key]);
-        }
-    }
-
-    return uri;
+    performPostRequest(server, 'facebook/login', options, successCallback);
 
 };
 
@@ -29,37 +24,57 @@ let localLogin = function(server, email, password, successCallback) {
 	formData.append('emailAddress', email);
 	formData.append('password', password);
 
-	fetch(server+ '/login', {
+	performPostRequest(server, 'login', {body: formData}, successCallback)
 
-		method: 'POST',
-		credentials: 'include',
-		body: formData
-
-	}).then(function(response) {
-
-		return response.json();
-
-	}).then(function(responseObject) {
-
-		successCallback(responseObject);
-
-	}).catch(function(error) {
-
-		console.log(error);
-
-	});
 };
+
+/*
+ * Interests
+ */
 
 let getInterests = function(server, authToken, parameters) {
 	performAuthenticatedGetRequest(server, 'interests', authToken, parameters, console.log);
 };
 
+/*
+ * Accommodation
+ */
+
 let getAccommodation = function(server, authToken, parameters) {
     performAuthenticatedGetRequest(server, 'accommodation', authToken, parameters, console.log);
 };
 
+/*
+ * Users
+ */
+
 let getTenantProfile = function(server, authToken) {
     performAuthenticatedGetRequest(server, 'users/tenants', authToken, {}, console.log);
+};
+
+/*
+ * Utilities
+ */
+
+let performPostRequest = function(server, endpoint, options, successCallback) {
+
+    options.method = 'POST';
+    options.credentials = 'include';
+
+    fetch(server + '/' + endpoint, options) .then(function(response) {
+
+        return response.json();
+
+    }).then(function(responseObject) {
+
+        successCallback(responseObject);
+
+    }).catch(function(error) {
+
+        console.log(error);
+
+    });
+
 };
 
 let performAuthenticatedGetRequest = function(server, endpoint, authToken, parameters, successCallback) {
@@ -87,8 +102,31 @@ let performAuthenticatedGetRequest = function(server, endpoint, authToken, param
 
 };
 
+let buildUri = function(endpoint, requestObject) {
+
+    let uri = endpoint + '?';
+    let first = true;
+
+    for (let key in requestObject) {
+
+        if (first) {
+            first = false;
+        } else {
+            uri += '&';
+        }
+
+        if (requestObject.hasOwnProperty(key)) {
+            uri += (key + '=' + requestObject[key]);
+        }
+    }
+
+    return uri;
+
+};
+
 module.exports = {
-	localLogin: localLogin,
+    facebookLogin: facebookLogin,
+    localLogin: localLogin,
 	getInterests: getInterests,
     getAccommodation: getAccommodation,
     getTenantProfile: getTenantProfile

@@ -9,7 +9,6 @@ functions.localLogin(server, 'kalle@example.com', 'password', function(responseO
 			count: 1,
 			offset: 0,
 			tenantId: 5,
-			accommodationId: 2
 
 		});
 	}
