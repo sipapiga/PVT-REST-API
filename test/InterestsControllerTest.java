@@ -182,6 +182,28 @@ public class InterestsControllerTest extends BaseTest {
     }
 
     @Test
+    public void canHandleTooOffsetTooGreat() {
+
+        Option<Integer> count = Option.apply(1);
+        Option<Integer> offset = Option.apply(5);
+        Option<Long> tenantId = Option.apply(tenant1.id);
+        Option<Long> accommodationId = Option.empty();
+        Option<Boolean> mutual = Option.empty();
+
+        String authToken = tenant1.createToken();
+
+        Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.get(count, offset, tenantId, accommodationId, mutual));
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
+
+        Result result = route(fakeRequest);
+        JsonNode responseBody = Json.parse(contentAsString(result));
+
+        assertEquals(BAD_REQUEST, result.status());
+        assertEquals(ResponseBuilder.OUT_OF_RANGE, responseBody.findValue("type").asText());
+
+    }
+
+    @Test
     public void cannotViewInterestsUserIsNotAuthorizedToView() {
         // Implement this
     }

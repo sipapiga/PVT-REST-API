@@ -23,6 +23,7 @@ public class ResponseBuilder {
     public static final String MALFORMED_LIST = "Malformed list.";
     public static final String NO_SUCH_ENTITY = "No such entity.";
     public static final String FORBIDDEN_ACTIVITY_CHOICE = "Forbidden activity choice.";
+    public static final String OUT_OF_RANGE = "Offset out of range.";
 
     private static ObjectMapper mapper = new ObjectMapper();
 

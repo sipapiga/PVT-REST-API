@@ -43,8 +43,14 @@ public class InterestsController extends Controller {
 
         List<Interest> interests = Interest.filterBy(functions);
 
-        interests = interests.subList(offset.isDefined() ? offset.get() : 0,
-                count.isDefined() && count.get() < interests.size() ? count.get() : interests.size());
+        int evaluatedOffset = offset.isDefined() ? offset.get() : 0;
+        int evaluatedCount = count.isDefined() && ((count.get() + evaluatedOffset) < interests.size()) ? count.get() : interests.size();
+
+        if (evaluatedOffset > interests.size()) {
+            return ResponseBuilder.buildBadRequest("The offset you have requested is larger than the number of results.", ResponseBuilder.OUT_OF_RANGE);
+        }
+
+        interests = interests.subList(evaluatedOffset, evaluatedCount);
 
         return ResponseBuilder.buildOKList(interests);
 
