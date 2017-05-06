@@ -118,6 +118,10 @@ public class User extends Model {
         }
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -155,17 +159,12 @@ public class User extends Model {
     public String createToken() {
 
         authToken = UUID.randomUUID().toString();
-        save();
-
         return authToken;
 
     }
 
     public void deleteAuthToken() {
-
         authToken = null;
-        save();
-
     }
 
     public static User findByAuthToken(String authToken) {

@@ -7,8 +7,11 @@ import models.user.Tenant;
 import models.user.User;
 import org.junit.Before;
 import play.test.WithApplication;
+import services.users.UsersService;
 
 public class BaseTest extends WithApplication {
+
+    protected UsersService usersService;
 
     protected User user1;
     protected String user1Email;
@@ -43,6 +46,8 @@ public class BaseTest extends WithApplication {
     public void setupClass() {
 
         TestData testData = app.injector().instanceOf(TestData.class);
+
+        usersService = testData.getUsersService();
 
         user1 = testData.getUser1();
         user1Email = user1.getEmailAddress();

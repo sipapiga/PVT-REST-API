@@ -23,6 +23,8 @@ public class ActivityGatheringControllerTest extends BaseTest {
     @Test
     public void testUnauthorizedRequestOnOrdinaryUser() {
 
+        String authToken = usersService.getToken(user1);
+
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.ActivityGatheringController.gather());
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, user1.createToken());
 
@@ -34,8 +36,10 @@ public class ActivityGatheringControllerTest extends BaseTest {
     @Test
     public void testAuthorizedRequestOnAdmin() {
 
+        String authToken = usersService.getToken(admin);
+
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.ActivityGatheringController.gather());
-        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, admin.createToken());
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
 
         Result result = route(fakeRequest);
         assertEquals(OK, result.status());

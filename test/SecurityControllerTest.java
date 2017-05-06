@@ -93,7 +93,8 @@ public class SecurityControllerTest extends BaseTest {
     @Test
     public void logout() {
         
-        String authToken = user1.createToken();
+        //String authToken = user1.createToken();
+        String authToken = usersService.getToken(user1);
 
         Result result = route(fakeRequest(controllers.routes.SecurityController.logout()).header(SecurityController.AUTH_TOKEN_HEADER, authToken));
         assertEquals(SEE_OTHER, result.status());

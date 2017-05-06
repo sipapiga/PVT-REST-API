@@ -5,7 +5,10 @@ import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.users.UserStorage;
+import repositories.users.UsersRepository;
 
+import javax.inject.Inject;
 import java.util.function.Predicate;
 
 /**
@@ -16,13 +19,20 @@ import java.util.function.Predicate;
  */
 public class Secured extends Security.Authenticator {
 
+    private UserStorage usersRepository;
+
+    @Inject
+    public Secured(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
+
     String evaluateUserPrivileges(Context ctx, Predicate<User> predicate) {
 
         String[] authTokenHeaderValues = ctx.request().headers().get(SecurityController.AUTH_TOKEN_HEADER);
 
         if ((authTokenHeaderValues != null) && (authTokenHeaderValues.length == 1) && (authTokenHeaderValues[0] != null)) {
 
-            User user = User.findByAuthToken(authTokenHeaderValues[0]);
+            User user = usersRepository.findByAuthToken(authTokenHeaderValues[0]);
 
             if (predicate.test(user)) {
 

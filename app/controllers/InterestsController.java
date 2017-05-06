@@ -1,24 +1,21 @@
 package controllers;
 
-import com.avaje.ebean.ExpressionList;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.Interest;
-import models.accommodation.Accommodation;
 import models.user.Renter;
 import models.user.Tenant;
 import models.user.User;
-import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import scala.Option;
+import services.interests.InterestsService;
+import exceptions.OffsetOutOfRangeException;
+import services.users.UsersService;
 import utils.ResponseBuilder;
 
-import java.util.Arrays;
+import javax.inject.Inject;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * @author Simon Olofsson
@@ -26,34 +23,32 @@ import java.util.function.Function;
 @Security.Authenticated(Secured.class)
 public class InterestsController extends Controller {
 
+    private InterestsService interestsService;
+    private UsersService usersService;
+
+    @Inject
+    public InterestsController(InterestsService interestsService, UsersService usersService) {
+
+        this.interestsService = interestsService;
+        this.usersService = usersService;
+
+    }
+
     public Result get(Option<Integer> count, Option<Integer> offset,
-                                     Option<Long> tenantId, Option<Long> accommodationId, Option<Boolean> mutual) {
+                      Option<Long> tenantId, Option<Long> accommodationId, Option<Boolean> mutual) {
 
         if (!tenantId.isDefined() && !accommodationId.isDefined()) {
             return ResponseBuilder.buildBadRequest("At least one of tenantId and accommodationId has to be defined.", ResponseBuilder.MALFORMED_URI_PARAMETERS);
         }
 
-        List<Function<ExpressionList<Interest>, ExpressionList<Interest>>> functions = Arrays.asList(
+        try {
 
-            exprList -> tenantId.isDefined()        ? exprList.eq("tenant_id", tenantId.get())                        : exprList,
-            exprList -> accommodationId.isDefined() ? exprList.eq("interest_accommodation_id", accommodationId.get()) : exprList,
-            exprList -> mutual.isDefined()          ? exprList.eq("mutual", mutual.get())                             : exprList
+            List<Interest> interests = interestsService.getSubset(count, offset, tenantId, accommodationId, mutual);
+            return ResponseBuilder.buildOKList(interests);
 
-        );
-
-        List<Interest> interests = Interest.filterBy(functions);
-
-        int evaluatedOffset = offset.isDefined() ? offset.get() : 0;
-        int evaluatedCount = count.isDefined() && ((count.get() + evaluatedOffset) < interests.size()) ? count.get() : interests.size();
-
-        if (evaluatedOffset > interests.size()) {
+        } catch(OffsetOutOfRangeException e) {
             return ResponseBuilder.buildBadRequest("The offset you have requested is larger than the number of results.", ResponseBuilder.OUT_OF_RANGE);
         }
-
-        interests = interests.subList(evaluatedOffset, evaluatedCount);
-
-        return ResponseBuilder.buildOKList(interests);
-
     }
 
     public Result create() {
@@ -65,7 +60,7 @@ public class InterestsController extends Controller {
             Tenant tenant = (Tenant) ctx().args.get("user");
             long accommodationId = body.findValue("accommodationId").asLong();
 
-            tenant.addInterest(Accommodation.findById(accommodationId));
+            usersService.addInterest(tenant, accommodationId);
 
             return noContent();
 
@@ -89,8 +84,7 @@ public class InterestsController extends Controller {
                 return ResponseBuilder.buildBadRequest("Attribute 'mutual' must be set to either 'true' or 'false'.", ResponseBuilder.ILLEGAL_ARGUMENT);
             }
 
-            Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
-            interest.setMutual(Boolean.parseBoolean(mutual));
+            Interest interest = usersService.setMutualInterest(renter, tenantId, Boolean.parseBoolean(mutual));
 
             return ResponseBuilder.buildOKObject(interest);
 
@@ -105,8 +99,7 @@ public class InterestsController extends Controller {
             return ResponseBuilder.buildUnauthorizedRequest("Owner of token and owner of tenant id do not match. A user may only withdraw own interests.");
         }
 
-        Interest interest = Interest.findByTenantAndAccommodation(tenantId, accommodationId);
-        interest.delete();
+        usersService.withdrawInterest(tenantId, accommodationId);
 
         return noContent();
 

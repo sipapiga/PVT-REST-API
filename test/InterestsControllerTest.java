@@ -18,6 +18,7 @@ import scala.None;
 import scala.Option;
 import scala.tools.cmd.Opt;
 import testResources.BaseTest;
+import testResources.MockTest;
 import utils.ResponseBuilder;
 
 import java.util.ArrayList;
@@ -50,7 +51,8 @@ public class InterestsControllerTest extends BaseTest {
 
     private Result makeAuthenticatedRequest(Option<Integer> count, Option<Integer> offset, Option<Long> tenantId, Option<Long> accommodationId, Option<Boolean> mutual) {
 
-        String authToken = renter1.createToken();
+        //String authToken = renter1.createToken();
+        String authToken = usersService.getToken(renter1);
 
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.get(count, offset, tenantId, accommodationId, mutual));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
@@ -94,7 +96,8 @@ public class InterestsControllerTest extends BaseTest {
 
         Accommodation renter2Accommodation = createRenterAndAccommodation();
 
-        String authToken = tenant1.createToken();
+        //String authToken = tenant1.createToken();
+        String authToken = usersService.getToken(tenant1);
 
         return makePostRequest(authToken, tenant1.id, renter2Accommodation.id);
 
@@ -169,7 +172,8 @@ public class InterestsControllerTest extends BaseTest {
         Option<Long> accommodationId = Option.empty();
         Option<Boolean> mutual = Option.empty();
 
-        String authToken = tenant1.createToken();
+        //String authToken = tenant1.createToken();
+        String authToken = usersService.getToken(tenant1);
 
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.get(count, offset, tenantId, accommodationId, mutual));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
@@ -190,7 +194,8 @@ public class InterestsControllerTest extends BaseTest {
         Option<Long> accommodationId = Option.empty();
         Option<Boolean> mutual = Option.empty();
 
-        String authToken = tenant1.createToken();
+        //String authToken = tenant1.createToken();
+        String authToken = usersService.getToken(tenant1);
 
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.get(count, offset, tenantId, accommodationId, mutual));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
@@ -226,7 +231,9 @@ public class InterestsControllerTest extends BaseTest {
         Tenant tenant2 = new Tenant("jonte@example.com", "password", "Jonte Jontesson",
                 "Jag heter Jonte", 25, 1, 5000, 18000, "Jonte!", 8000);
 
-        Result result = makePostRequest(tenant2.createToken(), tenant2.id, renter1Accommodation.id);
+        String authToken = usersService.getToken(tenant2);
+
+        Result result = makePostRequest(authToken, tenant2.id, renter1Accommodation.id);
         assertNotNull(Interest.findByTenantAndAccommodation(tenant2.id, renter1Accommodation.id));
 
     }
@@ -234,7 +241,9 @@ public class InterestsControllerTest extends BaseTest {
     @Test
     public void noSuchEntityErrorTypeOnNonTenantPost() {
 
-        Result result = makePostRequest(renter1.createToken(), tenant1.id, renter1Accommodation.id);
+        String authToken = usersService.getToken(renter1);
+
+        Result result = makePostRequest(authToken, tenant1.id, renter1Accommodation.id);
         JsonNode responseJson = Json.parse(contentAsString(result));
         assertEquals(ResponseBuilder.NO_SUCH_ENTITY, responseJson.findValue("type").asText());
 
@@ -252,7 +261,8 @@ public class InterestsControllerTest extends BaseTest {
     @Test
     public void authorizedPutReturnsUpdatedInterest() {
 
-        String authToken = renter1.createToken();
+        //String authToken = renter1.createToken();
+        String authToken = usersService.getToken(renter1);
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode bodyJson = mapper.createObjectNode();
@@ -327,7 +337,8 @@ public class InterestsControllerTest extends BaseTest {
         Tenant tenant = createSampleTenant();
         tenant.addInterest(accommodation);
 
-        String authToken = tenant.createToken();
+        //String authToken = tenant.createToken();
+        String authToken = usersService.getToken(tenant);
 
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.withdrawInterest(tenant.id, accommodation.id));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
@@ -350,7 +361,8 @@ public class InterestsControllerTest extends BaseTest {
         Tenant tenant = createSampleTenant();
         tenant.addInterest(accommodation);
 
-        String authToken = tenant.createToken();
+        //String authToken = tenant.createToken();
+        String authToken = usersService.getToken(tenant);
 
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.InterestsController.withdrawInterest(tenant.id, accommodation.id));
         fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);

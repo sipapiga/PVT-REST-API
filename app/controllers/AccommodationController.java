@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import exceptions.OffsetOutOfRangeException;
 import models.accommodation.Accommodation;
 import play.mvc.Controller;
 import play.mvc.Result;
 import scala.Option;
+import services.accommodation.AccommodationService;
 import utils.DynamicFilter;
 import utils.ResponseBuilder;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,38 +27,26 @@ import static play.mvc.Results.ok;
  * @author Simon Olofsson
  */
 public class AccommodationController extends Controller{
-	
-	private Predicate<Double> lessThanOrEqualTo(final Option<Double> option){
-		return value->!option.isDefined()||value<=option.get();
+
+    private AccommodationService accommodationService;
+
+    @Inject
+	public AccommodationController(AccommodationService accommodationService) {
+		this.accommodationService = accommodationService;
 	}
-	
-	private Predicate<Double> greaterThanOrEqualTo(final Option<Double> option){
-		return value->!option.isDefined()||value>=option.get();
-	}
-	
-	private Predicate<Boolean> equalTo(final Option<Boolean> option){
-		return value->!option.isDefined()||value==option.get();
-	}
-	
+
 	public Result get(final Option<Integer> count, final Option<Integer> offset,
-	                  final Option<Double> rent, final Option<Double> size,
-	                  final Option<Boolean> smokingAllowed, final Option<Boolean> animalsAllowed){
-		
-		DynamicFilter<Accommodation> accommodationFilter=new DynamicFilter<>(Arrays.asList(
-				
-				acc->!rent.isDefined()||acc.rent<=rent.get(),
-				acc->!size.isDefined()||acc.size>=size.get(),
-				acc->!smokingAllowed.isDefined()||(!smokingAllowed.get()||acc.smokingAllowed), // If the query set smokingAllowed to true, the accommodation has to allow smoking.
-				acc->!animalsAllowed.isDefined()||(!animalsAllowed.get()||acc.animalsAllowed) // If the query set animalsAllowed to true, the accommodation has to allow animals.
-		
-		), Accommodation.findAll());
-		
-		List<Accommodation> filteredAccommodation=accommodationFilter.filter();
-		
-		ArrayNode arrayNode=new ObjectMapper().valueToTree(filteredAccommodation);
-		
-		return ok(arrayNode);
-		
+					  final Option<Double> rent, final Option<Double> size,
+					  final Option<Boolean> smokingAllowed, final Option<Boolean> animalsAllowed){
+
+        try {
+
+            List<Accommodation> accommodation = accommodationService.getSubset(count, offset, rent, size, smokingAllowed, animalsAllowed);
+            return ResponseBuilder.buildOKList(accommodation);
+
+        } catch (OffsetOutOfRangeException e) {
+            return ResponseBuilder.buildBadRequest("The offset you have requested is larger than the number of results.", ResponseBuilder.OUT_OF_RANGE);
+        }
 	}
 	
 	public Result put(){

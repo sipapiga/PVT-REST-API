@@ -8,6 +8,7 @@ import play.data.FormFactory;
 import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.*;
+import services.users.UsersService;
 
 import javax.inject.Inject;
 
@@ -19,11 +20,18 @@ import javax.inject.Inject;
  */
 public class SecurityController extends Controller {
 
-    @Inject
-    FormFactory formFactory;
+    private FormFactory formFactory;
+    private UsersService usersService;
 
     public static final String AUTH_TOKEN_HEADER = "X-AUTH-TOKEN";
     public static final String AUTH_TOKEN = "authToken";
+
+    @Inject
+    public SecurityController(FormFactory formFactory, UsersService usersService) {
+
+        this.formFactory = formFactory;
+        this.usersService = usersService;
+    }
 
     public static User getUser() {
         return (User) Http.Context.current().args.get("user");
@@ -40,13 +48,13 @@ public class SecurityController extends Controller {
 
         Login login = loginForm.get();
 
-        User user = User.findByEmailAddressAndPassword(login.emailAddress, login.password);
+        User user = usersService.findByEmailAddressAndPassword(login.emailAddress, login.password);
 
         if (user == null) {
             return unauthorized();
         } else {
 
-            String authToken = user.createToken();
+            String authToken = usersService.getToken(user);
             ObjectNode authTokenJson = Json.newObject();
             authTokenJson.put(AUTH_TOKEN, authToken);
             response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authToken).withSecure(ctx().request().secure()).build());
@@ -60,7 +68,7 @@ public class SecurityController extends Controller {
     public Result logout() {
         
         response().discardCookie(AUTH_TOKEN);
-        getUser().deleteAuthToken();
+        usersService.deleteToken(getUser());
 
         return redirect("/");
 

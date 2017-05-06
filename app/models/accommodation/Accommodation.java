@@ -1,11 +1,13 @@
 package models.accommodation;
 
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.*;
 import models.user.Renter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Simon Olofsson
@@ -65,5 +67,17 @@ public class Accommodation extends Model {
 
     public static List<Accommodation> findAll() {
         return find.all();
+    }
+
+    public static List<Accommodation> filterBy(List<Function<ExpressionList<Accommodation>, ExpressionList<Accommodation>>> functions) {
+
+        ExpressionList<Accommodation> expressionList = find.where();
+
+        for (Function<ExpressionList<Accommodation>, ExpressionList<Accommodation>> function : functions) {
+            expressionList = function.apply(expressionList);
+        }
+
+        return expressionList.findList();
+
     }
 }

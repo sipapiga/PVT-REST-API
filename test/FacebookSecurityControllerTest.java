@@ -2,22 +2,10 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import play.libs.Json;
-import play.libs.ws.WS;
-import play.libs.ws.WSClient;
 import play.mvc.Result;
-import play.routing.Router;
-import play.routing.RoutingDsl;
-import play.server.Server;
-import services.FacebookService;
 import testResources.BaseTest;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static play.mvc.Http.Status.BAD_REQUEST;

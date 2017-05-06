@@ -1,4 +1,4 @@
-package services;
+package services.facebook;
 
 import play.libs.ws.WSResponse;
 

@@ -1,21 +1,10 @@
 package services;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import play.Logger;
-import play.libs.Json;
-import play.libs.ws.WS;
 import play.libs.ws.WSClient;
-import play.routing.Router;
-import play.routing.RoutingDsl;
 import play.server.Server;
+import services.facebook.FacebookService;
 import testResources.BaseTest;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static play.mvc.Results.ok;
 

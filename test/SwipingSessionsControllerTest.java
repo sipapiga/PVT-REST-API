@@ -46,7 +46,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     private Result makeGetRequest(String emailAddresses) {
 
-        String authToken = user1.createToken();
+        String authToken = usersService.getToken(user1);
         return makeAuthenticatedGetRequest(authToken, emailAddresses);
 
     }
@@ -62,7 +62,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     private Result makePostRequest(String emailAddresses) {
 
-        String authToken = user1.createToken();
+        String authToken = usersService.getToken(user1);
         return makeAuthenticatedPostRequest(authToken, emailAddresses);
 
     }
@@ -105,7 +105,7 @@ public class SwipingSessionsControllerTest extends BaseTest {
 
     private Result makePutRequest(long swipingSessionId, String email, String activities) {
 
-        String authToken = user1.createToken();
+        String authToken = usersService.getToken(user1);
         return makeAuthenticatedPutRequest(authToken, swipingSessionId, email, activities);
 
     }
@@ -121,8 +121,10 @@ public class SwipingSessionsControllerTest extends BaseTest {
     @Test
     public void getSwipingSession() {
 
+        String authToken = usersService.getToken(user1);
+
         Http.RequestBuilder fakeRequest = fakeRequest(controllers.routes.SwipingSessionsController.getSwipingSessionWithParticipant(user1Email));
-        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, user1.createToken());
+        fakeRequest.header(SecurityController.AUTH_TOKEN_HEADER, authToken);
 
         Result result = route(fakeRequest);
 

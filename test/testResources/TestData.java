@@ -14,6 +14,7 @@ import models.SwipingSession;
 import play.Configuration;
 import play.Logger;
 import play.libs.ws.WSClient;
+import services.users.UsersService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Singleton
 public class TestData {
 
+    private final UsersService usersService;
     private User user1;
     private User user2;
     private User admin;
@@ -44,8 +46,10 @@ public class TestData {
     private String appId;
 
     @Inject
-    public TestData(Configuration config) {
-        
+    public TestData(Configuration config, UsersService usersService) {
+
+        this.usersService = usersService;
+
         if (User.findByEmailAddressAndPassword("user1@demo.com", "password") == null) {
 
             user1 = new User("user1@demo.com", "password", "John Doe");
@@ -116,7 +120,9 @@ public class TestData {
 
     }
 
-
+    public UsersService getUsersService() {
+        return usersService;
+    }
 
     public User getUser1() {
         return user1;
